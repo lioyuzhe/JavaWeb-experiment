@@ -1,13 +1,17 @@
-<script setup>
-
-</script>
-
 <template>
-<div>
-  this is complaint
-</div>
+  <div>
+    <h2>这是ts_cafeteria_complaint.vue</h2>
+    <!-- 子组件的内容 -->
+  </div>
 </template>
 
-<style scoped>
+<script>
+export default {
+  name: 'TsHome'
+  // 可以添加一些逻辑
+}
+</script>
 
+<style>
+/* 添加一些样式 */
 </style>

@@ -40,10 +40,10 @@ const routes = [
       { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
       { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
       {
-        path: 'ts_cafeteria',
+        path: '/',
         name: 'ts_cafeteria',
         meta: { name: '师生食堂' },
-        component: () => import('../views/ts/ts_cafeteria'),
+        component: () => import('../views/ts/ts_cafeteria.vue'),
         children: [
           {path: 'ts_cafeteria_introduction', name: 'ts_cafeteria_introduction', meta: { name: '师生食堂介绍' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_introduction.vue')},
           {path: 'ts_cafeteria_dish', name: 'ts_cafeteria_dish', meta: { name: '师生食堂菜品' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_dish.vue')},
