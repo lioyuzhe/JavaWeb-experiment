@@ -32,6 +32,20 @@ const routes = [
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
   { path: '/register', name: 'Register', meta: { name: '注册' }, component: () => import('../views/Register.vue') },
   { path: '*', name: '404', meta: { name: '无法访问' }, component: () => import('../views/404.vue') },
+  {
+    path: '/',
+    name: 'ts',
+    component: () => import('../views/Ts.vue'),
+    children: [
+      { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
+      { path: 'ts_cafeteria', name: 'ts_cafeteria', meta: { name: '师生食堂' }, component: () => import('../views/ts/ts_cafeteria') },
+      { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
+      { path: 'ts_cafeteria_introduction', name: 'ts_cafeteria_introduction', meta: { name: '师生食堂介绍' }, component: () => import('../views/ts/ts_cafeteria_introduction') },
+      { path: 'ts_cafeteria_dish', name: 'ts_cafeteria_dish', meta: { name: '师生食堂菜品' }, component: () => import('../views/ts/ts_cafeteria_dish') },
+      { path: 'ts_cafeteria_complaint', name: 'ts_cafeteria_complaint', meta: { name: '师生食堂投诉' }, component: () => import('../views/ts/ts_cafeteria_complaint') },
+      { path: 'ts_cafeteria_vote', name: 'ts_cafeteria_vote', meta: { name: '师生食堂投票' }, component: () => import('../views/ts/ts_cafeteria_vote') }
+    ]
+  }
 ]
 
 const router = new VueRouter({
