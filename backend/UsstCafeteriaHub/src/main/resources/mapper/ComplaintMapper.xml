@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usst.usstcafeteriahub.mapper.ComplaintMapper">
+
+    <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.Complaint">
+            <id property="complaintId" column="complaint_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="cafeteriaId" column="cafeteria_id" jdbcType="BIGINT"/>
+            <result property="cafeteriaName" column="cafeteria_name" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="reply" column="reply" jdbcType="VARCHAR"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        complaint_id,user_id,user_name,
+        cafeteria_id,cafeteria_name,content,
+        status,reply,deleted
+    </sql>
+</mapper>

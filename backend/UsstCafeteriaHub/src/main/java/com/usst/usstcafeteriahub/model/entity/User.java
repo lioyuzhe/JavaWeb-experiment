@@ -5,17 +5,16 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName user
  */
-@TableName(value ="admin")
+@TableName(value ="user")
 @Data
-public class Admin implements Serializable {
+public class User implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long userId;
 
     private String account;
 
@@ -29,7 +28,11 @@ public class Admin implements Serializable {
 
     private String phone;
 
-    private Date createTime;
+    private Integer status;
+
+    private Integer activityLevel;
+
+    private Integer role;
 
     private Integer deleted;
 

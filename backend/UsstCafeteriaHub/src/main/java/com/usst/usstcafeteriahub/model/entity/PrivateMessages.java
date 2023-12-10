@@ -9,27 +9,31 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName private_messages
  */
-@TableName(value ="admin")
+@TableName(value ="private_messages")
 @Data
-public class Admin implements Serializable {
+public class PrivateMessages implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long messageId;
 
-    private String account;
+    private Long senderId;
 
-    private String name;
+    private String senderName;
 
-    private String password;
+    private String senderAvatar;
 
-    private String avatar;
+    private Long receiverId;
 
-    private String email;
+    private String receiverName;
 
-    private String phone;
+    private String receiverAvatar;
 
-    private Date createTime;
+    private String content;
+
+    private Date timestamp;
+
+    private Integer readStatus;
 
     private Integer deleted;
 

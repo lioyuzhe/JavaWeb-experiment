@@ -9,25 +9,21 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName community
  */
-@TableName(value ="admin")
+@TableName(value ="community")
 @Data
-public class Admin implements Serializable {
+public class Community implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long communityId;
 
-    private String account;
+    private Long userId;
+
+    private String userName;
 
     private String name;
 
-    private String password;
-
-    private String avatar;
-
-    private String email;
-
-    private String phone;
+    private String description;
 
     private Date createTime;
 
