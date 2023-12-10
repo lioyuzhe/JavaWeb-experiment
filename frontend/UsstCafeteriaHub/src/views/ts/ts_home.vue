@@ -1,13 +1,13 @@
 <template>
   <div>
-
-    <!-- 子组件的内容 -->
+    <h1>这是首页ts_home.vue</h1>
+    <router-view></router-view> <!-- 子组件在这里渲染 -->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TsHome'
+  name: 'Ts'
   // 可以添加一些逻辑
 }
 </script>
