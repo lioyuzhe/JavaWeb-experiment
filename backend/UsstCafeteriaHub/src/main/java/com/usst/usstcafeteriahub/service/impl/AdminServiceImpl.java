@@ -2,6 +2,7 @@ package com.usst.usstcafeteriahub.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Admin;
 import com.usst.usstcafeteriahub.service.AdminService;
 import com.usst.usstcafeteriahub.mapper.AdminMapper;
@@ -23,18 +24,42 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
     private AdminMapper adminMapper;
     @Override
     public BaseResponse addAdmin(Admin admin) {
-        BaseResponse baseResponse = new BaseResponse();
+        if (admin == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        Admin admin1 = adminMapper.selectById(admin);
+        if(admin1 != null){
+            return Result.error("该管理员已存在");
+        }
+
         int result = adminMapper.insert(admin);
         System.out.println(result);
         log.info("添加成功:{｝ ", result );
         if(result == 1){
-            baseResponse.setCode(200);
-            baseResponse.setMessage("添加成功");
+            return Result.success("添加成功");
         }else{
-            baseResponse.setCode(500);
-            baseResponse.setMessage("添加失败");
+            return Result.error("添加失败");
         }
-        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse deleteAdmin(Admin admin) {
+        if (admin == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        Admin admin1 = adminMapper.selectById(admin);
+        if(admin1 == null){
+            return Result.error("该管理员不存在");
+        }
+        // 删除
+        int result =  adminMapper.deleteById(admin);
+        if (result == 1){
+            return Result.success("删除成功");
+        }else{
+            return Result.error("删除失败");
+        }
     }
 }
 
