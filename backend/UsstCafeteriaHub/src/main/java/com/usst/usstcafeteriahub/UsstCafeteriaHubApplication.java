@@ -12,6 +12,7 @@ public class UsstCafeteriaHubApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UsstCafeteriaHubApplication.class, args);
+        //SpringApplication.run(UsstCafeteriaHubApplication.class, //args);
     }
 
 }
