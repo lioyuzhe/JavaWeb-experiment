@@ -9,29 +9,29 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName conversation
  */
-@TableName(value ="admin")
+@TableName(value ="conversation")
 @Data
-public class Admin implements Serializable {
+public class Conversation implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long conversationId;
 
-    private String account;
+    private Long userOneId;
 
-    private String name;
+    private String userOneName;
 
-    private String password;
+    private String userOneAvatar;
 
-    private String avatar;
+    private Long userTwoId;
 
-    private String email;
+    private String userTwoName;
 
-    private String phone;
+    private String userTwoAvatar;
 
-    private Date createTime;
+    private Long lastMessageId;
 
-    private Integer deleted;
+    private Date lastMessageTime;
 
     private static final long serialVersionUID = 1L;
 }

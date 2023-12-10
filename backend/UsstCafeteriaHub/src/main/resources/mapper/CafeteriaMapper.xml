@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usst.usstcafeteriahub.mapper.CafeteriaMapper">
+
+    <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.Cafeteria">
+            <id property="cafeteriaId" column="cafeteria_id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="adminId" column="admin_id" jdbcType="BIGINT"/>
+            <result property="adminName" column="admin_name" jdbcType="VARCHAR"/>
+            <result property="openTime" column="open_time" jdbcType="TIMESTAMP"/>
+            <result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cafeteria_id,name,location,
+        description,admin_id,admin_name,
+        open_time,close_time,deleted
+    </sql>
+</mapper>
