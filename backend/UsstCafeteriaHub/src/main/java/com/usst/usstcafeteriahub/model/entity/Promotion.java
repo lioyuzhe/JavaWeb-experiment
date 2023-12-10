@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="promotion")
 @Data
 public class Promotion implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long promotionId;
 
     private Long cafeteriaId;

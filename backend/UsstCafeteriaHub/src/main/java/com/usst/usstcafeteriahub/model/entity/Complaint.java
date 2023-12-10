@@ -13,6 +13,7 @@ import lombok.Data;
 @TableName(value ="complaint")
 @Data
 public class Complaint implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long complaintId;
 
     private Long userId;

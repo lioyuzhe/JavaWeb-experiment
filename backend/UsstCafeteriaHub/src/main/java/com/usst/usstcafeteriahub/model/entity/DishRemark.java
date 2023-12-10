@@ -13,6 +13,7 @@ import lombok.Data;
 @TableName(value ="dish_remark")
 @Data
 public class DishRemark implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long remarkId;
 
     private Long userId;

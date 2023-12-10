@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="cafeteria_admin")
 @Data
 public class CafeteriaAdmin implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long adminId;
 
     private String account;

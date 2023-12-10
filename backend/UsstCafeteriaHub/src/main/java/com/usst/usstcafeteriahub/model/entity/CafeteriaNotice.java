@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="cafeteria_notice")
 @Data
 public class CafeteriaNotice implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long noticeId;
 
     private Long cafeteriaId;
