@@ -9,11 +9,11 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName cafeteria_admin
  */
-@TableName(value ="admin")
+@TableName(value ="cafeteria_admin")
 @Data
-public class Admin implements Serializable {
+public class CafeteriaAdmin implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long adminId;
 

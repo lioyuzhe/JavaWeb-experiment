@@ -9,25 +9,31 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName promotion
  */
-@TableName(value ="admin")
+@TableName(value ="promotion")
 @Data
-public class Admin implements Serializable {
+public class Promotion implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long promotionId;
 
-    private String account;
+    private Long cafeteriaId;
 
-    private String name;
+    private String cafeteriaName;
 
-    private String password;
+    private Long dishId;
 
-    private String avatar;
+    private String dishName;
 
-    private String email;
+    private Date startTime;
 
-    private String phone;
+    private Date endTime;
+
+    private String description;
+
+    private String imageUrl;
+
+    private Integer status;
 
     private Date createTime;
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usst.usstcafeteriahub.mapper.DishMapper">
+
+    <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.Dish">
+            <id property="dishId" column="dish_id" jdbcType="BIGINT"/>
+            <result property="cafeteriaId" column="cafeteria_id" jdbcType="BIGINT"/>
+            <result property="cafeteriaName" column="cafeteria_name" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="cuisine" column="cuisine" jdbcType="VARCHAR"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        dish_id,cafeteria_id,cafeteria_name,
+        name,price,cuisine,
+        image_url,status,deleted
+    </sql>
+</mapper>

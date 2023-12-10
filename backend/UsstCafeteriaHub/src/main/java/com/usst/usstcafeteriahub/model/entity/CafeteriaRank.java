@@ -5,31 +5,24 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName cafeteria_rank
  */
-@TableName(value ="admin")
+@TableName(value ="cafeteria_rank")
 @Data
-public class Admin implements Serializable {
+public class CafeteriaRank implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long rankId;
 
-    private String account;
+    private Long cafeteriaId;
 
-    private String name;
+    private String cafeteriaName;
 
-    private String password;
+    private Double totalScore;
 
-    private String avatar;
-
-    private String email;
-
-    private String phone;
-
-    private Date createTime;
+    private Integer rank;
 
     private Integer deleted;
 

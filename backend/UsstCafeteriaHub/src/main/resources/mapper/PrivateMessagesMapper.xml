@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usst.usstcafeteriahub.mapper.PrivateMessagesMapper">
+
+    <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.PrivateMessages">
+            <id property="messageId" column="message_id" jdbcType="BIGINT"/>
+            <result property="senderId" column="sender_id" jdbcType="BIGINT"/>
+            <result property="senderName" column="sender_name" jdbcType="VARCHAR"/>
+            <result property="senderAvatar" column="sender_avatar" jdbcType="VARCHAR"/>
+            <result property="receiverId" column="receiver_id" jdbcType="BIGINT"/>
+            <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
+            <result property="receiverAvatar" column="receiver_avatar" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="timestamp" column="timestamp" jdbcType="TIMESTAMP"/>
+            <result property="readStatus" column="read_status" jdbcType="TINYINT"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        message_id,sender_id,sender_name,
+        sender_avatar,receiver_id,receiver_name,
+        receiver_avatar,content,timestamp,
+        read_status,deleted
+    </sql>
+</mapper>

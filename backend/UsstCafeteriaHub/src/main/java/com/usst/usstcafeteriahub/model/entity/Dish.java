@@ -5,31 +5,31 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
+import java.math.BigDecimal;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName dish
  */
-@TableName(value ="admin")
+@TableName(value ="dish")
 @Data
-public class Admin implements Serializable {
+public class Dish implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long dishId;
 
-    private String account;
+    private Long cafeteriaId;
+
+    private String cafeteriaName;
 
     private String name;
 
-    private String password;
+    private BigDecimal price;
 
-    private String avatar;
+    private String cuisine;
 
-    private String email;
+    private String imageUrl;
 
-    private String phone;
-
-    private Date createTime;
+    private Integer status;
 
     private Integer deleted;
 
