@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usst.usstcafeteriahub.mapper.PromotionMapper">
+
+    <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.Promotion">
+            <id property="promotionId" column="promotion_id" jdbcType="BIGINT"/>
+            <result property="cafeteriaId" column="cafeteria_id" jdbcType="BIGINT"/>
+            <result property="cafeteriaName" column="cafeteria_name" jdbcType="VARCHAR"/>
+            <result property="dishId" column="dish_id" jdbcType="BIGINT"/>
+            <result property="dishName" column="dish_name" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        promotion_id,cafeteria_id,cafeteria_name,
+        dish_id,dish_name,start_time,
+        end_time,description,image_url,
+        status,create_time,deleted
+    </sql>
+</mapper>
