@@ -8,7 +8,7 @@
     </ul>
     <div class="personal-information">
       <div class="avatar-container" @click="goto('profile')">
-        < img src="avatar.png" alt="头像" class="avatar">
+        < img src="../assets/ts_images/img.png" alt="头像" class="avatar">
         <div class="notification-dot" v-if="hasUnread"></div>
       </div>
     </div>
