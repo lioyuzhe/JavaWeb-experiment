@@ -52,8 +52,8 @@ public class UserController {
     }
 
     @ApiOperation("删除用户")
-    @DeleteMapping("/deleteUser")
-    public BaseResponse deleteUser(@RequestParam User user) {
+    @PostMapping("/deleteUser")
+    public BaseResponse deleteUser(@RequestBody User user) {
         if (user == null) {
             return Result.error("参数为空");
         }
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户")
-    @PutMapping("/updateUser")
+    @PostMapping("/updateUser")
     public BaseResponse updateUser(@RequestBody User user) {
         if (user == null) {
             return Result.error("参数为空");
