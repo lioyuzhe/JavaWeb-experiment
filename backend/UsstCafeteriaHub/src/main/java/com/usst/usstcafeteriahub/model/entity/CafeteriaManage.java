@@ -13,6 +13,7 @@ import lombok.Data;
 @TableName(value ="cafeteria_manage")
 @Data
 public class CafeteriaManage implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long manageId;
 
     private Long adminId;

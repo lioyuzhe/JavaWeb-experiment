@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="private_messages")
 @Data
 public class PrivateMessages implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long messageId;
 
     private Long senderId;

@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="admin")
 @Data
 public class Admin implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long adminId;
 
     private String account;
