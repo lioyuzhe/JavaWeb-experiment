@@ -5,31 +5,28 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName community_user
  */
-@TableName(value ="admin")
+@TableName(value ="community_user")
 @Data
-public class Admin implements Serializable {
+public class CommunityUser implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long communityUserId;
 
-    private String account;
+    private Long userId;
 
-    private String name;
+    private String userName;
 
-    private String password;
+    private Long communityId;
 
-    private String avatar;
+    private String communityName;
 
-    private String email;
+    private Integer postCount;
 
-    private String phone;
-
-    private Date createTime;
+    private Integer likeCount;
 
     private Integer deleted;
 

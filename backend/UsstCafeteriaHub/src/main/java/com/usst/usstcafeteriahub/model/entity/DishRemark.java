@@ -5,31 +5,28 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName admin
+ * @TableName dish_remark
  */
-@TableName(value ="admin")
+@TableName(value ="dish_remark")
 @Data
-public class Admin implements Serializable {
+public class DishRemark implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long adminId;
+    private Long remarkId;
 
-    private String account;
+    private Long userId;
 
-    private String name;
+    private String userName;
 
-    private String password;
+    private Long dishId;
 
-    private String avatar;
+    private String dishName;
 
-    private String email;
+    private String content;
 
-    private String phone;
-
-    private Date createTime;
+    private Double score;
 
     private Integer deleted;
 
