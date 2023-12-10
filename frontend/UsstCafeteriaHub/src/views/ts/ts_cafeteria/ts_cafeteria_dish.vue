@@ -1,11 +1,37 @@
 <template>
   <div class="dish-container">
     <el-card class="dish-item" v-for="dish in dishes" :key="dish.id" @click.native="viewDetails(dish)">
-      <img :src="dish.imageUrl" :alt="dish.name" class="dish-image" />
+      <img :src="dish.imageUrl" :alt="dish.name" class="dish-image" @click="viewDetails(dish)" />
       <div slot="header" class="clearfix">
-        <span class="dish-name">{{ dish.name }}</span>
+        <span class="dish-name" @click="viewDetails(dish)">{{ dish.name }}</span>
       </div>
     </el-card>
+    <!-- 弹窗组件 -->
+    <el-dialog :visible.sync="dialogVisible">
+      <h2>{{ selectedDish.name }}</h2>
+      <img :src="selectedDish.imageUrl" alt="Dish Image" class="dialog-image" />
+
+      <div class="dish-details">
+        <p>菜品详情信息：{{ selectedDish.details }}</p>
+        <p class="rating-label">菜品评分：</p>
+        <el-rate v-model="rating"></el-rate> <!-- 星级评分组件 -->
+        <p class="review-label">菜品评价：</p>
+        <el-input
+            type="textarea"
+            placeholder="请输入评价"
+            v-model="review"
+        ></el-input>
+        <div class="image-upload">
+          <div class="upload-item" @click="addImage">
+            <i class="el-icon-plus"></i>
+            <span>添加图片</span>
+          </div>
+          <!-- 如果需要显示预览已添加的图片，可以在这里添加 -->
+        </div>
+        <el-button type="primary" @click="submitReview">发布</el-button>
+        <el-button @click="cancelReview">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -36,21 +62,67 @@ export default {
         {"id": 19, "name": "牛肉面", "imageUrl": "/ts_images/avatar.png"},
         {"id": 20, "name": "酸辣土豆丝", "imageUrl": "/ts_images/avatar.png"}
         // ... 更多菜品
-      ]
-
+      ],
+      dialogVisible: false, // 控制弹窗显示
+      selectedDish: {}, // 存储被选中的菜品信息
+      rating: 0, // 评分
+      review: '', // 评价内容
     };
   },
   methods: {
     viewDetails(dish) {
-      // 点击菜品后的逻辑，例如打开一个详细信息的模态框
-      // 这里简单地打印出点击的菜品信息
-      console.log('查看菜品详情', dish);
-    }
+      this.selectedDish = dish; // 设置被选中的菜品
+      this.dialogVisible = true; // 显示弹窗
+    },
+    addImage() {
+      // 实现添加图片的逻辑
+    },
+    submitReview() {
+      // 实现提交评价的逻辑
+    },
+    cancelReview() {
+      // 实现取消操作的逻辑
+    },
   }
 };
 </script>
 
 <style scoped>
+
+/* 特定段落的底部外边距 */
+.rating-label,
+.review-label {
+  margin-bottom: 10px;
+}
+
+.dialog-image {
+  max-width: 50%;
+  height: auto;
+}
+
+.image-upload {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.upload-item {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+}
+.upload-item i {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.upload-item span {
+  display: block;
+  color: #666;
+}
+
 .dish-container {
   display: flex;
   flex-wrap: wrap;
