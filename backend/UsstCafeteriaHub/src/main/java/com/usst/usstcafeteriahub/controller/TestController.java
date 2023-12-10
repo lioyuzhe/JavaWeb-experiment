@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
+
+
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
@@ -36,5 +38,8 @@ public class TestController {
         return Result.error("功能还未开发");
 
     }
+
+
+
 
 }
