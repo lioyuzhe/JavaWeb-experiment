@@ -38,12 +38,19 @@ const routes = [
     component: () => import('../views/Ts.vue'),
     children: [
       { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
-      { path: 'ts_cafeteria', name: 'ts_cafeteria', meta: { name: '师生食堂' }, component: () => import('../views/ts/ts_cafeteria') },
       { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
-      { path: 'ts_cafeteria_introduction', name: 'ts_cafeteria_introduction', meta: { name: '师生食堂介绍' }, component: () => import('../views/ts/ts_cafeteria_introduction') },
-      { path: 'ts_cafeteria_dish', name: 'ts_cafeteria_dish', meta: { name: '师生食堂菜品' }, component: () => import('../views/ts/ts_cafeteria_dish') },
-      { path: 'ts_cafeteria_complaint', name: 'ts_cafeteria_complaint', meta: { name: '师生食堂投诉' }, component: () => import('../views/ts/ts_cafeteria_complaint') },
-      { path: 'ts_cafeteria_vote', name: 'ts_cafeteria_vote', meta: { name: '师生食堂投票' }, component: () => import('../views/ts/ts_cafeteria_vote') }
+      {
+        path: 'ts_cafeteria',
+        name: 'ts_cafeteria',
+        meta: { name: '师生食堂' },
+        component: () => import('../views/ts/ts_cafeteria'),
+        children: [
+          {path: 'ts_cafeteria_introduction', name: 'ts_cafeteria_introduction', meta: { name: '师生食堂介绍' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_introduction.vue')},
+          {path: 'ts_cafeteria_dish', name: 'ts_cafeteria_dish', meta: { name: '师生食堂菜品' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_dish.vue')},
+          {path: 'ts_cafeteria_complaint', name: 'ts_cafeteria_complaint', meta: { name: '师生食堂投诉' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_complaint.vue')},
+          {path: 'ts_cafeteria_vote', name: 'ts_cafeteria_vote', meta: { name: '师生食堂投票' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_vote.vue')}
+        ]
+      }
     ]
   }
 ]

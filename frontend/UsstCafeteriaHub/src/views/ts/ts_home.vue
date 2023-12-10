@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    this is home
     <!-- 子组件的内容 -->
   </div>
 </template>
