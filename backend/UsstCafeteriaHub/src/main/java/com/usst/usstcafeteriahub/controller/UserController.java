@@ -57,17 +57,12 @@ public class UserController {
         if (user == null) {
             return Result.error("参数为空");
         }
-        log.info("删除用户: {}", user);
-        User user1 = userService.getById(user.getUserId());
-        if (user1 == null) {
-            return Result.error("用户不存在");
-        }
+        log.info("要删除用户: {}", user);
         boolean remove = userService.removeById(user.getUserId());
-        if(remove){
-            return Result.success("删除成功");
-        }else{
+        if(!remove) {
             return Result.error("删除失败");
         }
+        return Result.success("删除成功");
     }
 
     @ApiOperation("修改用户")
