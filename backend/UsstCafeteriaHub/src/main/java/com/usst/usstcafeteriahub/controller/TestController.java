@@ -34,7 +34,6 @@ public class TestController {
     @GetMapping("/test2")
     public BaseResponse test2(@RequestParam String username){
         return Result.error("功能还未开发");
-
     }
 
 }
