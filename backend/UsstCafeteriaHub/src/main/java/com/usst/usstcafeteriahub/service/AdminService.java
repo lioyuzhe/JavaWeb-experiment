@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.service;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface AdminService extends IService<Admin> {
 
+
+    BaseResponse addAdmin(Admin admin);
 }
