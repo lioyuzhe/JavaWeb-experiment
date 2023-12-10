@@ -28,13 +28,17 @@ public class AdminController {
         return Result.error("功能还未开发");
     }
 
-
     @ApiOperation(value = "增加管理员")
     @PostMapping("/addAdmin")
     public BaseResponse addAdmin(@RequestBody Admin admin){
         return adminService.addAdmin(admin);
     }
 
+    @ApiOperation(value = "删除管理员")
+    @PostMapping("/deleteAdmin")
+    public BaseResponse deleteAdmin(@RequestBody Admin admin){
+        return adminService.deleteAdmin(admin);
+    }
 
 
 
