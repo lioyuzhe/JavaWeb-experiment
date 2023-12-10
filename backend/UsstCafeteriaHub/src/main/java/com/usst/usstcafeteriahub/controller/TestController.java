@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "接口测试和规范")
 @RequestMapping("/test")
 public class TestController {
+    // 写一个请求
 
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
