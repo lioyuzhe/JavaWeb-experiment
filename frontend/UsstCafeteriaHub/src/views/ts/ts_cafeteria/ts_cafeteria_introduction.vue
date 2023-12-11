@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>这是社区ts_community.vue</h2>
+    <h2>这是ts_cafeteria_introduction.vue</h2>
     <!-- 子组件的内容 -->
   </div>
 </template>
