@@ -14,8 +14,13 @@
       </div>
     </div>
     <div class="right-side">
-      <!-- 插槽，用于从父组件传递内容 -->
-      <slot></slot>
+      <div class="notifications">
+        <div class="notification-item" v-for="notification in notifications" :key="notification.id">
+          <h4>{{ notification.type }}</h4>
+          <p>{{ notification.message }}</p>
+          <span v-if="notification.isNew">新的!</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +40,14 @@ export default {
           likes: 123
         },
         // 更多动态数据...
+      ],
+
+      notifications: [
+        // 示例通知数据
+        { id: 1, type: '评论', message: '您有新的评论', isNew: true },
+        { id: 2, type: '点赞', message: '您的帖子收到了新的点赞', isNew: true },
+        { id: 3, type: '投诉回复', message: '您的投诉有了新的回复', isNew: false },
+        // 更多通知数据...
       ]
     };
   }
@@ -42,9 +55,16 @@ export default {
 </script>
 
 <style scoped>
-/* 在这里编写该子组件特有的CSS */
+.main-content {
+  display: flex; /* 设置为flex布局 */
+  justify-content: space-between; /* 子元素间留有空间 */
+}
 .left-side {
   width: 70%;
+  padding: 0 20px;
+}
+.right-side {
+  width: 30%;
   padding: 0 20px;
 }
 .feed-item {
@@ -56,5 +76,27 @@ export default {
 .feed-content {
   padding: 10px;
 }
-/* ...其他样式... */
+/* ...右侧样式... */
+
+.notifications {
+  margin-bottom: 20px;
+}
+.notification-item {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.notification-item h4 {
+  margin: 0;
+  color: #333;
+  font-size: 1.1em;
+}
+.notification-item p {
+  color: #666;
+}
+.notification-item span {
+  font-weight: bold;
+  color: #d32f2f;
+}
 </style>
