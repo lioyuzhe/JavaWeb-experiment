@@ -1,37 +1,17 @@
-<!--社区-->
-<script setup>
-
-</script>
-
 <template>
-  <el-row>
-    <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
-  </el-row>
-  <el-row>
-    <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col>
-  </el-row>
-  <el-row>
-    <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
-    <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-  </el-row>
-  <el-row>
-    <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-  </el-row>
-  <el-row>
-    <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-  </el-row>
+  <div>
+    <h2>这是社区ts_community.vue</h2>
+    <!-- 子组件的内容 -->
+  </div>
 </template>
 
-<style scoped>
+<script>
+export default {
+  name: 'TsHome'
+  // 可以添加一些逻辑
+}
+</script>
 
+<style>
+/* 添加一些样式 */
 </style>
