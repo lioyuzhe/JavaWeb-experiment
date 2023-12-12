@@ -170,7 +170,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import '@wangeditor/editor/dist/css/style.css'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 export default {
@@ -305,21 +304,21 @@ export default {
       }
     },
 
-    async fetchData() {
-      try {
-        const likesResponse = await axios.get('/api/likes');// 获取点赞数据,替换url
-        this.likes = likesResponse.data;
-
-        const commentsResponse = await axios.get('/api/comments');// 获取评论数据,替换url
-        this.comments = commentsResponse.data;
-
-        const messagesResponse = await axios.get('/api/private-messages');// 获取私信数据,替换url
-        this.messages = messagesResponse.data;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        // 处理错误情况
-      }
-    },
+    // async fetchData() {
+    //   try {
+    //     const likesResponse = await axios.get('/api/likes');// 获取点赞数据,替换url
+    //     this.likes = likesResponse.data;
+    //
+    //     const commentsResponse = await axios.get('/api/comments');// 获取评论数据,替换url
+    //     this.comments = commentsResponse.data;
+    //
+    //     const messagesResponse = await axios.get('/api/private-messages');// 获取私信数据,替换url
+    //     this.messages = messagesResponse.data;
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //     // 处理错误情况
+    //   }
+    // },
     switchMessageType(type) {
       // 切换消息类型
       this.currentMessageType = type;
@@ -347,13 +346,13 @@ export default {
       this.selectedMessage = null;
     }
   },
-  mounted() {
-    // // 模拟 ajax 请求，异步渲染编辑器
-    // setTimeout(() => {
-    //   this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
-    // }, 1500)
-    this.fetchData();
-  },
+  // mounted() {
+  //   // // 模拟 ajax 请求，异步渲染编辑器
+  //   // setTimeout(() => {
+  //   //   this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
+  //   // }, 1500)
+  //   this.fetchData();
+  // },
   beforeDestroy() {
     const editor = this.editor
     if (editor == null) return
