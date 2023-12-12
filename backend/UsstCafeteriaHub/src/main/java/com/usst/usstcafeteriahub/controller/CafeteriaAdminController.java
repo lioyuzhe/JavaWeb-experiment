@@ -4,6 +4,7 @@ import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin;
 import com.usst.usstcafeteriahub.service.CafeteriaAdminService;
+import com.usst.usstcafeteriahub.utils.CafeteriaAdminHolder;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,15 @@ public class CafeteriaAdminController {
     @GetMapping("/test")
     public BaseResponse test(){
         return Result.error("功能还未开发");
+    }
+
+
+    @ApiOperation("获取自己信息")
+    @GetMapping("/getCurrentCafeteriaAdmin")
+    public BaseResponse getCurrentCafeteriaAdmin(){
+        CafeteriaAdmin cafeteriaAdmin = CafeteriaAdminHolder.getCafeteriaAdmin();
+        if(cafeteriaAdmin==null) return Result.error("尚未登录");
+        return Result.success(cafeteriaAdmin);
     }
 
 
