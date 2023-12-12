@@ -61,6 +61,26 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
             return Result.error("删除失败");
         }
     }
+
+    @Override
+    public BaseResponse updateAdmin(Admin admin) {
+        if (admin == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        Admin admin1 = adminMapper.selectById(admin);
+        if(admin1 == null){
+            return Result.error("该管理员不存在");
+        }
+        // 更新
+        int result = adminMapper.updateById(admin);
+        if (result == 1){
+            return Result.success("更新成功");
+        }else{
+            return Result.error("更新失败");
+        }
+    }
+
 }
 
 

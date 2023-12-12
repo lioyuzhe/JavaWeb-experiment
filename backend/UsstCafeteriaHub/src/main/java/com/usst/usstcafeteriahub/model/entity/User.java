@@ -32,6 +32,9 @@ public class User implements Serializable {
 
     private Integer activityLevel;
 
+    /**
+     * 0:学生 1:老师
+     */
     private Integer role;
 
     private Integer deleted;
