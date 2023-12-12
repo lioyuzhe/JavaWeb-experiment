@@ -30,6 +30,31 @@ public class DishController {
         return Result.success(list);
     }
 
+    @ApiOperation("根据菜品的菜系获取菜品列表")
+    @GetMapping("/getDishByCuisine")
+    public BaseResponse getDishByCuisine(@RequestParam("cuisine") String cuisine) {
+        List<Dish> list = dishService.getDishByCuisine(cuisine);
+        log.info("根据菜品的菜系获取菜品列表: {}", list);
+        return Result.success(list);
+    }
+
+    @ApiOperation("根据菜品所属食堂获取菜品列表")
+    @GetMapping("/getDishByCafeteriaID")
+    public BaseResponse getDishByCafeteriaID(@RequestParam("cafeteriaId") Integer cafeteriaId) {
+        List<Dish> list = dishService.getDishByCafeteriaID(cafeteriaId);
+        log.info("根据菜品所属食堂获取菜品列表: {}", list);
+        return Result.success(list);
+    }
+
+
+    @ApiOperation("获取所有菜品的列表，并按菜品价格排序,接受参数order，1为从低到高，2为从高到低")
+    @GetMapping("/getDishOrderByPrice")
+    public BaseResponse getDishOrderByPriceDesc(@RequestParam("order") Integer order) {
+        List<Dish> list = dishService.getDishOrderByPrice(order);
+        log.info("获取所有菜品的列表，并按菜品价格排序: {}", list);
+        return Result.success(list);
+    }
+
     @ApiOperation("删除菜品")
     @PostMapping("/deleteDish")
     public BaseResponse deleteDish(@RequestBody Dish dish) {
