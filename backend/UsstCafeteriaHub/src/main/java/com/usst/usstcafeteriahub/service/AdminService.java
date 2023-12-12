@@ -15,4 +15,7 @@ public interface AdminService extends IService<Admin> {
     BaseResponse addAdmin(Admin admin);
 
     BaseResponse deleteAdmin(Admin admin);
+
+    BaseResponse updateAdmin(Admin admin);
+
 }

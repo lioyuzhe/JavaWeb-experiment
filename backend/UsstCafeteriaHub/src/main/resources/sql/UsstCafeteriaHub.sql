@@ -354,7 +354,7 @@ CREATE TABLE `dish_rank` (
                              `dish_id` bigint NOT NULL COMMENT '菜品ID',
                              `dish_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜品名',
                              `total_score` float DEFAULT NULL COMMENT '总评分',
-                             `rank` int NOT NULL COMMENT '排名',
+                             `rank` int  COMMENT '排名',
                              PRIMARY KEY (`rank_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜品排名表' ROW_FORMAT = Dynamic;
 

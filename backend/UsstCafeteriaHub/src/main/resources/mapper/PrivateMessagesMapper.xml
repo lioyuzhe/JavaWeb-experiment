@@ -24,4 +24,5 @@
         receiver_avatar,content,timestamp,
         read_status,deleted
     </sql>
+
 </mapper>
