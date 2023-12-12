@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 苹果电脑的.DS_Store文件 ###
+.DS_Store
