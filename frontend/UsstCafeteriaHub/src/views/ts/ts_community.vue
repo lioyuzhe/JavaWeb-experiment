@@ -370,6 +370,7 @@ export default {
 
 .community-dynamic {
   margin-bottom: 20px;
+  flex-grow: 1;
 }
 
 .top-bar {
@@ -556,6 +557,7 @@ button:hover {
   height: 100%; /* 右侧部分占满整个高度 */
   border-left: 1px solid #eee;
   padding: 0; /* 可以根据需要调整内边距 */
+  flex-grow: 1;
 }
 
 .notification-tabs {
@@ -588,7 +590,7 @@ button:hover {
 .chat-window {
   display: flex;
   flex-direction: column;
-  height: 100%; /* 使聊天窗口占满容器 */
+  height: 600px; /* 使聊天窗口占满容器 */
   background: #FFF;
 }
 
@@ -658,7 +660,6 @@ button:hover {
   display: flex;
   align-items: center;
 }
-
 
 /* 滚动条样式 */
 .chat-body::-webkit-scrollbar {
