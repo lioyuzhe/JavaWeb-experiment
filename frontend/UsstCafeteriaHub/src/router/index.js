@@ -61,6 +61,8 @@ const router = new VueRouter({
   routes
 })
 
+
+
 router.beforeEach((to, from, next) => {
   // to 是到达的路由信息
   // from 是开源的路由信息
