@@ -7,13 +7,14 @@ import com.usst.usstcafeteriahub.service.DishService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Dish接口
+ * @author 黄泽旭
+ */
 @RestController
 @Slf4j
 @RequestMapping("/dishes/actions")
@@ -30,8 +31,8 @@ public class DishController {
     }
 
     @ApiOperation("删除菜品")
-    @GetMapping("/deleteDish")
-    public BaseResponse deleteDish(Dish dish) {
+    @PostMapping("/deleteDish")
+    public BaseResponse deleteDish(@RequestBody Dish dish) {
         if (dish == null) {
             return Result.error("参数为空");
         }
@@ -44,8 +45,8 @@ public class DishController {
     }
 
     @ApiOperation("添加菜品")
-    @GetMapping("/addDish")
-    public BaseResponse addDish(Dish dish) {
+    @PostMapping ("/addDish")
+    public BaseResponse addDish(@RequestBody Dish dish) {
         if (dish == null) {
             return Result.error("参数为空");
         }
@@ -58,8 +59,8 @@ public class DishController {
     }
 
     @ApiOperation("修改菜品")
-    @PutMapping("/updateDish")
-    public BaseResponse updateDish(Dish dish) {
+    @PostMapping("/updateDish")
+    public BaseResponse updateDish(@RequestBody Dish dish) {
         if (dish == null) {
             return Result.error("参数为空");
         }
