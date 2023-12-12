@@ -32,6 +32,9 @@ const routes = [
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
   { path: '/register', name: 'Register', meta: { name: '注册' }, component: () => import('../views/Register.vue') },
   { path: '*', name: '404', meta: { name: '无法访问' }, component: () => import('../views/404.vue') },
+//   xuyang 的测试
+  { path: '/test', name: 'test', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
+// 师生 teacher and student  有冲突我把你们的都保留了，加了注释 ，你们自己选择要不要修改  -- 李英杰  
   {
     path: '/',
     name: 'ts',
@@ -53,6 +56,7 @@ const routes = [
       }
     ]
   }
+
 ]
 
 const router = new VueRouter({
