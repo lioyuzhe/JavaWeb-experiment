@@ -33,5 +33,8 @@ public class Admin implements Serializable {
 
     private Integer deleted;
 
+    @TableField(exist = false)
+    private String token;
+
     private static final long serialVersionUID = 1L;
 }
