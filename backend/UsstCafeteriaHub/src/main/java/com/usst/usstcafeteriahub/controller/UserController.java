@@ -4,6 +4,7 @@ import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.User;
 import com.usst.usstcafeteriahub.service.UserService;
+import com.usst.usstcafeteriahub.utils.UserHolder;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -52,8 +53,8 @@ public class UserController {
     }
 
     @ApiOperation("删除用户")
-    @DeleteMapping("/deleteUser")
-    public BaseResponse deleteUser(@RequestParam User user) {
+    @PostMapping("/deleteUser")
+    public BaseResponse deleteUser(@RequestBody User user) {
         if (user == null) {
             return Result.error("参数为空");
         }
@@ -66,7 +67,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户")
-    @PutMapping("/updateUser")
+    @PostMapping("/updateUser")
     public BaseResponse updateUser(@RequestBody User user) {
         if (user == null) {
             return Result.error("参数为空");
@@ -83,5 +84,25 @@ public class UserController {
             return Result.error("修改失败");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+    @ApiOperation("获取当前用户")
+    @GetMapping("/getCurrentUser")
+    public BaseResponse getCurrentUser(){
+        User user = UserHolder.getUser();
+        if (user==null) return Result.error("尚未登录");
+        return Result.success(user);
+    }
+
+
 
 }

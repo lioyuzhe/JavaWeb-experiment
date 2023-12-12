@@ -19,4 +19,11 @@
         dish_id,dish_name,total_score,
         rank
     </sql>
+    <select id="getDishRankByScore" resultType="com.usst.usstcafeteriahub.model.entity.DishRank">
+        select
+        <include refid="Base_Column_List"/>
+        from dish_rank
+        where cafeteria_id = #{cafeteriaId}
+        order by total_score desc
+    </select>
 </mapper>
