@@ -45,7 +45,11 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="forgetPassDialogVis = false">取 消</el-button>
         <el-button type="primary" @click="resetPassword">确 定</el-button>
+
       </div>
+
+
+
     </el-dialog>
 
   </div>
@@ -91,13 +95,17 @@ export default {
         code: [
           { validator: validateCode, trigger: 'blur' }
         ],
-      }
+      },
+
     }
   },
   created() {
 
   },
   methods: {
+
+
+
     handleForgetPass() {   //  初始化表单的数据
       this.forgetUserForm = {}
       this.forgetPassDialogVis = true
