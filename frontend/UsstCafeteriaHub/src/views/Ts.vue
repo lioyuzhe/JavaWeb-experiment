@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="Ts">
     <el-row class="header">
       <el-col :span="18">
         <ul class="navigation">
