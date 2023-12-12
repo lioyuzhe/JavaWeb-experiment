@@ -30,12 +30,23 @@
         </div>
         <el-button type="primary" @click="submitReview">发布</el-button>
         <el-button @click="cancelReview">取消</el-button>
+        <el-button @click="test1">{{this.test}}</el-button>
       </div>
+
+
+
     </el-dialog>
+
+
+
+
   </div>
+
 </template>
 
 <script>
+
+
 export default {
   name: 'TsCafeteriaDish',
   data() {
@@ -67,6 +78,8 @@ export default {
       selectedDish: {}, // 存储被选中的菜品信息
       rating: 0, // 评分
       review: '', // 评价内容
+
+      test:'',
     };
   },
   methods: {
@@ -82,6 +95,17 @@ export default {
     },
     cancelReview() {
       // 实现取消操作的逻辑
+    },
+    test1(){
+      this.$request.get('/test/test',).then(res => {
+        console.log("请求到达");
+        if (res.code === 200) {
+          this.$message.success('测试成功');
+          this.test=res.data;
+        } else {
+          this.$message.error(res.message);
+        }
+      })
     },
   }
 };
