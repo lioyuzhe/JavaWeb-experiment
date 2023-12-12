@@ -3,13 +3,7 @@ package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
-import com.usst.usstcafeteriahub.model.entity.Admin;
-import com.usst.usstcafeteriahub.service.AdminService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
-import jakarta.annotation.Resource;
-import jdk.jfr.Name;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
