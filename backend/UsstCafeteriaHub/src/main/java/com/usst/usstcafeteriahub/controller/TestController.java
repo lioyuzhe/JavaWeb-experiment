@@ -3,10 +3,7 @@ package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
-import jdk.jfr.Name;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     // 写一个请求
 
-
-
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
-        return Result.error("功能还未开发");
+        return Result.success("功能还未开发");
     }
 
     @ApiOperation(value = "测试接口2")
