@@ -32,7 +32,31 @@ const routes = [
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
   { path: '/register', name: 'Register', meta: { name: '注册' }, component: () => import('../views/Register.vue') },
   { path: '*', name: '404', meta: { name: '无法访问' }, component: () => import('../views/404.vue') },
+//   xuyang 的测试
   { path: '/test', name: 'test', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
+// 师生 teacher and student  有冲突我把你们的都保留了，加了注释 ，你们自己选择要不要修改  -- 李英杰  
+  {
+    path: '/',
+    name: 'ts',
+    component: () => import('../views/Ts.vue'),
+    children: [
+      { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
+      { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
+      {
+        path: '/',
+        name: 'ts_cafeteria',
+        meta: { name: '师生食堂' },
+        component: () => import('../views/ts/ts_cafeteria.vue'),
+        children: [
+          {path: 'ts_cafeteria_introduction', name: 'ts_cafeteria_introduction', meta: { name: '师生食堂介绍' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_introduction.vue')},
+          {path: 'ts_cafeteria_dish', name: 'ts_cafeteria_dish', meta: { name: '师生食堂菜品' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_dish.vue')},
+          {path: 'ts_cafeteria_complaint', name: 'ts_cafeteria_complaint', meta: { name: '师生食堂投诉' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_complaint.vue')},
+          {path: 'ts_cafeteria_vote', name: 'ts_cafeteria_vote', meta: { name: '师生食堂投票' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_vote.vue')}
+        ]
+      }
+    ]
+  }
+
 ]
 
 const router = new VueRouter({
@@ -40,6 +64,8 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+
 
 router.beforeEach((to, from, next) => {
   // to 是到达的路由信息
