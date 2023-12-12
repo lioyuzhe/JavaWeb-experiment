@@ -32,9 +32,15 @@ public class User implements Serializable {
 
     private Integer activityLevel;
 
+    /**
+     * 0:学生 1:老师
+     */
     private Integer role;
 
     private Integer deleted;
+
+    @TableField(exist = false)
+    private String token;
 
     private static final long serialVersionUID = 1L;
 }

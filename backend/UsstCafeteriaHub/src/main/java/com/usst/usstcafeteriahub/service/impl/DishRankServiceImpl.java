@@ -6,6 +6,8 @@ import com.usst.usstcafeteriahub.service.DishRankService;
 import com.usst.usstcafeteriahub.mapper.DishRankMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author Klein
 * @description 针对表【dish_rank(菜品排名表)】的数据库操作Service实现
@@ -14,6 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DishRankServiceImpl extends ServiceImpl<DishRankMapper, DishRank>
     implements DishRankService{
+
+    /**
+     * 返回菜品排名并按照分数降序排序
+     * @return
+     */
+    @Override
+    public List<DishRank> getDishRank() {
+        return baseMapper.getDishRankByScore();
+    }
+
 
 }
 
