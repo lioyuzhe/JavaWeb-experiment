@@ -1,27 +1,76 @@
-<!-- 子组件 ts_home.vue -->
 <template>
-  <div class="main-content">
-    <div class="left-side">
-      <div class="feed-item" v-for="feed in feeds" :key="feed.id">
-        <div class="feed-content">
-          <h3>{{ feed.title }}</h3>
-          <p>{{ feed.description }}</p>
-          <div class="feed-meta">
-            <span>{{ feed.timeAgo }}</span>
-            <span>{{ feed.likes }}个赞</span>
+  <div class="home-container">
+    <!-- 左侧内容 -->
+    <div class="left-content">
+      <!-- 动态轮播部分 -->
+      <div class="dynamic-carousel">
+        <el-carousel interval=4000 type="card" height="200px">
+          <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id" @click="viewDetails(promo)">
+            <el-card>
+              <img :src="promo.image_url" alt="促销图片">
+              <div>
+                <h3>{{ promo.dish_name }}</h3>
+                <p>{{ promo.description }}</p>
+              </div>
+            </el-card>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <!-- 功能入口部分 -->
+      <div class="feature-entrances">
+        <el-row :gutter="20">
+          <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id">
+            <el-card>
+              <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
+              <div>
+                <h3>{{ entry.title }}</h3>
+                <p>{{ entry.description }}</p>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+
+    <!-- 右侧内容 -->
+    <div class="right-content">
+      <!-- 功能图标部分 -->
+      <div class="icon-tray">
+        <el-badge :value="commentsCount" class="icon">
+          <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
+        </el-badge>
+        <el-badge :value="likesCount" class="icon">
+          <el-button icon="el-icon-thumb" circle @click="handleIconClick('likes')"></el-button>
+        </el-badge>
+        <el-badge :value="complaintsCount" class="icon">
+          <el-button icon="el-icon-warning" circle @click="handleIconClick('complaints')"></el-button>
+        </el-badge>
+      </div>
+      <!-- 消息栏 -->
+      <el-card class="message-card">
+        <div class="message-header">
+          <!-- 标题部分代码省略 -->
+        </div>
+        <el-scrollbar class="message-list">
+          <div v-for="item in activeMessages" :key="item.id" class="message-item" @click="viewDetails(item)">
+            <span>{{ item.user_name }}：</span>
+            <p>{{ item.content }}</p>
           </div>
-        </div>
-      </div>
+        </el-scrollbar>
+      </el-card>
     </div>
-    <div class="right-side">
-      <div class="notifications">
-        <div class="notification-item" v-for="notification in notifications" :key="notification.id">
-          <h4>{{ notification.type }}</h4>
-          <p>{{ notification.message }}</p>
-          <span v-if="notification.isNew">新的!</span>
-        </div>
+
+    <!-- 详细信息的弹出对话框 -->
+    <el-dialog :visible.sync="dialogVisible" title="详细信息">
+      <div v-if="selectedItem.dish_name">
+        <h3>{{ selectedItem.dish_name }}</h3>
+        <img :src="selectedItem.image_url" alt="促销图片">
       </div>
-    </div>
+      <p>{{ selectedItem.description || selectedItem.content }}</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -30,73 +79,223 @@ export default {
   name: 'ts_home',
   data() {
     return {
-      feeds: [
-        // 示例数据，实际应用中应从外部获取
+      activeTab: 'comments', // 默认显示评论
+      dialogVisible: false,
+      selectedItem: {},
+
+      featureEntrances: [
+        // 现有的功能入口数据
         {
-          id: 1,
-          title: '动态标题',
-          description: '这里是动态的详细描述，可能包含了用户的活动或者其他的社交信息。',
-          timeAgo: '2小时前',
-          likes: 123
+          id: 'promo',
+          title: '最新促销',
+          description: '探索我们的特价菜品',
+          imageUrl: 'path/to/promotion-image.jpg'
         },
-        // 更多动态数据...
+        {
+          id: 'vote',
+          title: '投票调查',
+          description: '参与我们的最新调查',
+          imageUrl: 'path/to/vote-image.jpg'
+        },
+        // 新增加的功能入口数据
+        {
+          id: 'recommendation',
+          title: '食堂推荐',
+          description: '最新食堂推荐菜品',
+          imageUrl: 'path/to/recommendation-image.jpg'
+        },
+        {
+          id: 'communityTopic',
+          title: '社区话题',
+          description: '社区热门话题，参与讨论',
+          imageUrl: 'path/to/community-topic-image.jpg'
+        },
+        {
+          id: 'canteenRank',
+          title: '食堂排名',
+          description: '查看最新食堂排名',
+          imageUrl: 'path/to/canteen-rank-image.jpg'
+        },
+        {
+          id: 'dishRank',
+          title: '菜品排名',
+          description: '最新高评价菜品排名',
+          imageUrl: 'path/to/dish-rank-image.jpg'
+        },
+        // 您可以继续添加更多的入口...
       ],
 
-      notifications: [
-        // 示例通知数据
-        { id: 1, type: '评论', message: '您有新的评论', isNew: true },
-        { id: 2, type: '点赞', message: '您的帖子收到了新的点赞', isNew: true },
-        { id: 3, type: '投诉回复', message: '您的投诉有了新的回复', isNew: false },
-        // 更多通知数据...
-      ]
+      avatarUrl: '/ts_images/avatar.png',
+      commentsCount: 3,
+      likesCount: 2,
+      complaintsCount: 2,
+      promotions: [
+        {
+          promotion_id: 1,
+          dish_name: '促销菜品1',
+          description: '促销菜品1描述。',
+          image_url: 'https://example.com/promo1.jpg'
+        },
+        // 可以添加更多模拟的促销信息
+        {
+          promotion_id: 2,
+          dish_name: '最新投票调查',
+          description: '最新投票调查描述。',
+          image_url: 'https://example.com/promo2.jpg'
+        },
+        {
+          promotion_id: 3,
+          dish_name: '最新食堂推荐菜品',
+          description: '最新食堂推荐菜品描述。',
+          image_url: 'https://example.com/promo3.jpg'
+        },
+        {
+          promotion_id: 4,
+          dish_name: '社区热门话题',
+          description: '被点赞最多的社区信息。',
+          image_url: 'https://example.com/promo4.jpg'
+        },
+        {
+          promotion_id: 5,
+          dish_name: '最新食堂排名',
+          description: '最新食堂排名描述。',
+          image_url: 'https://example.com/promo5.jpg'
+        },
+        {
+          promotion_id: 6,
+          dish_name: '最新高评价菜品排名',
+          description: '最新高评价菜品排名描述。',
+          image_url: 'https://example.com/promo6.jpg'
+        },
+      ],
+      communityMessages: [
+        { message_id: 1, user_name: 'Alice', content: '今天的餐点非常美味！' },
+        { message_id: 2, user_name: 'Bob', content: '期待更多的素食选择。' },
+        { message_id: 3, user_name: 'Carol', content: '服务态度非常好，环境也很舒适。' },
+      ],
+      likes: [
+        { id: 1, user_name: 'Dave', content: 'Dave觉得你的评论很赞' },
+        { id: 2, user_name: 'Eve', content: 'Eve为你的分享点了赞' },
+      ],
+      complaints: [
+        { complaint_id: 1, user_name: 'Frank', content: '午餐时排队等待时间太长了。', reply: '我们会尽快改进排队系统，感谢反馈。' },
+        { complaint_id: 2, user_name: 'Grace', content: '食堂内部分区域卫生条件需要提高。', reply: '已经通知清洁团队进行深度清理，感谢您的建议。' },
+      ],
+
     };
-  }
+
+  },
+  methods: {
+    // 点击事件处理器，用于切换活动标签
+    handleIconClick(tab) {
+      console.log('Tab clicked:', tab); // 添加调试信息
+      this.activeTab = tab;
+    },
+    viewDetails(item) {
+      this.selectedItem = item;
+      this.dialogVisible = true;
+    },
+  },
+  computed: {
+    activeMessages() {
+      // 根据活动标签返回相应的消息列表
+      switch (this.activeTab) {
+        case 'comments':
+          return this.communityMessages;
+        case 'likes':
+          return this.likes;
+        case 'complaints':
+          return this.complaints;
+        default:
+          return [];
+      }
+    }
+  },
+  // 方法部分可以根据需要实现API调用等
 };
 </script>
 
-<style scoped>
-.main-content {
-  display: flex; /* 设置为flex布局 */
-  justify-content: space-between; /* 子元素间留有空间 */
-}
-.left-side {
-  width: 70%;
-  padding: 0 20px;
-}
-.right-side {
-  width: 30%;
-  padding: 0 20px;
-}
-.feed-item {
-  margin-bottom: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-}
-.feed-content {
-  padding: 10px;
-}
-/* ...右侧样式... */
 
-.notifications {
-  margin-bottom: 20px;
+<style scoped>
+/* 全局布局 */
+.home-container {
+  display: flex;
+  justify-content: space-between; /* 确保左右内容分布在两侧 */
 }
-.notification-item {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px;
+
+/* 导航栏下方左侧内容样式 */
+.left-content {
+  width: calc(100% - 320px); /* 计算右侧内容宽度后剩余的宽度 */
+  margin-right: 20px; /* 右侧内容与左侧内容之间的间隔 */
+}
+
+/* 功能图标和消息栏样式 */
+.right-content {
+  width: 300px; /* 功能图标和消息栏宽度 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 右对齐 */
+}
+
+/* 功能图标样式 */
+.icon-tray {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px; /* 与消息栏之间的间距 */
+}
+
+.icon-tray .icon {
+  flex: 1; /* 平均分布图标 */
+  text-align: center; /* 图标居中 */
+}
+
+/* 消息栏样式 */
+.message-card {
+  width: 100%;
+  margin-top: 20px; /* 消息栏与图标的间距 */
+}
+
+.message-header h3 {
+  font-size: 16px;
   margin-bottom: 10px;
 }
-.notification-item h4 {
-  margin: 0;
-  color: #333;
-  font-size: 1.1em;
+
+.message-list {
+  height: calc(100vh - 220px); /* 减去头部和间距的高度 */
+  overflow-y: auto;
 }
-.notification-item p {
-  color: #666;
+
+.message-item {
+  margin-bottom: 10px;
 }
-.notification-item span {
-  font-weight: bold;
-  color: #d32f2f;
+
+/* 适应移动视图 */
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+  }
+
+  .left-content,
+  .right-content {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .icon-tray {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .icon-tray .icon {
+    width: 33%; /* 每个图标占1/3宽度 */
+    margin-bottom: 10px;
+  }
+
+  .message-list {
+    height: auto; /* 移动视图高度自适应 */
+  }
 }
 </style>

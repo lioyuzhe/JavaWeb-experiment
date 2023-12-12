@@ -1,112 +1,146 @@
 <template>
-  <div id="Ts">
-    <el-row class="header">
-      <el-col :span="18">
-        <ul class="navigation">
-          <li>首页</li>
-          <li>社区</li>
-          <li>食堂</li>
-        </ul>
-      </el-col>
-      <el-col :span="6" class="personal-information">
-        <div class="avatar-container" @click="goto('profile')">
-          <img src="../assets/ts_images/avatar.png" alt="头像" class="avatar">
-          <div class="notification-dot" v-if="hasUnread"></div>
-        </div>
-      </el-col>
-    </el-row>
-    <router-view></router-view>
-  </div>
+  <el-container>
+    <!-- 头部导航栏 -->
+    <el-header class="header">
+      <el-row type="flex" justify="space-between" align="middle">
+        <el-col :span="18">
+          <el-menu mode="horizontal" class="menu">
+            <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
+            <el-menu-item index="2" @click="goto('community')">社区</el-menu-item>
+            <el-menu-item index="3" @click="goto('canteen')">食堂</el-menu-item>
+          </el-menu>
+        </el-col>
+        <el-col :span="6">
+          <div class="personal-information">
+            <el-badge is-dot v-if="hasUnread">
+              <el-avatar :src="avatarUrl" size="large" @click="goto('profile')"></el-avatar>
+            </el-badge>
+          </div>
+        </el-col>
+      </el-row>
+    </el-header>
+
+    <el-main>
+      <router-view></router-view>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
-import { ref } from 'vue';
-
-const hasUnread = ref(true); // 假设有未读消息
-
-const goto = (page) => {
-  // 根据page参数跳转到不同页面
-  console.log('导航到:', page);
-  // 这里可以添加实际的导航逻辑
-};
-
 export default {
   name: 'Ts',
-  // 可以添加一些逻辑
+  data() {
+    return {
+      hasUnread: true, // 是否有未读信息
+      avatarUrl: '/ts_images/avatar.png' // 您的猫猫头像URL
+    };
+  },
+  methods: {
+    goto(page) {
+      // 页面跳转逻辑
+    }
+  }
 };
 </script>
 
 <style scoped>
-#app {
-  background-color: #fff;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-.header {
-  padding: 14px 70px;
-}
-
-.navigation {
-  display: flex;
-  list-style: none;
-  padding: 0;
+.el-container {
+  /* 确保容器填满整个视口的宽度 */
+  width: 100%;
   margin: 0;
 }
 
-.navigation li {
-  padding: 14px 42px;
-  transition: background-color 0.3s;
-  border-right: 1px solid #ddd;
+.header {
+  /* 设定头部的样式和对齐 */
+  background-color: #fff; /* 根据需要设置背景颜色 */
+  padding: 0 70px;
+  height: 60px; /* 设定一个固定高度 */
 }
 
-.navigation li:last-child {
-  border-right: none; /* 移除最后一个元素的右边框 */
+.menu {
+  /* 菜单样式调整 */
+  line-height: 60px; /* 调整行高以垂直居中 */
 }
 
-.navigation li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  font-size: 22px;
-  transition: color 0.3s;
-}
-
-.navigation li a:hover,
-.navigation li a:focus {
-  color: #d32f2f;
+.menu .el-menu-item {
+  /* 单独菜单项的样式 */
+  font-size: 20px; /* 字体大小根据需要调整 */
 }
 
 .personal-information {
+  /* 个人信息区域样式 */
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative; /* 设置为相对定位 */
+}
+
+.el-avatar {
+  width: 50px;
+  height: 50px;
+}
+
+.el-badge {
+  /* 未读消息徽章样式 */
+  position: absolute;
+  top: -10px; /* 徽章位置调整 */
+  right: 0;
+}
+
+.main-content {
+  /* 主内容区域样式 */
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px; /* 从头部下方开始 */
+}
+
+.left-side {
+  /* 左侧内容样式 */
+  width: 80%;
+}
+
+.right-side {
+  /* 右侧图标区域样式 */
+  width: 30%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.avatar-container {
-  position: relative;
-  padding-left: 28px;
-  cursor: pointer;
+.icons {
+  /* 图标区域样式 */
+  display: flex;
+  justify-content: space-around; /* 平均分配空间 */
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #eee; /* 可选的分割线 */
 }
 
-.avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 4px solid #d32f2f;
-  transition: border-color 0.3s;
+.icons .el-button {
+  /* 单独图标按钮样式 */
+  font-size: 20px; /* 根据需要调整图标大小 */
+  margin: 10px 0; /* 调整上下边距 */
 }
 
-.avatar:hover {
-  border-color: #ff6659;
+.icons-row {
+  gap: 30px; /* 增大功能图标之间的间隔 */
 }
+/* 添加媒体查询以适应不同屏幕尺寸 */
+@media (max-width: 768px) {
+  .header,
+  .main-content {
+    flex-direction: column;
+  }
 
-.notification-dot {
-  position: absolute;
-  top: -2px;
-  right: 0;
-  width: 14px;
-  height: 14px;
-  background-color: #d32f2f;
-  border-radius: 50%;
-  border: 3px solid #fff;
+  .personal-information,
+  .icons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .el-avatar {
+    margin-bottom: 10px; /* 在移动视图中将头像与菜单项分开 */
+  }
 }
 </style>
+
