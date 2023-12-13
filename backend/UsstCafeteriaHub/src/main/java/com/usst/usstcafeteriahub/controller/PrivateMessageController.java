@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Promotion 接口
+ * PrivateMessage 接口
  * @author 黄泽旭
  */
 @Slf4j
@@ -22,13 +22,38 @@ public class PrivateMessageController {
     @Resource
     private PrivateMessagesService privateMessagesService;
 
-    @ApiOperation("获取私信列表")
-    @GetMapping("/getPrivateMessages")
-    public BaseResponse getPrivateMessages() {
-        List<PrivateMessages> list = privateMessagesService.list();
+    @ApiOperation("根据conversationId获取私信列表（聊天记录）时间升序")
+    @GetMapping("/getPrivateMessagesByConversationId")
+    public BaseResponse getPrivateMessagesByConversationId(@RequestParam Integer conversationId) {
+        if (conversationId == null){
+            return Result.error("参数为空");
+        }
+        List<PrivateMessages> list = privateMessagesService.getPrivateMessagesByConversationId(conversationId) ;
         log.info("获取私信列表: {}", list);
         return Result.success(list);
     }
+
+    @ApiOperation("(废置)根据用户id获取私信列表（聊天记录）时间升序")
+    @GetMapping("/getPrivateMessages")
+    public BaseResponse getPrivateMessages(@RequestParam Integer id) {
+        if (id == null){
+            return Result.error("参数为空");
+        }
+        List<PrivateMessages> list = privateMessagesService.getPrivateMessages(id) ;
+        log.info("获取私信列表: {}", list);
+        return Result.success(list);
+    }
+
+    // @ApiOperation("（废置）根据用户id获取私信，未读优先，时间降序")
+    // @GetMapping("/getPrivateMessagesById")
+    // public BaseResponse getPrivateMessagesById(@RequestParam Integer id) {
+    //     if (id == null) {
+    //         return Result.error("参数为空");
+    //     }
+    //     PrivateMessages privateMessages = privateMessagesService.getPrivateMessagesById(id);
+    //     log.info("根据id获取私信: {}", privateMessages);
+    //     return Result.success(privateMessages);
+    // }
 
     @ApiOperation("添加私信")
     @PostMapping("/addPrivateMessages")
@@ -44,7 +69,7 @@ public class PrivateMessageController {
         return Result.success("添加成功");
     }
 
-    @ApiOperation("私信设置已读")
+    @ApiOperation("（废置）私信设置已读")
     @PostMapping("/setRead")
     public BaseResponse setRead(@RequestBody PrivateMessages privateMessages) {
         if (privateMessages == null) {
