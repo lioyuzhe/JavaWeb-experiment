@@ -1,10 +1,16 @@
 package com.usst.usstcafeteriahub.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaManage;
+import com.usst.usstcafeteriahub.service.CafeteriaAdminService;
 import com.usst.usstcafeteriahub.service.CafeteriaManageService;
 import com.usst.usstcafeteriahub.mapper.CafeteriaManageMapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author Klein
@@ -15,6 +21,20 @@ import org.springframework.stereotype.Service;
 public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMapper, CafeteriaManage>
     implements CafeteriaManageService{
 
+    @Resource
+    private CafeteriaManageMapper cafeteriaManageMapper;
+    @Resource
+    private CafeteriaAdminService cafeteriaAdminService;
+
+    @Override
+    public BaseResponse getCafeteriaAdmins(Integer id) {
+       List<CafeteriaManage> result =  cafeteriaManageMapper.getCafeteriaAdmins(id);
+       List<CafeteriaAdmin> cafeteriaAdmins = cafeteriaAdminService.list();
+       for (CafeteriaManage cafeteriaManage : result) {
+
+       }
+       return null;
+    }
 }
 
 

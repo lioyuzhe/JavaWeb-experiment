@@ -1,7 +1,11 @@
 package com.usst.usstcafeteriahub.mapper;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaManage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
 * @author Klein
@@ -11,6 +15,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface CafeteriaManageMapper extends BaseMapper<CafeteriaManage> {
 
+
+    List<CafeteriaManage> getCafeteriaAdmins(Integer id);
 }
 
 
