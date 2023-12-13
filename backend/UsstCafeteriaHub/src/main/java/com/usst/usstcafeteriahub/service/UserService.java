@@ -1,7 +1,10 @@
 package com.usst.usstcafeteriahub.service;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.usst.usstcafeteriahub.model.request.LoginDTO;
+import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 
 /**
 * @author HrizonX
@@ -9,6 +12,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-12-10 14:42:29
 */
 public interface UserService extends IService<User> {
+
+    BaseResponse registerUser(RegisterDTO registerDTO);
+
+    BaseResponse loginUser(LoginDTO loginDTO);
 
     /**
      * 添加用户,判断用户邮箱手机号正则

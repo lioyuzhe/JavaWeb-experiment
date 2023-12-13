@@ -12,13 +12,13 @@
             <result property="userTwoId" column="user_two_id" jdbcType="BIGINT"/>
             <result property="userTwoName" column="user_two_name" jdbcType="VARCHAR"/>
             <result property="userTwoAvatar" column="user_two_avatar" jdbcType="VARCHAR"/>
-            <result property="lastMessageId" column="last_message_id" jdbcType="BIGINT"/>
+            <result property="lastMessage" column="last_message" jdbcType="VARCHAR"/>
             <result property="lastMessageTime" column="last_message_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         conversation_id,user_one_id,user_one_name,
         user_one_avatar,user_two_id,user_two_name,
-        user_two_avatar,last_message_id,last_message_time
+        user_two_avatar,last_message,last_message_time
     </sql>
 </mapper>

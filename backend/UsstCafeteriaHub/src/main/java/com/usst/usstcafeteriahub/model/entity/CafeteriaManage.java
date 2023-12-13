@@ -23,4 +23,9 @@ public class CafeteriaManage implements Serializable {
     private Integer deleted;
 
     private static final long serialVersionUID = 1L;
+
+    public CafeteriaManage(Long adminId, Long cafeteriaId) {
+        this.adminId = adminId;
+        this.cafeteriaId = cafeteriaId;
+    }
 }

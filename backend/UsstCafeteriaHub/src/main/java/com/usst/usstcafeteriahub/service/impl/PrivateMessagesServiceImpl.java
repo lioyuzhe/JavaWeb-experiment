@@ -14,7 +14,7 @@ import java.util.List;
 /**
 * @author Klein
 * @description 针对表【private_messages(私信表)】的数据库操作Service实现
-* @createDate 2023-12-10 15:34:15
+* @createDate 2023-12-13 17:25:48
 */
 @Service
 public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMapper, PrivateMessages>

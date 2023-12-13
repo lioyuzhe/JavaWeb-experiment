@@ -11,6 +11,7 @@
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="userName" column="user_name" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="score" column="score" jdbcType="FLOAT"/>
             <result property="reply" column="reply" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -20,7 +21,7 @@
     <sql id="Base_Column_List">
         remark_id,cafeteria_id,cafeteria_name,
         user_id,user_name,content,
-        reply,status,create_time,
-        deleted
+        score,reply,status,
+        create_time,deleted
     </sql>
 </mapper>
