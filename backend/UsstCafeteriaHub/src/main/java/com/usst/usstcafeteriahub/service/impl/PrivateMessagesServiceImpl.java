@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.usst.usstcafeteriahub.mapper.ConversationMapper;
 import com.usst.usstcafeteriahub.model.entity.PrivateMessages;
 import com.usst.usstcafeteriahub.service.PrivateMessagesService;
 import com.usst.usstcafeteriahub.mapper.PrivateMessagesMapper;
@@ -20,6 +21,8 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
     implements PrivateMessagesService{
     @Resource
     private PrivateMessagesMapper privateMessagesMapper;
+    @Resource
+    private ConversationMapper conversationMapper;
 
     @Override
     public boolean addPrivateMessages(PrivateMessages privateMessages) {
@@ -41,6 +44,37 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
             return true;
         }
         return false;
+    }
+
+    // /**
+    //  * 根据用户id获取私信列表，且read_status为0的在前，时间降序
+    //  * @param id
+    //  * @return
+    //  */
+    // @Override
+    // public PrivateMessages getPrivateMessagesById(Integer id) {
+    //     PrivateMessages privateMessages = privateMessagesMapper.getPrivateMessagesById(id);
+    //     return privateMessages;
+    // }
+
+    /**
+     * 根据用户id获取消息列表，时间升序
+     * @param id
+     * @return
+     */
+    @Override
+    public List<PrivateMessages> getPrivateMessages(Integer id) {
+        return privateMessagesMapper.getPrivateMessages(id);
+    }
+
+    /**
+     * 根据conversationId获取私信列表，时间升序
+     * @param conversationId
+     * @return
+     */
+    @Override
+    public List<PrivateMessages> getPrivateMessagesByConversationId(Integer conversationId) {
+        return privateMessagesMapper.getPrivateMessagesByConversationId(conversationId);
     }
 
 }

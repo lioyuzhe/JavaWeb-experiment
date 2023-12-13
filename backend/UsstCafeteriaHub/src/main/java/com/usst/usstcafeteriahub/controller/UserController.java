@@ -35,6 +35,9 @@ public class UserController {
     @ApiOperation("根据id获取用户")
     @GetMapping("/getUserById")
     public BaseResponse getUserById(@RequestParam Integer id) {
+        if (id == null) {
+            return Result.error("参数为空");
+        }
         User user = userService.getById(id);
         log.info("根据id获取用户: {}", user);
         return Result.success(user);
@@ -43,13 +46,18 @@ public class UserController {
     @ApiOperation("添加用户")
     @PostMapping("/addUser")
     public BaseResponse addUser(@RequestBody User user) {
-        // 如果传入参数为空则返回Result.error("参数为空")
         if (user == null) {
             return Result.error("参数为空");
         }
-        boolean save = userService.save(user);
         log.info("添加用户: {}", user);
-        return Result.success(save);
+        int addResult = userService.addUser(user); // 0:添加成功 1:邮箱或手机号格式错误 2:添加失败
+        if(addResult == 1) {
+            return Result.error("邮箱或手机号格式错误");
+        }
+        if(addResult == 2) {
+            return Result.error("添加失败");
+        }
+        return Result.success("添加成功");
     }
 
     @ApiOperation("删除用户")
@@ -73,16 +81,14 @@ public class UserController {
             return Result.error("参数为空");
         }
         log.info("修改用户: {}", user);
-        User user1 = userService.getById(user.getUserId());
-        if (user1 == null) {
-            return Result.error("用户不存在");
+        int updateResult = userService.updateUser(user); // 0:添加成功 1:邮箱或手机号格式错误 2:添加失败
+        if (updateResult == 1){
+            return Result.error("邮箱或手机号格式错误");
         }
-        boolean update = userService.updateById(user);
-        if(update){
-            return Result.success("修改成功");
-        }else{
-            return Result.error("修改失败");
+        if(updateResult == 2) {
+            return Result.error("添加失败");
         }
+        return Result.success("添加成功");
     }
 
 
