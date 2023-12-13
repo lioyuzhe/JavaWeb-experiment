@@ -10,4 +10,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserService extends IService<User> {
 
+    /**
+     * 添加用户,判断用户邮箱手机号正则
+     * @param user
+     * @return 0:添加成功 1:邮箱或手机号格式错误 2:添加失败
+     */
+    int addUser(User user);
+
+    /**
+     * 修改用户信息,判断用户邮箱手机号正则
+     * @param user
+     * @return 0:添加成功 1:邮箱或手机号格式错误 2:添加失败
+     */
+    int updateUser(User user);
 }
