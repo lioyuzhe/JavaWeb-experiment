@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
+
 /**
  * 文件上传下载接口
  * @author 李英杰
@@ -29,7 +31,6 @@ import java.net.URLEncoder;
 @RestController
 @RequestMapping("/files")
 public class FileController {
-
     @Value("${ip:localhost}")
     String ip;
 
@@ -37,13 +38,7 @@ public class FileController {
     String port;
 
     // 每个用户注册成功之后都会在files文件夹下创建一个文件夹，文件夹名字为用户或管理员的id，里面存放用户的头像，上传的文件等等
-    private static final String ROOT_PATH =  System.getProperty("user.dir") + File.separator + "src/main/resources/files";
 
-    private static final String ADMIN_FILE_PATH = ROOT_PATH + File.separator+"admins";
-
-    private static final String CAFETERIA_ADMIN_FILE_PATH = ROOT_PATH + File.separator+"cafeteriaAdmins";
-    private static final String STUDENT_FILE_PATH = ROOT_PATH + File.separator+"students";
-    private static final String TEACHER_FILE_PATH = ROOT_PATH + File.separator+"teachers";
 
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
@@ -202,6 +197,24 @@ public class FileController {
         }
     }
 
+
+
+    // 获取头像
+    @ApiOperation(value = "获取默认头像")
+    @AuthAccess // 放行
+    @GetMapping("/getDefaultAvatar")
+    public void getDefaultAvatar(HttpServletResponse response) throws IOException {
+        response.addHeader("Content-Disposition", "inline;filename=defaultAvatar.png" );  // 预览
+
+        if (!FileUtil.exist(DEFAULT_AVATAR_PATH)) {
+            return;
+        }
+        byte[] bytes = FileUtil.readBytes(DEFAULT_AVATAR_PATH);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes);  // 数组是一个字节数组，也就是文件的字节流数组
+        outputStream.flush();
+        outputStream.close();
+    }
 
 
 
