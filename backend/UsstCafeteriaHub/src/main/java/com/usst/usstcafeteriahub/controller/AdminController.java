@@ -372,9 +372,6 @@ public class AdminController {
 
 
 
-
-
-
     // 社区管理
     @ApiOperation(value = "查看社区信息")
     @GetMapping("/getCommunityById")

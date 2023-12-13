@@ -51,6 +51,13 @@ public class SystemConstants {
 
     public static final String PUBLIC_FILE_PATH = ROOT_PATH + File.separator+"public";
 
+    // 所有菜品的图片都放在这个文件夹里面，就不分哪个食堂的了，包括所有和食堂有关的文件全部放在这里
+    public static final String CAFETERIA_FILE_PATH = ROOT_PATH + File.separator+"cafeterias";
+     // 所有和社区有关的文件全部放在这里
+    public static final String COMMUNITY_FILE_PATH = ROOT_PATH + File.separator+"communities";
+
+
+    // 文件访问url
     public static final String BASE_PATH = "http://" + ip + ":" + port ;
 
     public static final String DEFAULT_AVATAR_URL = BASE_PATH+ File.separator + "files/getDefaultAvatar";

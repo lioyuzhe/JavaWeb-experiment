@@ -213,7 +213,7 @@ public class FileController {
 
 
 
-    // 获取头像
+    // 获取默认头像
     @ApiOperation(value = "获取默认头像")
     @AuthAccess // 放行
     @GetMapping("/getDefaultAvatar")
@@ -265,6 +265,89 @@ public class FileController {
             return;
         }
         byte[] bytes = FileUtil.readBytes(PUBLIC_FILE_PATH + File.separator + fileName);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes);  // 数组是一个字节数组，也就是文件的字节流数组
+        outputStream.flush();
+        outputStream.close();
+    }
+
+
+    // 上传食堂文件
+    @ApiOperation(value = "上传食堂文件 -- 包括菜品等")
+    @PostMapping("/cafeteria/upload")
+    public BaseResponse uploadCafeteriaFile(MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();  // 文件的原始名称
+        // aaa.png
+        String mainName = FileUtil.mainName(originalFilename);  // aaa
+        String extName = FileUtil.extName(originalFilename);// png
+        if (!FileUtil.exist(CAFETERIA_FILE_PATH)) {
+            FileUtil.mkdir(CAFETERIA_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
+        }
+        if (FileUtil.exist(CAFETERIA_FILE_PATH + File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
+            originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
+        }
+        File saveFile = new File(CAFETERIA_FILE_PATH + File.separator + originalFilename);
+        if (!saveFile.getParentFile().exists()) {
+            saveFile.getParentFile().mkdirs();
+        }
+        file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
+        String url = "http://" + ip + ":" + port + "/files/getCafeteriaFile/" + originalFilename;
+        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+    }
+
+    // 获取食堂文件
+    @ApiOperation(value = "获取食堂文件 -- 包括菜品等")
+    @AuthAccess // 放行
+    @GetMapping("/getCafeteriaFile/{fileName}")
+    public void getCafeteriaFile(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+        response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
+
+        if (!FileUtil.exist(CAFETERIA_FILE_PATH + File.separator + fileName)) {
+            return;
+        }
+
+        byte[] bytes = FileUtil.readBytes(CAFETERIA_FILE_PATH + File.separator + fileName);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes);  // 数组是一个字节数组，也就是文件的字节流数组
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    // 上传社区文件
+    @ApiOperation(value = "上传社区文件 ")
+    @PostMapping("/community/upload")
+    public BaseResponse uploadCommunityFile(MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();  // 文件的原始名称
+        // aaa.png
+        String mainName = FileUtil.mainName(originalFilename);  // aaa
+        String extName = FileUtil.extName(originalFilename);// png
+        if (!FileUtil.exist(COMMUNITY_FILE_PATH)) {
+            FileUtil.mkdir(COMMUNITY_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
+        }
+        if (FileUtil.exist(COMMUNITY_FILE_PATH + File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
+            originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
+        }
+        File saveFile = new File(COMMUNITY_FILE_PATH + File.separator + originalFilename);
+        if (!saveFile.getParentFile().exists()) {
+            saveFile.getParentFile().mkdirs();
+        }
+        file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
+        String url = "http://" + ip + ":" + port + "/files/getCommunityFile/" + originalFilename;
+        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+    }
+
+
+    // 获取社区文件
+    @ApiOperation(value = "获取社区文件 ")
+    @AuthAccess // 放行
+    @GetMapping("/getCommunityFile/{fileName}")
+    public void getCommunityFile(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+        response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
+
+        if (!FileUtil.exist(COMMUNITY_FILE_PATH + File.separator + fileName)) {
+            return;
+        }
+        byte[] bytes = FileUtil.readBytes(COMMUNITY_FILE_PATH + File.separator + fileName);
         ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(bytes);  // 数组是一个字节数组，也就是文件的字节流数组
         outputStream.flush();
