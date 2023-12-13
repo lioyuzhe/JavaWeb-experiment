@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.service;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaManage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CafeteriaManageService extends IService<CafeteriaManage> {
 
+    BaseResponse getCafeteriaAdmins(Integer id);
 }

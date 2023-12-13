@@ -10,6 +10,7 @@ import com.usst.usstcafeteriahub.model.request.LoginDTO;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 import com.usst.usstcafeteriahub.service.CafeteriaAdminService;
 import com.usst.usstcafeteriahub.mapper.CafeteriaAdminMapper;
+import com.usst.usstcafeteriahub.utils.CafeteriaAdminHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -57,6 +58,7 @@ public class CafeteriaAdminServiceImpl extends ServiceImpl<CafeteriaAdminMapper,
             return Result.error("用户不存在");
         }else {
             if(Cafeteriaadmin.getPassword().equals(loginDTO.getPassword())){
+                CafeteriaAdminHolder.saveCafeteriaAdmin(Cafeteriaadmin);
                 return Result.success("登录成功");
             }else{
                 return Result.error("密码错误");

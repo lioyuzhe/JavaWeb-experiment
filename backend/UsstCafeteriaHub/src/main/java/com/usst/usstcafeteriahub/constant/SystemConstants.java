@@ -30,8 +30,8 @@ public class SystemConstants {
 
     //
     public static final String USER_NAME_PREFIX = "user_";
-    public static final String Admin_NAME_PREFIX = "user_";
-    public static final String CAFETERIA_ADMIN_NAME_PREFIX = "user_";
+    public static final String Admin_NAME_PREFIX = "admin_";
+    public static final String CAFETERIA_ADMIN_NAME_PREFIX = "cafeteriaAdmin_";
 
 
     // 文件路径

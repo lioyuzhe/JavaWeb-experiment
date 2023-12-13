@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.PrivateMessages">
             <id property="messageId" column="message_id" jdbcType="BIGINT"/>
+            <result property="conversationId" column="conversation_id" jdbcType="BIGINT"/>
             <result property="senderId" column="sender_id" jdbcType="BIGINT"/>
             <result property="senderName" column="sender_name" jdbcType="VARCHAR"/>
             <result property="senderAvatar" column="sender_avatar" jdbcType="VARCHAR"/>
@@ -19,10 +20,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        message_id,sender_id,sender_name,
-        sender_avatar,receiver_id,receiver_name,
-        receiver_avatar,content,timestamp,
-        read_status,deleted
+        message_id,conversation_id,sender_id,
+        sender_name,sender_avatar,receiver_id,
+        receiver_name,receiver_avatar,content,
+        timestamp,read_status,deleted
     </sql>
-
 </mapper>

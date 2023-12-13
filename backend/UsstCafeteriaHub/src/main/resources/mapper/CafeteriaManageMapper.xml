@@ -15,4 +15,10 @@
         manage_id,admin_id,cafeteria_id,
         deleted
     </sql>
+    <select id="getCafeteriaAdmins" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin">
+       select
+         <include refid="Base_Column_List"/>
+         from cafeteria_manage
+            where cafeteria_id = #{cafeteriaId}
+    </select>
 </mapper>

@@ -61,6 +61,9 @@ public class FileController {
             originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
         }
         File saveFile = new File(ADMIN_FILE_PATH + File.separator + id+ File.separator + originalFilename);
+        if (!saveFile.getParentFile().exists()) {
+            saveFile.getParentFile().mkdirs();
+        }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/admins/actions/download/" + originalFilename;
         return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
@@ -100,6 +103,9 @@ public class FileController {
             originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
         }
         File saveFile = new File(CAFETERIA_ADMIN_FILE_PATH + File.separator + id+ File.separator + originalFilename);
+        if (!saveFile.getParentFile().exists()) {
+            saveFile.getParentFile().mkdirs();
+        }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/cafeteriaAdmins/actions/download/" + originalFilename;
         return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
@@ -132,15 +138,20 @@ public class FileController {
         String extName = FileUtil.extName(originalFilename);// png
         User user = UserHolder.getUser();
         Integer role = user.getRole();
+
         if(role==1){
             if (!FileUtil.exist(TEACHER_FILE_PATH)) {
                 FileUtil.mkdir(TEACHER_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
             }
             Long id = UserHolder.getUser().getUserId();
+
             if (FileUtil.exist(TEACHER_FILE_PATH + File.separator + id+ File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
                 originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
             }
             File saveFile = new File(TEACHER_FILE_PATH + File.separator + id+ File.separator + originalFilename);
+            if (!saveFile.getParentFile().exists()) {
+                saveFile.getParentFile().mkdirs();
+            }
             file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
             String url = "http://" + ip + ":" + port + "/users/actions/download/" + originalFilename;
             return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
@@ -153,6 +164,9 @@ public class FileController {
                 originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
             }
             File saveFile = new File(STUDENT_FILE_PATH + File.separator + id+ File.separator + originalFilename);
+            if (!saveFile.getParentFile().exists()) {
+                saveFile.getParentFile().mkdirs();
+            }
             file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
             String url = "http://" + ip + ":" + port + "/users/actions/download/" + originalFilename;
             return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
@@ -216,10 +230,46 @@ public class FileController {
         outputStream.close();
     }
 
+    // 上传公共文件
+    @ApiOperation(value = "上传公共文件")
+    @PostMapping("/upload")
+    public BaseResponse uploadPublicFile(MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();  // 文件的原始名称
+        // aaa.png
+        String mainName = FileUtil.mainName(originalFilename);  // aaa
+        String extName = FileUtil.extName(originalFilename);// png
+        if (!FileUtil.exist(PUBLIC_FILE_PATH)) {
+            FileUtil.mkdir(PUBLIC_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
+        }
+        if (FileUtil.exist(PUBLIC_FILE_PATH + File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
+            originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
+        }
+        File saveFile = new File(PUBLIC_FILE_PATH + File.separator + originalFilename);
+        if (!saveFile.getParentFile().exists()) {
+            saveFile.getParentFile().mkdirs();
+        }
+        file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
+        String url = "http://" + ip + ":" + port + "/files/getPublicFile/" + originalFilename;
+        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+    }
 
 
+    // 获取公共文件
+    @ApiOperation(value = "获取公共文件")
+    @AuthAccess // 放行
+    @GetMapping("/getPublicFile/{fileName}")
+    public void getPublicFile(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+        response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
 
-
+        if (!FileUtil.exist(PUBLIC_FILE_PATH + File.separator + fileName)) {
+            return;
+        }
+        byte[] bytes = FileUtil.readBytes(PUBLIC_FILE_PATH + File.separator + fileName);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes);  // 数组是一个字节数组，也就是文件的字节流数组
+        outputStream.flush();
+        outputStream.close();
+    }
 
 
 }

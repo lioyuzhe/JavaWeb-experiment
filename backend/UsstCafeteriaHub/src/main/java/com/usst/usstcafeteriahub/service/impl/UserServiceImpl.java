@@ -9,6 +9,7 @@ import com.usst.usstcafeteriahub.model.request.LoginDTO;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 import com.usst.usstcafeteriahub.service.UserService;
 import com.usst.usstcafeteriahub.mapper.UserMapper;
+import com.usst.usstcafeteriahub.utils.UserHolder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return Result.error("用户不存在");
         }else {
             if(user.getPassword().equals(loginDTO.getPassword())){
+                UserHolder.saveUser(user);
                 return Result.success("登录成功");
             }else{
                 return Result.error("密码错误");

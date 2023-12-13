@@ -10,6 +10,7 @@ import com.usst.usstcafeteriahub.model.request.LoginDTO;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 import com.usst.usstcafeteriahub.service.AdminService;
 import com.usst.usstcafeteriahub.mapper.AdminMapper;
+import com.usst.usstcafeteriahub.utils.AdminHolder;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -118,6 +119,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
             return Result.error("用户不存在");
         }else {
             if (admin.getPassword().equals(loginDTO.getPassword())){
+                AdminHolder.saveAdmin(admin);
                 return Result.success("登录成功");
             }else{
                 return Result.error("密码错误");
