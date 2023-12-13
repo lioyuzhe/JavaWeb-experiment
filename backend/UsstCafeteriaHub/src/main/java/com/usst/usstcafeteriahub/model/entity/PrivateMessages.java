@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -15,8 +14,9 @@ import lombok.Data;
 @TableName(value ="private_messages")
 @Data
 public class PrivateMessages implements Serializable {
-    @TableId(type = IdType.AUTO)
     private Long messageId;
+
+    private Long conversationId;
 
     private Long senderId;
 
@@ -32,7 +32,7 @@ public class PrivateMessages implements Serializable {
 
     private String content;
 
-    private LocalDateTime timestamp;
+    private Date timestamp;
 
     private Integer readStatus;
 

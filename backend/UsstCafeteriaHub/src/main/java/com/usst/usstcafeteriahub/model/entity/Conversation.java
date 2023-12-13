@@ -14,7 +14,6 @@ import lombok.Data;
 @TableName(value ="conversation")
 @Data
 public class Conversation implements Serializable {
-    @TableId(type = IdType.AUTO)
     private Long conversationId;
 
     private Long userOneId;
@@ -29,7 +28,7 @@ public class Conversation implements Serializable {
 
     private String userTwoAvatar;
 
-    private Long lastMessageId;
+    private String lastMessage;
 
     private Date lastMessageTime;
 

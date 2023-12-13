@@ -3,6 +3,8 @@ package com.usst.usstcafeteriahub.service;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.usst.usstcafeteriahub.model.request.LoginDTO;
+import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 
 /**
 * @author Klein
@@ -18,4 +20,7 @@ public interface AdminService extends IService<Admin> {
 
     BaseResponse updateAdmin(Admin admin);
 
+    BaseResponse registerAdmin(RegisterDTO registerDTO);
+
+    BaseResponse loginAdmin(LoginDTO loginDTO);
 }

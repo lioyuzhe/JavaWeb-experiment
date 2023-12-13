@@ -3,10 +3,11 @@ package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
-import io.swagger.annotations.Api;
+import com.usst.usstcafeteriahub.model.entity.Admin;
+import com.usst.usstcafeteriahub.service.AdminService;
+import com.usst.usstcafeteriahub.utils.RegexUtils;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
-import jdk.jfr.Name;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +26,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     // 写一个请求
 
-
+    @Resource
+    private AdminService adminService;
 
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
-    public BaseResponse test(){
-        return Result.error("功能还未开发");
+    public BaseResponse test(@RequestParam String email){
+
+        boolean emailInvalid = RegexUtils.isEmailInvalid(email);
+        log.info("email:{}",email);
+        if (emailInvalid){
+            return Result.error("邮箱格式错误");
+        }
+
+//        Admin admin = adminService.query().eq("account", "admin").one();
+//        return Result.success(admin);
+
+
+        return Result.success("功能还未开发");
     }
 
     @ApiOperation(value = "测试接口2")

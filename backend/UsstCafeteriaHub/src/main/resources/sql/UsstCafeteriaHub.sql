@@ -95,6 +95,7 @@ INSERT INTO `user` (`user_id`, `account`, `name`, `password`, `avatar`, `email`,
 DROP TABLE IF EXISTS `private_messages`;
 CREATE TABLE `private_messages` (
                                     `message_id` bigint NOT NULL AUTO_INCREMENT COMMENT '消息ID',
+                                    `conversation_id` bigint COMMENT '会话id,外键，绑定到conversation表',
                                     `sender_id` bigint NOT NULL COMMENT '发送者ID',
                                     `sender_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送者姓名',
                                     `sender_avatar` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发送者头像',
@@ -128,7 +129,7 @@ CREATE TABLE `conversation` (
                                 `user_two_id` bigint NOT NULL COMMENT '参与会话的另一用户的ID，外键关联user表',
                                 `user_two_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与会话的另一用户的姓名',
                                 `user_two_avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '参与会话的另一用户的头像',
-                                `last_message_id` bigint NOT NULL COMMENT '会话中最后一条消息的ID，外键关联private_messages表',
+                                `last_message` text COMMENT '会话中最后一条消息',
                                 `last_message_time` datetime NOT NULL COMMENT '会话中最后一条消息的发送时间',
                                 PRIMARY KEY (`conversation_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '会话表' ROW_FORMAT = Dynamic;
@@ -177,6 +178,7 @@ CREATE TABLE `cafeteria_remark` (
                                     `user_id` bigint NOT NULL COMMENT '用户ID',
                                     `user_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
                                     `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '评价内容',
+                                    `score` float DEFAULT NULL COMMENT '评分',
                                     `reply` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对用户评价的回复',
                                     `status` int NOT NULL DEFAULT '0' COMMENT '默认为0，创建的时候默认为0, 0表示没有回复，1表示已回复。',
                                     `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -261,7 +263,7 @@ CREATE TABLE `cafeteria_rank` (
                                   `cafeteria_id` bigint NOT NULL COMMENT 'Cafeteria ID',
                                   `cafeteria_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the cafeteria',
                                   `total_score` float NOT NULL COMMENT 'Total score',
-                                  `rank` int NOT NULL COMMENT 'Ranking',
+                                  `rank` int DEFAULT NULL COMMENT 'Ranking',
                                   `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0 ，表示不删除，1 表示删除',
                                   PRIMARY KEY (`rank_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '食堂排名表' ROW_FORMAT = Dynamic;
