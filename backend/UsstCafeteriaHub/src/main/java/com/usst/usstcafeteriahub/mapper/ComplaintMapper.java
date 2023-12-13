@@ -11,6 +11,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface ComplaintMapper extends BaseMapper<Complaint> {
 
+    /**
+     * 设置投诉为已读
+     * @param complaint
+     * @return
+     */
+    boolean setRead(Complaint complaint);
 }
 
 

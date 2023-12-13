@@ -34,7 +34,7 @@ public class UserController {
 
     @ApiOperation("根据id获取用户")
     @GetMapping("/getUserById")
-    public BaseResponse getUserById(@RequestParam Integer id) {
+    public BaseResponse getUserById(@RequestParam Long id) {
         if (id == null) {
             return Result.error("参数为空");
         }

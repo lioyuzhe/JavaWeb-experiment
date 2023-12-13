@@ -61,20 +61,19 @@ public class ComplaintController {
         return Result.success("删除成功");
     }
 
-    // 2023-12-12待做合并
-    // @ApiOperation("投诉设置已读")
-    // @GetMapping("/setRead")
-    // public BaseResponse setRead(@RequestBody Complaint complaint) {
-    //     if (complaint == null) {
-    //         return Result.error("参数为空");
-    //     }
-    //     log.info("投诉设置已读: {}", complaint);
-    //     boolean ans = complaintService.setRead(complaint);
-    //     if(!ans){
-    //         return Result.error("设置失败");
-    //     }
-    //     return Result.success("设置成功");
-    // }
+    @ApiOperation("投诉设置已读")
+    @GetMapping("/setRead")
+    public BaseResponse setRead(@RequestBody Complaint complaint) {
+        if (complaint == null) {
+            return Result.error("参数为空");
+        }
+        log.info("投诉设置已读: {}", complaint);
+        boolean ans = complaintService.setRead(complaint);
+        if(!ans){
+            return Result.error("设置失败");
+        }
+        return Result.success("设置成功");
+    }
 
 
 

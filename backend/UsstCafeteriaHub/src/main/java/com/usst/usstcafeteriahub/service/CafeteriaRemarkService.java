@@ -17,8 +17,13 @@ public interface CafeteriaRemarkService extends IService<CafeteriaRemark> {
      * @param id
      * @return
      */
-    List<CafeteriaRemark> getCafeteriaRemarksByCafeteriaID(Integer id);
+    List<CafeteriaRemark> getCafeteriaRemarksByCafeteriaID(Long id);
 
 
-
+    /**
+     * 按照用户ID筛选食堂评价
+     * @param id
+     * @return
+     */
+    List<CafeteriaRemark> getCafeteriaRemarksByUserID(Long id);
 }

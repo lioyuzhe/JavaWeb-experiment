@@ -10,4 +10,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ComplaintService extends IService<Complaint> {
 
+    /**
+     * 设置投诉为已读
+     * @param complaint
+     * @return
+     */
+    boolean setRead(Complaint complaint);
 }

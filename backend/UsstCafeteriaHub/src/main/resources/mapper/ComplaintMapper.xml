@@ -21,4 +21,10 @@
         cafeteria_id,cafeteria_name,content,
         status,reply,deleted
     </sql>
+    <!--设置投诉为已读-->
+    <update id="setRead">
+        UPDATE complaint
+        SET status = 1
+        WHERE complaint_id = #{complaintId}
+    </update>
 </mapper>

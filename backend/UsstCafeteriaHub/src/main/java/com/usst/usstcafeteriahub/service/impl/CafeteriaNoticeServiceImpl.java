@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaNotice;
 import com.usst.usstcafeteriahub.service.CafeteriaNoticeService;
 import com.usst.usstcafeteriahub.mapper.CafeteriaNoticeMapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author Klein
@@ -15,6 +18,18 @@ import org.springframework.stereotype.Service;
 public class CafeteriaNoticeServiceImpl extends ServiceImpl<CafeteriaNoticeMapper, CafeteriaNotice>
     implements CafeteriaNoticeService{
 
+    @Resource
+    private CafeteriaNoticeMapper cafeteriaNoticeMapper;
+
+    /**
+     * 按照食堂ID筛选食堂公告
+     * @param id
+     * @return
+     */
+    @Override
+    public List<CafeteriaNotice> getCafeteriaNoticesByCafeteriaID(Long id) {
+        return cafeteriaNoticeMapper.getCafeteriaNoticesByCafeteriaID(id);
+    }
 }
 
 

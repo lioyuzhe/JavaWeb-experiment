@@ -16,7 +16,22 @@ import java.util.List;
 public interface CafeteriaManageMapper extends BaseMapper<CafeteriaManage> {
 
 
-    List<CafeteriaManage> getCafeteriaAdmins(Integer id);
+    // 你这里有点问题，传入参数id 没有映射到你xml文件里的cafeteriaId 给你注释掉了，用我下面这个
+    // List<CafeteriaManage> getCafeteriaAdmins(Integer id);
+
+    /**
+     * 按照食堂ID筛选食堂管理
+     * @param id
+     * @return
+     */
+    List<CafeteriaManage> getCafeteriaManagesByCafeteriaID(Long id);
+
+    /**
+     * 按照食堂管理员ID筛选食堂管理
+     * @param id
+     * @return
+     */
+    List<CafeteriaManage> getCafeteriaManagesByAdminID(Long id);
 }
 
 

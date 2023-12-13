@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.usst.usstcafeteriahub.model.entity.Complaint;
 import com.usst.usstcafeteriahub.service.ComplaintService;
 import com.usst.usstcafeteriahub.mapper.ComplaintMapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,18 @@ import org.springframework.stereotype.Service;
 public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint>
     implements ComplaintService{
 
+    @Resource
+    private ComplaintMapper complaintMapper;
+
+    /**
+     * 设置投诉为已读
+     * @param complaint
+     * @return
+     */
+    @Override
+    public boolean setRead(Complaint complaint) {
+        return complaintMapper.setRead(complaint);
+    }
 }
 
 
