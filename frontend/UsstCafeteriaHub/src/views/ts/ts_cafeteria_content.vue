@@ -1,25 +1,28 @@
 <template>
   <div class="ts-cafeteria-content">
-    <div class="page-header">
-      <h2>食堂简介</h2>
+    <div class="page-header" id="introduction">
+      <h2>食堂介绍</h2>
       <el-divider></el-divider>
     </div>
-    <ts-cafeteria-introduction ref="introduction"></ts-cafeteria-introduction>
-    <div class="page-header">
+    <ts-cafeteria-introduction></ts-cafeteria-introduction>
+
+    <div class="page-header" id="dish">
       <h2>食堂菜品</h2>
       <el-divider></el-divider>
     </div>
-    <ts-cafeteria-dish ref="dish"></ts-cafeteria-dish>
-    <div class="page-header">
+    <ts-cafeteria-dish></ts-cafeteria-dish>
+
+    <div class="page-header" id="vote">
       <h2>投票调查</h2>
       <el-divider></el-divider>
     </div>
-    <ts-cafeteria-vote ref="vote"></ts-cafeteria-vote>
-    <div class="page-header">
+    <ts-cafeteria-vote></ts-cafeteria-vote>
+
+    <div class="page-header" id="complaint">
       <h2>投诉食堂</h2>
       <el-divider></el-divider>
     </div>
-    <ts-cafeteria-complaint ref="complaint"></ts-cafeteria-complaint>
+    <ts-cafeteria-complaint></ts-cafeteria-complaint>
   </div>
 </template>
 
