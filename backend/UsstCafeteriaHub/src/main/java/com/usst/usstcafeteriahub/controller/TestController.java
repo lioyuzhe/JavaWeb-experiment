@@ -30,7 +30,7 @@ public class TestController {
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
-        return Result.error("功能还未开发");
+        return Result.success("功能还未开发");
     }
 
     @ApiOperation(value = "测试接口2")
