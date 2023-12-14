@@ -33,7 +33,7 @@ te<template>
         </el-input>
       </div>
       <!-- 内容区域 -->
-      <div class="content-area" style="margin-top: 50px; margin-left: 120px;">
+      <div class="content-area" style="margin-top: 50px; margin-left: 150px;">
       <!-- 内容区域的子组件或元素 -->
         <router-view></router-view>
       </div>
