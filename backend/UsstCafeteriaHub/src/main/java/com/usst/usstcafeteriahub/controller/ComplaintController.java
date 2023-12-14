@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/dishes/actions")
+@RequestMapping("/complaints/actions")
 public class ComplaintController {
     @Resource
     private ComplaintService complaintService;
@@ -59,19 +59,20 @@ public class ComplaintController {
         return Result.success("删除成功");
     }
 
-    @ApiOperation("投诉设置已读")
-    @PostMapping("/setRead")
-    public BaseResponse setRead(@RequestBody Complaint complaint) {
-        if (complaint == null) {
-            return Result.error("参数为空");
-        }
-        log.info("投诉设置已读: {}", complaint);
-        boolean ans = complaintService.setRead(complaint);
-        if(!ans){
-            return Result.error("设置失败");
-        }
-        return Result.success("设置成功");
-    }
+    // 废置
+    // @ApiOperation("（废置）投诉设置已处理")
+    // @PostMapping("/setReply")
+    // public BaseResponse setReply(@RequestBody Complaint complaint) {
+    //     if (complaint == null) {
+    //         return Result.error("参数为空");
+    //     }
+    //     log.info("投诉设置已回复: {}", complaint);
+    //     boolean ans = complaintService.setRead(complaint);
+    //     if(!ans){
+    //         return Result.error("设置失败");
+    //     }
+    //     return Result.success("设置成功");
+    // }
 
     @ApiOperation("修改投诉")
     @PostMapping("/updateComplaint")
@@ -87,6 +88,48 @@ public class ComplaintController {
         return Result.success("修改成功");
     }
 
+    @ApiOperation("食堂管理员根据食堂id获取投诉列表,且未处理的投诉优先显示")
+    @GetMapping("/getComplaintByCafeteriaId")
+    public BaseResponse getComplaintByCafeteriaId(@RequestParam("cafeteriaId") Long cafeteriaId) {
+        if (cafeteriaId == null) {
+            return Result.error("参数为空");
+        }
+        List<Complaint> list = complaintService.getComplaintByCafeteriaId(cafeteriaId);
+        if (list == null) {
+            return Result.error("查询失败");
+        }
+        log.info("根据食堂id获取投诉列表: {}", list);
+        return Result.success(list);
+    }
 
+    @ApiOperation("食堂管理员根据食堂id获取投诉列表获取未处理的投诉数量")
+    @GetMapping("/getComplaintNumByCafeteriaId")
+    public BaseResponse getComplaintNumByCafeteriaId(@RequestParam("cafeteriaId") Long cafeteriaId) {
+        if (cafeteriaId == null) {
+            return Result.error("参数为空");
+        }
+        List<Complaint> list = complaintService.getComplaintByCafeteriaId(cafeteriaId);
+        int num = 0;
+        for (Complaint complaint : list) {
+            if (complaint.getStatus() == 0) {
+                num++;
+            }
+        }
+        log.info("根据食堂id获取投诉列表: {}", list);
+        return Result.success(num);
+    }
 
+    @ApiOperation("用户根据用户id获取已回复的投诉列表")
+    @GetMapping("/getComplaintReplyByUserId")
+    public BaseResponse getComplaintReplyByUserId(@RequestParam("userId") Long userId) {
+        if (userId == null) {
+            return Result.error("参数为空");
+        }
+        List<Complaint> list = complaintService.getComplaintReplyByUserId(userId);
+        if (list == null) {
+            return Result.error("查询失败");
+        }
+        log.info("根据用户id获取已回复的投诉列表: {}", list);
+        return Result.success(list);
+    }
 }

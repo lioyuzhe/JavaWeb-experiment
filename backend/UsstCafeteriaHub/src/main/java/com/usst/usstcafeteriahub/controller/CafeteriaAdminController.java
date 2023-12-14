@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/CafeteriaAdmins/actions")
+@RequestMapping("/cafeteriaAdmins/actions")
 public class CafeteriaAdminController {
 
     @Resource

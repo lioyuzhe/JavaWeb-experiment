@@ -43,6 +43,17 @@ public class UserController {
         return Result.success(user);
     }
 
+    @ApiOperation("根据用户名进行模糊查询")
+    @GetMapping("/getUserByName")
+    public BaseResponse getUserByName(@RequestParam String name) {
+        if (name == null) {
+            return Result.error("参数为空");
+        }
+        List<User> list = userService.getUserByName(name);
+        log.info("根据用户名进行模糊查询: {}", list);
+        return Result.success(list);
+    }
+
     @ApiOperation("添加用户")
     @PostMapping("/addUser")
     public BaseResponse addUser(@RequestBody User user) {
