@@ -7,10 +7,7 @@ import com.usst.usstcafeteriahub.service.ComplaintService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,12 +31,13 @@ public class ComplaintController {
     }
 
     @ApiOperation("添加投诉")
-    @GetMapping("/addComplaint")
+    @PostMapping("/addComplaint")
     public BaseResponse addComplaint(@RequestBody Complaint complaint) {
         if (complaint == null) {
             return Result.error("参数为空");
         }
         log.info("添加投诉: {}", complaint);
+        complaint.setStatus(0);
         boolean save = complaintService.save(complaint);
         if(!save){
             return Result.error("添加失败");
@@ -48,7 +46,7 @@ public class ComplaintController {
     }
 
     @ApiOperation("删除投诉")
-    @GetMapping("/deleteComplaint")
+    @PostMapping("/deleteComplaint")
     public BaseResponse deleteComplaint(@RequestBody Complaint complaint) {
         if (complaint == null) {
             return Result.error("参数为空");
@@ -62,7 +60,7 @@ public class ComplaintController {
     }
 
     @ApiOperation("投诉设置已读")
-    @GetMapping("/setRead")
+    @PostMapping("/setRead")
     public BaseResponse setRead(@RequestBody Complaint complaint) {
         if (complaint == null) {
             return Result.error("参数为空");
@@ -73,6 +71,20 @@ public class ComplaintController {
             return Result.error("设置失败");
         }
         return Result.success("设置成功");
+    }
+
+    @ApiOperation("修改投诉")
+    @PostMapping("/updateComplaint")
+    public BaseResponse updateComplaint(@RequestBody Complaint complaint) {
+        if (complaint == null) {
+            return Result.error("参数为空");
+        }
+        log.info("修改投诉: {}", complaint);
+        boolean update = complaintService.updateById(complaint);
+        if(!update){
+            return Result.error("修改失败");
+        }
+        return Result.success("修改成功");
     }
 
 
