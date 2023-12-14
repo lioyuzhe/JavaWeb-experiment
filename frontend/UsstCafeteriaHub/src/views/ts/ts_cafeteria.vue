@@ -1,18 +1,17 @@
 te<template>
   <div class="main-container">
     <!-- 侧边栏 -->
-    <el-menu class="sidebar" style="width: 20%;" default-active="1">
+    <el-menu class="sidebar" style="position: fixed; top: 140px; width:120px; height: calc(100% - 60px); z-index: 1000;">
       <el-menu-item index="1">食堂介绍</el-menu-item>
       <el-menu-item index="2">食堂菜品</el-menu-item>
       <el-menu-item index="3">投票调查</el-menu-item>
       <el-menu-item index="4">投诉食堂</el-menu-item>
     </el-menu>
 
-    <!-- 右侧内容区域 -->
-    <div class="content" style="width: 80%;">
-      <!-- 顶部搜索和食堂选择区域 -->
-      <div class="top-container">
-        <!-- 食堂搜索框 -->
+    <div class="content" style="width: 100%;">
+      <!-- 顶部栏 -->
+      <div class="top-container" style="position: fixed; top: 70px; margin-left: 120px; width: 100%; z-index: 1000;">
+      <!-- 食堂搜索框 -->
         <el-input
             class="cafeteria-search"
             placeholder="搜索食堂"
@@ -34,8 +33,8 @@ te<template>
         </el-input>
       </div>
       <!-- 内容区域 -->
-      <div class="content-area">
-        <!-- 内容区域的子组件或元素 -->
+      <div class="content-area" style="margin-top: 50px; margin-left: 120px;">
+      <!-- 内容区域的子组件或元素 -->
         <router-view></router-view>
       </div>
     </div>

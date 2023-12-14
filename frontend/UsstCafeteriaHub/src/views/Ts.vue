@@ -1,8 +1,8 @@
 <template>
   <el-container>
     <!-- 头部导航栏 -->
-    <el-header class="header">
-      <el-row type="flex" justify="space-between" align="middle">
+  <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
+    <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="18">
           <el-menu mode="horizontal" class="menu">
             <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
@@ -20,7 +20,7 @@
       </el-row>
     </el-header>
 
-    <el-main>
+    <el-main style="margin-top: 60px;">
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -36,8 +36,23 @@ export default {
     };
   },
   methods: {
-    goto(page) {
-      // 页面跳转逻辑
+    goto(destination) {
+      let url = '';
+      switch (destination) {
+        case 'home':
+          url = 'http://localhost:7000/ts_home';
+          break;
+        case 'community':
+          url = 'http://localhost:7000/ts_community';
+          break;
+        case 'canteen':
+          url = 'http://localhost:7000/ts_cafeteria_introduction';
+          break;
+        default:
+          // 默认地址或错误处理
+          url = 'http://localhost:7000';
+      }
+      window.location.href = url;
     }
   }
 };
