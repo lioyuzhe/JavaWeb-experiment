@@ -2,10 +2,10 @@ te<template>
   <div class="main-container">
     <!-- 侧边栏 -->
     <el-menu class="sidebar" style="position: fixed; top: 140px; width:120px; height: calc(100% - 60px); z-index: 1000;">
-      <el-menu-item index="1">食堂介绍</el-menu-item>
-      <el-menu-item index="2">食堂菜品</el-menu-item>
-      <el-menu-item index="3">投票调查</el-menu-item>
-      <el-menu-item index="4">投诉食堂</el-menu-item>
+      <el-menu-item index="1" @click="scrollToComponent('introduction')">食堂介绍</el-menu-item>
+      <el-menu-item index="2" @click="scrollToComponent('dish')">食堂菜品</el-menu-item>
+      <el-menu-item index="3" @click="scrollToComponent('vote')">投票调查</el-menu-item>
+      <el-menu-item index="4" @click="scrollToComponent('complaint')">投诉食堂</el-menu-item>
     </el-menu>
 
     <div class="content" style="width: 100%;">
@@ -34,14 +34,14 @@ te<template>
       </div>
       <!-- 内容区域 -->
       <div class="content-area" style="margin-top: 50px; margin-left: 150px;">
-      <!-- 内容区域的子组件或元素 -->
-        <router-view></router-view>
+        <ts-cafeteria-content ref="cafeteriaContent"></ts-cafeteria-content>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import TsCafeteriaContent from './ts_cafeteria_content.vue';
 export default {
   name: 'TsCafeteria',
   data() {
@@ -49,6 +49,9 @@ export default {
       isFixed: false,
       offsetTop: 0, // 父组件底部到页面顶部的距离
     };
+  },
+  components: {
+    TsCafeteriaContent
   },
   mounted() {
     this.offsetTop = this.$el.querySelector('.parent-component').offsetHeight;
@@ -62,6 +65,9 @@ export default {
         this.isFixed = false;
       }
     },
+    scrollToComponent(componentRef) {
+      this.$refs.cafeteriaContent.$refs[componentRef].$el.scrollIntoView({ behavior: 'smooth' });
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
