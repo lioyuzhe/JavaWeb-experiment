@@ -9,6 +9,7 @@ import com.usst.usstcafeteriahub.service.CafeteriaAdminService;
 import com.usst.usstcafeteriahub.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,22 +32,19 @@ public class LoginController {
     private CafeteriaAdminService cafeteriaAdminService;
 
 
-
-
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
-    public BaseResponse login(@RequestBody LoginDTO loginDTO){
+    public BaseResponse login(@RequestBody LoginDTO loginDTO, HttpServletRequest request){
         Integer role = loginDTO.getRole();
         if(role==0){
-            return adminService.loginAdmin(loginDTO);
+            return adminService.loginAdmin(loginDTO,request);
         }else if(role==1){
-            return cafeteriaAdminService.loginCafeteriaAdmin(loginDTO);
+            return cafeteriaAdminService.loginCafeteriaAdmin(loginDTO,request);
         }else if(role==2 || role == 3){
-            return userService.loginUser(loginDTO);
+            return userService.loginUser(loginDTO,request);
         }else{
             return Result.error("角色错误");
         }
-
     }
 
 

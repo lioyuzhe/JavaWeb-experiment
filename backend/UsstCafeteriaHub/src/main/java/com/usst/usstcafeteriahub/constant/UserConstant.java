@@ -14,7 +14,4 @@ public interface UserConstant {
      */
     static final int IS_TEACHER = 1;
 
-    static final String USER_LOGIN_STATE = "userLoginState";
-
-
 }

@@ -33,7 +33,6 @@ public class RegisterController {
     private CafeteriaAdminService cafeteriaAdminService;
 
 
-
     @ApiOperation(value = "注册用户")
     @PostMapping("/register")
     public BaseResponse register(@RequestBody RegisterDTO registerDTO){

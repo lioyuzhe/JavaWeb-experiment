@@ -32,8 +32,10 @@ export default {
   data() {
     return {
       hasUnread: true, // 是否有未读信息
-      avatarUrl: '/ts_images/avatar.png' // 您的猫猫头像URL
+      // avatarUrl: '/ts_images/avatar.png' // 您的猫猫头像URL
+      avatarUrl: 'http://localhost:9090/files/getDefaultAvatar'
     };
+
   },
   methods: {
     goto(page) {

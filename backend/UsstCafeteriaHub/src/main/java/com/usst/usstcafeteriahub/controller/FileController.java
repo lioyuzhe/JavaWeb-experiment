@@ -5,12 +5,15 @@ import cn.hutool.core.io.FileUtil;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.constant.AuthAccess;
+import com.usst.usstcafeteriahub.model.entity.Admin;
+import com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin;
 import com.usst.usstcafeteriahub.model.entity.User;
 import com.usst.usstcafeteriahub.utils.AdminHolder;
 import com.usst.usstcafeteriahub.utils.CafeteriaAdminHolder;
 import com.usst.usstcafeteriahub.utils.UserHolder;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
+import static com.usst.usstcafeteriahub.constant.WebConstants.*;
 
 /**
  * 文件上传下载接口
@@ -48,7 +52,7 @@ public class FileController {
 
     @ApiOperation(value = "管理员上传文件")
     @PostMapping("/admins/actions/upload")
-    public BaseResponse uploadAdmin(MultipartFile file) throws IOException {
+    public BaseResponse uploadAdmin(MultipartFile file, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件的原始名称
         // aaa.png
         String mainName = FileUtil.mainName(originalFilename);  // aaa
@@ -56,7 +60,14 @@ public class FileController {
         if (!FileUtil.exist(ADMIN_FILE_PATH)) {
             FileUtil.mkdir(ADMIN_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
         }
-        Long id = AdminHolder.getAdmin().getAdminId();
+//        Long id = AdminHolder.getAdmin().getAdminId();
+        // 从session中获取用户的id
+        Object userObj = request.getSession().getAttribute(ADMIN_LOGIN_STATE);
+        if(userObj==null){
+            return Result.error("用户未登录");
+        }
+        Admin admin = (Admin) userObj;
+        Long id = admin.getAdminId();
         if (FileUtil.exist(ADMIN_FILE_PATH + File.separator + id+ File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
             originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
         }
@@ -73,10 +84,16 @@ public class FileController {
     @ApiOperation(value = "管理员下载文件")
     @AuthAccess // 放行
     @GetMapping("/admins/actions/download/{fileName}")
-    public void downloadAdmin(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+    public void downloadAdmin(@PathVariable String fileName, HttpServletResponse response,HttpServletRequest request) throws IOException {
 //        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 附件下载
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
-        Long id = AdminHolder.getAdmin().getAdminId();
+//        Long id = AdminHolder.getAdmin().getAdminId();
+        Object userObj = request.getSession().getAttribute(ADMIN_LOGIN_STATE);
+        if(userObj==null){
+            return;
+        }
+        Admin admin = (Admin) userObj;
+        Long id = admin.getAdminId();
         String filePath = ADMIN_FILE_PATH + File.separator + id + File.separator + fileName;
         if (!FileUtil.exist(filePath)) {
             return;
@@ -90,7 +107,7 @@ public class FileController {
 
     @ApiOperation(value = "食堂管理员上传文件")
     @PostMapping("/cafeteriaAdmins/actions/upload")
-    public BaseResponse uploadCafeteriaAdmin(MultipartFile file) throws IOException {
+    public BaseResponse uploadCafeteriaAdmin(MultipartFile file, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件的原始名称
         // aaa.png
         String mainName = FileUtil.mainName(originalFilename);  // aaa
@@ -98,7 +115,13 @@ public class FileController {
         if (!FileUtil.exist(CAFETERIA_ADMIN_FILE_PATH)) {
             FileUtil.mkdir(CAFETERIA_ADMIN_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
         }
-        Long id = CafeteriaAdminHolder.getCafeteriaAdmin().getAdminId();
+//        Long id = CafeteriaAdminHolder.getCafeteriaAdmin().getAdminId();
+        Object userObj = request.getSession().getAttribute(CAFETERIA_ADMIN_LOGIN_STATE);
+        if(userObj==null){
+            return Result.error("用户未登录");
+        }
+        CafeteriaAdmin admin = (CafeteriaAdmin) userObj;
+        Long id = admin.getAdminId();
         if (FileUtil.exist(CAFETERIA_ADMIN_FILE_PATH + File.separator + id+ File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
             originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
         }
@@ -114,10 +137,16 @@ public class FileController {
     @ApiOperation(value = "食堂管理员下载文件")
     @AuthAccess // 放行
     @GetMapping("/cafeteriaAdmins/actions/download/{fileName}")
-    public void downloadCafeteriaAdmin(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+    public void downloadCafeteriaAdmin(@PathVariable String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
 //        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 附件下载
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
-        Long id = CafeteriaAdminHolder.getCafeteriaAdmin().getAdminId();
+//        Long id = CafeteriaAdminHolder.getCafeteriaAdmin().getAdminId();
+        Object userObj = request.getSession().getAttribute(CAFETERIA_ADMIN_LOGIN_STATE);
+        if(userObj==null){
+            return ;
+        }
+        CafeteriaAdmin admin = (CafeteriaAdmin) userObj;
+        Long id = admin.getAdminId();
         String filePath = CAFETERIA_ADMIN_FILE_PATH + File.separator + id + File.separator + fileName;
         if (!FileUtil.exist(filePath)) {
             return;
@@ -131,19 +160,31 @@ public class FileController {
 
     @ApiOperation(value = "用户上传文件")
     @PostMapping("/users/actions/upload")
-    public BaseResponse uploadUser(MultipartFile file) throws IOException {
+    public BaseResponse uploadUser(MultipartFile file, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件的原始名称
         // aaa.png
         String mainName = FileUtil.mainName(originalFilename);  // aaa
         String extName = FileUtil.extName(originalFilename);// png
-        User user = UserHolder.getUser();
+//        User user = UserHolder.getUser();
+//        Integer role = user.getRole();
+        Object userObjTmp = request.getSession().getAttribute(USER_LOGIN_STATE);
+        if(userObjTmp==null){
+            return Result.error("用户未登录");
+        }
+        User user = (User) userObjTmp;
         Integer role = user.getRole();
 
         if(role==1){
             if (!FileUtil.exist(TEACHER_FILE_PATH)) {
                 FileUtil.mkdir(TEACHER_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
             }
-            Long id = UserHolder.getUser().getUserId();
+//            Long id = UserHolder.getUser().getUserId();
+            Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+            if(userObj==null){
+                return Result.error("用户未登录");
+            }
+            User user1 = (User) userObj;
+            Long id = user1.getUserId();
 
             if (FileUtil.exist(TEACHER_FILE_PATH + File.separator + id+ File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
                 originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
@@ -159,7 +200,13 @@ public class FileController {
             if (!FileUtil.exist(STUDENT_FILE_PATH)) {
                 FileUtil.mkdir(STUDENT_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
             }
-            Long id = UserHolder.getUser().getUserId();
+//            Long id = UserHolder.getUser().getUserId();
+            Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+            if(userObj==null){
+                return Result.error("用户未登录");
+            }
+            User user1 = (User) userObj;
+            Long id = user1.getUserId();
             if (FileUtil.exist(STUDENT_FILE_PATH + File.separator + id+ File.separator + originalFilename)) {  // 如果当前上传的文件已经存在了，那么这个时候我就要重名一个文件名称
                 originalFilename = System.currentTimeMillis() + "_" + mainName + "." + extName;
             }
@@ -179,13 +226,25 @@ public class FileController {
     @ApiOperation(value = "用户下载文件")
     @AuthAccess // 放行
     @GetMapping("/users/actions/download/{fileName}")
-    public void downloadUser(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+    public void downloadUser(@PathVariable String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
         //        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 附件下载
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
-        User user = UserHolder.getUser();
+//        User user = UserHolder.getUser();
+//        Integer role = user.getRole();
+        Object userObjTmp = request.getSession().getAttribute(USER_LOGIN_STATE);
+        if(userObjTmp==null){
+            return;
+        }
+        User user = (User) userObjTmp;
         Integer role = user.getRole();
         if(role==1){
-            Long id = UserHolder.getUser().getUserId();
+//            Long id = UserHolder.getUser().getUserId();
+            Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+            if(userObj==null){
+                return ;
+            }
+            User user1 = (User) userObj;
+            Long id = user1.getUserId();
             String filePath = TEACHER_FILE_PATH + File.separator + id + File.separator + fileName;
             if (!FileUtil.exist(filePath)) {
                 return;
@@ -196,7 +255,13 @@ public class FileController {
             outputStream.flush();
             outputStream.close();
         }else if(role==0){
-            Long id = UserHolder.getUser().getUserId();
+//            Long id = UserHolder.getUser().getUserId();
+            Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+            if(userObj==null){
+                return;
+            }
+            User user1 = (User) userObj;
+            Long id = user1.getUserId();
             String filePath = STUDENT_FILE_PATH + File.separator + id + File.separator + fileName;
             if (!FileUtil.exist(filePath)) {
                 return;
@@ -217,7 +282,7 @@ public class FileController {
     @ApiOperation(value = "获取默认头像")
     @AuthAccess // 放行
     @GetMapping("/getDefaultAvatar")
-    public void getDefaultAvatar(HttpServletResponse response) throws IOException {
+    public void getDefaultAvatar(HttpServletResponse response, HttpServletRequest request) throws IOException {
         response.addHeader("Content-Disposition", "inline;filename=defaultAvatar.png" );  // 预览
 
         if (!FileUtil.exist(DEFAULT_AVATAR_PATH)) {
@@ -233,7 +298,7 @@ public class FileController {
     // 上传公共文件
     @ApiOperation(value = "上传公共文件")
     @PostMapping("/upload")
-    public BaseResponse uploadPublicFile(MultipartFile file) throws IOException {
+    public BaseResponse uploadPublicFile(MultipartFile file, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件的原始名称
         // aaa.png
         String mainName = FileUtil.mainName(originalFilename);  // aaa
@@ -258,7 +323,7 @@ public class FileController {
     @ApiOperation(value = "获取公共文件")
     @AuthAccess // 放行
     @GetMapping("/getPublicFile/{fileName}")
-    public void getPublicFile(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+    public void getPublicFile(@PathVariable String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
 
         if (!FileUtil.exist(PUBLIC_FILE_PATH + File.separator + fileName)) {
@@ -275,7 +340,7 @@ public class FileController {
     // 上传食堂文件
     @ApiOperation(value = "上传食堂文件 -- 包括菜品等")
     @PostMapping("/cafeteria/upload")
-    public BaseResponse uploadCafeteriaFile(MultipartFile file) throws IOException {
+    public BaseResponse uploadCafeteriaFile(MultipartFile file, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件的原始名称
         // aaa.png
         String mainName = FileUtil.mainName(originalFilename);  // aaa
@@ -299,7 +364,7 @@ public class FileController {
     @ApiOperation(value = "获取食堂文件 -- 包括菜品等")
     @AuthAccess // 放行
     @GetMapping("/getCafeteriaFile/{fileName}")
-    public void getCafeteriaFile(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+    public void getCafeteriaFile(@PathVariable String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
 
         if (!FileUtil.exist(CAFETERIA_FILE_PATH + File.separator + fileName)) {
@@ -316,7 +381,7 @@ public class FileController {
     // 上传社区文件
     @ApiOperation(value = "上传社区文件 ")
     @PostMapping("/community/upload")
-    public BaseResponse uploadCommunityFile(MultipartFile file) throws IOException {
+    public BaseResponse uploadCommunityFile(MultipartFile file, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();  // 文件的原始名称
         // aaa.png
         String mainName = FileUtil.mainName(originalFilename);  // aaa
@@ -341,7 +406,7 @@ public class FileController {
     @ApiOperation(value = "获取社区文件 ")
     @AuthAccess // 放行
     @GetMapping("/getCommunityFile/{fileName}")
-    public void getCommunityFile(@PathVariable String fileName, HttpServletResponse response) throws IOException {
+    public void getCommunityFile(@PathVariable String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
 
         if (!FileUtil.exist(COMMUNITY_FILE_PATH + File.separator + fileName)) {

@@ -32,7 +32,7 @@ public class CafeteriaRemarkController {
     }
 
     @ApiOperation("按照食堂ID筛选食堂评价")
-    @GetMapping("/getCafeteriaRemarks")
+    @GetMapping("/getCafeteriaRemarksByCafeteriaID")
     public BaseResponse getCafeteriaRemarksByCafeteriaID(@RequestParam Integer id){
         if(id == null){
             return Result.error("参数为空");

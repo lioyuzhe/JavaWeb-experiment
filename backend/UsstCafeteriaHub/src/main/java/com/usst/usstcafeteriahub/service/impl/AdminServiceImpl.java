@@ -11,13 +11,18 @@ import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 import com.usst.usstcafeteriahub.service.AdminService;
 import com.usst.usstcafeteriahub.mapper.AdminMapper;
 import com.usst.usstcafeteriahub.utils.AdminHolder;
+import com.usst.usstcafeteriahub.utils.JwtUtils;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
+import static com.usst.usstcafeteriahub.constant.WebConstants.ADMIN_LOGIN_STATE;
 
 /**
 * @author Klein
@@ -111,7 +116,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
     }
 
     @Override
-    public BaseResponse loginAdmin(LoginDTO loginDTO) {
+    public BaseResponse loginAdmin(LoginDTO loginDTO, HttpServletRequest request) {
         Admin admin = query().eq("account", loginDTO.getAccount()).one();
         // 5.判断用户是否存在
         if (admin == null) {
@@ -119,8 +124,15 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
             return Result.error("用户不存在");
         }else {
             if (admin.getPassword().equals(loginDTO.getPassword())){
-                AdminHolder.saveAdmin(admin);
-                return Result.success("登录成功");
+                Map<String,Object> claims = new HashMap<>();
+                claims.put("account",admin.getAccount());
+                claims.put("password",admin.getPassword());
+                String token = JwtUtils.generateToken(claims);
+                admin.setToken(token);
+                // 用session保存用户信息
+                request.getSession().setAttribute(ADMIN_LOGIN_STATE,admin);
+                admin.setPassword(null); // 密码不返回
+                return Result.success(admin,"登录成功");
             }else{
                 return Result.error("密码错误");
             }

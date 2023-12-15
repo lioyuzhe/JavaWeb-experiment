@@ -11,11 +11,16 @@ import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 import com.usst.usstcafeteriahub.service.CafeteriaAdminService;
 import com.usst.usstcafeteriahub.mapper.CafeteriaAdminMapper;
 import com.usst.usstcafeteriahub.utils.CafeteriaAdminHolder;
+import com.usst.usstcafeteriahub.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
+import static com.usst.usstcafeteriahub.constant.WebConstants.CAFETERIA_ADMIN_LOGIN_STATE;
 
 
 /**
@@ -50,7 +55,7 @@ public class CafeteriaAdminServiceImpl extends ServiceImpl<CafeteriaAdminMapper,
     }
 
     @Override
-    public BaseResponse loginCafeteriaAdmin(LoginDTO loginDTO) {
+    public BaseResponse loginCafeteriaAdmin(LoginDTO loginDTO, HttpServletRequest request) {
         CafeteriaAdmin Cafeteriaadmin = query().eq("account", loginDTO.getAccount()).one();
         // 5.判断用户是否存在
         if (Cafeteriaadmin == null) {
@@ -58,8 +63,16 @@ public class CafeteriaAdminServiceImpl extends ServiceImpl<CafeteriaAdminMapper,
             return Result.error("用户不存在");
         }else {
             if(Cafeteriaadmin.getPassword().equals(loginDTO.getPassword())){
-                CafeteriaAdminHolder.saveCafeteriaAdmin(Cafeteriaadmin);
-                return Result.success("登录成功");
+                Map<String,Object> claims = new HashMap<>();
+                claims.put("account",Cafeteriaadmin.getAccount());
+                claims.put("password",Cafeteriaadmin.getPassword());
+                String token = JwtUtils.generateToken(claims);
+                Cafeteriaadmin.setToken(token);
+
+                // 将用户信息保存到session中
+                request.getSession().setAttribute(CAFETERIA_ADMIN_LOGIN_STATE,Cafeteriaadmin);
+                Cafeteriaadmin.setPassword(null); // 密码不返回
+                return Result.success(Cafeteriaadmin,"登录成功");
             }else{
                 return Result.error("密码错误");
             }

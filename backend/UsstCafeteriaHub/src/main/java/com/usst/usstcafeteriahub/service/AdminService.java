@@ -5,6 +5,7 @@ import com.usst.usstcafeteriahub.model.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.usst.usstcafeteriahub.model.request.LoginDTO;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author Klein
@@ -22,5 +23,5 @@ public interface AdminService extends IService<Admin> {
 
     BaseResponse registerAdmin(RegisterDTO registerDTO);
 
-    BaseResponse loginAdmin(LoginDTO loginDTO);
+    BaseResponse loginAdmin(LoginDTO loginDTO, HttpServletRequest request);
 }

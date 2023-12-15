@@ -9,15 +9,20 @@ import com.usst.usstcafeteriahub.model.request.LoginDTO;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
 import com.usst.usstcafeteriahub.service.UserService;
 import com.usst.usstcafeteriahub.mapper.UserMapper;
+import com.usst.usstcafeteriahub.utils.JwtUtils;
 import com.usst.usstcafeteriahub.utils.UserHolder;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import com.usst.usstcafeteriahub.utils.RegexUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
+import static com.usst.usstcafeteriahub.constant.WebConstants.USER_LOGIN_STATE;
 
 /**
 * @author HrizonX
@@ -98,7 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public BaseResponse loginUser(LoginDTO loginDTO) {
+    public BaseResponse loginUser(LoginDTO loginDTO, HttpServletRequest request) {
         User user = query().eq("account", loginDTO.getAccount()).one();
         // 5.判断用户是否存在
         if (user == null) {
@@ -106,8 +111,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return Result.error("用户不存在");
         }else {
             if(user.getPassword().equals(loginDTO.getPassword())){
-                UserHolder.saveUser(user);
-                return Result.success("登录成功");
+                Map<String,Object> claims = new HashMap<>();
+                claims.put("account",user.getAccount());
+                claims.put("password",user.getPassword());
+                String token = JwtUtils.generateToken(claims);
+                user.setToken(token);
+                // 将用户信息保存到session中
+                request.getSession().setAttribute(USER_LOGIN_STATE,user);
+
+                user.setPassword(null); // 密码不返回
+                return Result.success(user,"登录成功");
             }else{
                 return Result.error("密码错误");
             }
@@ -122,7 +135,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setRole( registerDTO.getRole());
         // 为用户设置一个随机的名字。
         user.setName(USER_NAME_PREFIX + RandomUtil.randomString(10));
-
         // 为用户设置默认的头像
         user.setAvatar(DEFAULT_AVATAR_URL);
 
