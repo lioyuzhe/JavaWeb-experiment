@@ -130,7 +130,7 @@ CREATE TABLE `conversation` (
                                 `user_two_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与会话的另一用户的姓名',
                                 `user_two_avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '参与会话的另一用户的头像',
                                 `last_message` text COMMENT '会话中最后一条消息',
-                                `last_message_time` datetime NOT NULL COMMENT '会话中最后一条消息的发送时间',
+                                `last_message_time` datetime  COMMENT '会话中最后一条消息的发送时间',
                                 PRIMARY KEY (`conversation_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '会话表' ROW_FORMAT = Dynamic;
 
@@ -392,8 +392,8 @@ CREATE TABLE `community_user` (
                                   `community_user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '社区用户ID',
                                   `user_id` bigint NOT NULL COMMENT '用户ID',
                                   `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
-                                  `community_id` bigint NOT NULL COMMENT '社区ID',
-                                  `community_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '社区名',
+                                  `community_id` bigint default 1 COMMENT '社区ID',
+                                  `community_name` varchar(50) default '上海理工大学食堂点评交流社区' COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '社区名',
                                   `post_count` int DEFAULT NULL COMMENT '发布消息数',
                                   `like_count` int DEFAULT NULL COMMENT '点赞总数',
                                   `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0表示不删除，1表示删除',
@@ -411,13 +411,14 @@ CREATE TABLE `community_user` (
 DROP TABLE IF EXISTS `community_message`;
 CREATE TABLE `community_message` (
                                      `message_id` bigint NOT NULL AUTO_INCREMENT COMMENT '信息ID',
-                                     `community_id` bigint NOT NULL COMMENT '社区ID',
-                                     `community_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '社区名',
+                                     `community_id` bigint default 1 COMMENT '社区ID',
+                                     `community_name` varchar(256) default '上海理工大学食堂点评交流社区'  COLLATE utf8mb4_unicode_ci  COMMENT '社区名',
                                      `user_id` bigint NOT NULL COMMENT '用户ID',
                                      `user_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
                                      `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标题',
                                      `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内容（具体的存储的内容可以在前端通过富文本编辑器实现）',
                                      `like_count` int NOT NULL COMMENT '点赞数',
+                                     `create_time` datetime COMMENT '创建时间',
                                      `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0表示不删除，1表示删除',
                                      PRIMARY KEY (`message_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '社区信息表' ROW_FORMAT = Dynamic;

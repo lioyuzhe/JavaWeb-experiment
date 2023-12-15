@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class RegisterController {
 
 
-
     @Resource
     private UserService userService;
 
@@ -31,7 +30,6 @@ public class RegisterController {
 
     @Resource
     private CafeteriaAdminService cafeteriaAdminService;
-
 
 
     @ApiOperation(value = "注册用户")
@@ -47,7 +45,6 @@ public class RegisterController {
         }else{
             return Result.error("角色错误");
         }
-
     }
 
 

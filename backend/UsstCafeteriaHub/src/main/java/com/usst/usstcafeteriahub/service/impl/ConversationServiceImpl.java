@@ -15,7 +15,7 @@ import java.util.List;
 /**
 * @author Klein
 * @description 针对表【conversation(会话表)】的数据库操作Service实现
-* @createDate 2023-12-13 21:56:14
+* @createDate 2023-12-15 14:53:13
 */
 @Service
 @Slf4j

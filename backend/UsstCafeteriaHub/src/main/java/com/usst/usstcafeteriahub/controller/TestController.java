@@ -5,6 +5,7 @@ import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Admin;
 import com.usst.usstcafeteriahub.service.AdminService;
+import com.usst.usstcafeteriahub.utils.AdminHolder;
 import com.usst.usstcafeteriahub.utils.RegexUtils;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
@@ -31,17 +32,12 @@ public class TestController {
 
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
-    public BaseResponse test(@RequestParam String email){
-
-        boolean emailInvalid = RegexUtils.isEmailInvalid(email);
-        log.info("email:{}",email);
-        if (emailInvalid){
-            return Result.error("邮箱格式错误");
-        }
+    public BaseResponse test(){
 
 //        Admin admin = adminService.query().eq("account", "admin").one();
-//        return Result.success(admin);
-
+//        AdminHolder.saveAdmin(admin);
+//        Admin admin1 = AdminHolder.getAdmin();
+//        System.out.println(admin1);
 
         return Result.success("功能还未开发");
     }

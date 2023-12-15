@@ -39,6 +39,7 @@ public class CafeteriaRemarkServiceImpl extends ServiceImpl<CafeteriaRemarkMappe
     @Override
     public List<CafeteriaRemark> getCafeteriaRemarksByUserID(Long id) {
         return cafeteriaRemarkMapper.getCafeteriaRemarksByUserID(id);
+
     }
 }
 
