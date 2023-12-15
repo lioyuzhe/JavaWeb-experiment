@@ -82,7 +82,7 @@ export default {
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
       collapseIcon: 'el-icon-s-fold',
-      user: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+      user: JSON.parse(localStorage.getItem('admin') || '{}'),
     }
   },
   mounted() {   // 页面加载完成之后触发
@@ -95,7 +95,7 @@ export default {
       this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
     },
     logout() {
-      localStorage.removeItem('honey-user')  // 清除当前的token和用户数据
+      localStorage.removeItem('admin')  // 清除当前的token和用户数据
       // this.$router.push('/login')
     },
     handleFull() {
