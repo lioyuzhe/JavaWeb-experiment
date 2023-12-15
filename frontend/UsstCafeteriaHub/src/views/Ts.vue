@@ -1,10 +1,8 @@
 <template>
   <el-container>
     <!-- 头部导航栏 -->
-
-  <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
-    <el-row type="flex" justify="space-between" align="middle">
-
+    <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
+      <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="18">
           <el-menu mode="horizontal" class="menu">
             <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
@@ -15,18 +13,28 @@
         <el-col :span="6">
           <div class="personal-information">
             <el-badge is-dot v-if="hasUnread">
-              <el-avatar :src="avatarUrl" size="large" @click="goto('profile')"></el-avatar>
+              <!-- 修改头像为超链接 -->
+              <a :href="profileUrl" @click.prevent="showUserProfile">
+                <el-avatar :src="avatarUrl" size="large"></el-avatar>
+              </a>
             </el-badge>
           </div>
         </el-col>
       </el-row>
     </el-header>
-
-
     <el-main style="margin-top: 60px;">
-
       <router-view></router-view>
     </el-main>
+    <!-- 用户详情信息弹窗 -->
+    <el-dialog
+        title="用户详情信息"
+        :visible="userProfileVisible"
+        @close="userProfileVisible = false"
+        width="50%"
+    >
+      <!-- 在这里引入用户详情信息的组件 -->
+      <!-- 例如：<UserProfileComponent :userData="userData" /> -->
+    </el-dialog>
   </el-container>
 </template>
 
@@ -35,22 +43,30 @@ export default {
   name: 'Ts',
   data() {
     return {
+      profileUrl: '/ts/ts_user_profile', // 用户详情信息的链接，根据实际情况修改
+      userProfileVisible: false, // 控制用户详情信息的显示状态
       hasUnread: true, // 是否有未读信息
       avatarUrl: '/ts_images/avatar.png' // 您的猫猫头像URL
     };
   },
   methods: {
+    showUserProfile() {
+      this.userProfileVisible = true;
+    },
     goto(destination) {
       let url = '';
       switch (destination) {
         case 'home':
-          url = 'http://localhost:7000/ts_home';
+          url = 'http://localhost:7000/ts/ts_home';
           break;
         case 'community':
-          url = 'http://localhost:7000/ts_community';
+          url = 'http://localhost:7000/ts/ts_community';
           break;
         case 'canteen':
-          url = 'http://localhost:7000/ts_cafeteria_introduction';
+          url = 'http://localhost:7000/ts/ts_cafeteria_introduction';
+          break;
+        case 'vote':
+          url = 'http://localhost:7000/ts/ts_cafeteria_vote';
           break;
         default:
           // 默认地址或错误处理
@@ -60,6 +76,7 @@ export default {
     }
   }
 };
+
 </script>
 
 <style scoped>
@@ -162,4 +179,3 @@ export default {
   }
 }
 </style>
-

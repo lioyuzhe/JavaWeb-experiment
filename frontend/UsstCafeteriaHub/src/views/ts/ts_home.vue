@@ -5,7 +5,7 @@
       <!-- 动态轮播部分 -->
       <div class="dynamic-carousel">
         <el-carousel :interval=4000 type="card" height="200px">
-          <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id" @click="viewDetails(promo)">
+          <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">
             <el-card>
               <img :src="promo.image_url" alt="促销图片">
               <div>
@@ -19,14 +19,17 @@
       <!-- 功能入口部分 -->
       <div class="feature-entrances">
         <el-row :gutter="20">
-          <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id" @click="viewDetails(entry)">
-            <el-card>
-              <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
-              <div>
-                <h3>{{ entry.title }}</h3>
-                <p>{{ entry.description }}</p>
-              </div>
-            </el-card>
+          <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id">
+            <!-- 使用 router-link 来实现路由跳转 -->
+            <router-link :to="getLink(entry.id)">
+              <el-card>
+                <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
+                <div>
+                  <h3>{{ entry.title }}</h3>
+                  <p>{{ entry.description }}</p>
+                </div>
+              </el-card>
+            </router-link>
           </el-col>
         </el-row>
       </div>
@@ -52,30 +55,17 @@
           <!-- 标题部分代码省略 -->
         </div>
         <el-scrollbar class="message-list">
-          <div v-for="item in activeMessages" :key="item.id" class="message-item" @click="viewDetails(item)">
+          <div v-for="item in activeMessages" :key="item.id" class="message-item">
             <span>{{ item.user_name }}：</span>
             <p>{{ item.content }}</p>
           </div>
         </el-scrollbar>
       </el-card>
     </div>
-
-    <!-- 详细信息的弹出对话框 -->
-    <el-dialog :visible.sync="dialogVisible" title="详细信息">
-      <div v-if="selectedItem.dish_name">
-        <h3>{{ selectedItem.dish_name }}</h3>
-        <img :src="selectedItem.image_url" alt="促销图片">
-      </div>
-      <p>{{ selectedItem.description || selectedItem.content }}</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">关闭</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
-
-
 <script>
+
 export default {
   name: 'ts_home',
   data() {
@@ -169,17 +159,27 @@ export default {
         },
       ],
       communityMessages: [
-        { message_id: 1, user_name: 'Alice', content: '今天的餐点非常美味！' },
-        { message_id: 2, user_name: 'Bob', content: '期待更多的素食选择。' },
-        { message_id: 3, user_name: 'Carol', content: '服务态度非常好，环境也很舒适。' },
+        {message_id: 1, user_name: 'Alice', content: '今天的餐点非常美味！'},
+        {message_id: 2, user_name: 'Bob', content: '期待更多的素食选择。'},
+        {message_id: 3, user_name: 'Carol', content: '服务态度非常好，环境也很舒适。'},
       ],
       likes: [
-        { id: 1, user_name: 'Dave', content: 'Dave觉得你的评论很赞' },
-        { id: 2, user_name: 'Eve', content: 'Eve为你的分享点了赞' },
+        {id: 1, user_name: 'Dave', content: 'Dave觉得你的评论很赞'},
+        {id: 2, user_name: 'Eve', content: 'Eve为你的分享点了赞'},
       ],
       complaints: [
-        { complaint_id: 1, user_name: 'Frank', content: '午餐时排队等待时间太长了。', reply: '我们会尽快改进排队系统，感谢反馈。' },
-        { complaint_id: 2, user_name: 'Grace', content: '食堂内部分区域卫生条件需要提高。', reply: '已经通知清洁团队进行深度清理，感谢您的建议。' },
+        {
+          complaint_id: 1,
+          user_name: 'Frank',
+          content: '午餐时排队等待时间太长了。',
+          reply: '我们会尽快改进排队系统，感谢反馈。'
+        },
+        {
+          complaint_id: 2,
+          user_name: 'Grace',
+          content: '食堂内部分区域卫生条件需要提高。',
+          reply: '已经通知清洁团队进行深度清理，感谢您的建议。'
+        },
       ],
 
     };
@@ -191,11 +191,23 @@ export default {
       console.log('Tab clicked:', tab); // 添加调试信息
       this.activeTab = tab;
     },
-    viewDetails(item) {
-      console.log('View details:', item); // 调试信息
-      this.selectedItem = item;
-      this.dialogVisible = true;
+    getLink(entryId) {
+      switch (entryId) {
+        case 'vote':
+          // 导航到 ts_cafeteria_content 页面的锚点位置
+          return '/ts/ts_cafeteria_content#vote';
+        case 'communityTopic':
+          return '/ts/ts_community';
+        case 'recommendation':
+          return '/ts/ts_cafeteria_introduction';
+          // 其他入口的路由链接可以在这里添加
+        default:
+          return '/';
+      }
     },
+
+
+    // 方法部分可以根据需要实现API调用等
   },
   computed: {
     activeMessages() {
@@ -212,8 +224,7 @@ export default {
       }
     }
   },
-  // 方法部分可以根据需要实现API调用等
-};
+}
 </script>
 
 

@@ -33,6 +33,17 @@ import TsCafeteriaVote from './ts_cafeteria/ts_cafeteria_vote.vue';
 import TsCafeteriaComplaint from './ts_cafeteria/ts_cafeteria_complaint.vue';
 
 export default {
+  mounted() {
+    // 检查是否有锚点
+    const hash = window.location.hash;
+    if (hash) {
+      // 如果有锚点，滚动到锚点位置
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  },
   components: {
     TsCafeteriaIntroduction,
     TsCafeteriaDish,
