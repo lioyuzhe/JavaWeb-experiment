@@ -13,12 +13,43 @@
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="likeCount" column="like_count" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         message_id,community_id,community_name,
         user_id,user_name,title,
-        content,like_count,deleted
+        content,like_count,create_time,
+        deleted
     </sql>
+    <!--根据用户id筛选communityMessage-->
+    <select id="getCommunityMessageByUserId" resultType="com.usst.usstcafeteriahub.model.entity.CommunityMessage">
+        select
+        <include refid="Base_Column_List"/>
+        from community_message
+        where user_id = #{userId}
+    </select>
+    <!--根据文章标题进行模糊查询-->
+    <select id="getCommunityMessageByTitle" resultType="com.usst.usstcafeteriahub.model.entity.CommunityMessage">
+        select
+        <include refid="Base_Column_List"/>
+        from community_message
+        where title like concat('%',#{communityMessageName},'%')
+    </select>
+    <!--根据点赞数降序返回社区信息-->
+    <select id="getCommunityMessageByLike" resultType="com.usst.usstcafeteriahub.model.entity.CommunityMessage">
+        select
+        <include refid="Base_Column_List"/>
+        from community_message
+        order by like_count desc
+    </select>
+    <!--根据时间降序返回社区信息-->
+    <select id="getCommunityMessageByTime" resultType="com.usst.usstcafeteriahub.model.entity.CommunityMessage">
+        select
+        <include refid="Base_Column_List"/>
+        from community_message
+        order by create_time desc
+    </select>
+
 </mapper>

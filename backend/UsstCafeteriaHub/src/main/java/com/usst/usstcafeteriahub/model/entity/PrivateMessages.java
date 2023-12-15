@@ -18,6 +18,8 @@ public class PrivateMessages implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long messageId;
 
+    private Long conversationId;
+
     private Long senderId;
 
     private String senderName;

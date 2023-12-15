@@ -21,4 +21,28 @@
         cafeteria_id,cafeteria_name,content,
         status,reply,deleted
     </sql>
+    <!--设置投诉为已读-->
+    <update id="setRead">
+        UPDATE complaint
+        SET status = 1
+        WHERE complaint_id = #{complaintId}
+    </update>
+    <!--食堂管理员根据食堂id获取投诉列表,且未处理的投诉优先显示-->
+    <select id="getComplaintByCafeteriaId" resultType="com.usst.usstcafeteriahub.model.entity.Complaint">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM complaint
+        WHERE cafeteria_id = #{cafeteriaId}
+        AND deleted = 0
+        ORDER BY status ASC
+    </select>
+    <!--用户根据用户id获取已回复的投诉列表-->
+    <select id="getComplaintReplyByUserId" resultType="com.usst.usstcafeteriahub.model.entity.Complaint">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM complaint
+        WHERE user_id = #{userId}
+        AND deleted = 0
+        AND status = 1
+    </select>
 </mapper>

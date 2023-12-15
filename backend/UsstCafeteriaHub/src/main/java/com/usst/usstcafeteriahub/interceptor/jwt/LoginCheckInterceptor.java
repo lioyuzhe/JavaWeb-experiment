@@ -2,6 +2,7 @@ package com.usst.usstcafeteriahub.interceptor.jwt;
 
 import com.alibaba.fastjson.JSONObject;
 import com.usst.usstcafeteriahub.common.Result;
+import com.usst.usstcafeteriahub.constant.AuthAccess;
 import com.usst.usstcafeteriahub.utils.JwtUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.apachecommons.CommonsLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 @Slf4j
@@ -20,10 +22,18 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("登录拦截器：我在检测jwt令牌，工作中……");
 
         log.info("等待中……");
+
         log.info("放行啦~");
 
         return HandlerInterceptor.super.preHandle(request, response, handler); // 放行
 
+////        // 如果不是映射到方法直接通过
+//        if (handler instanceof HandlerMethod) {
+//            AuthAccess annotation = ((HandlerMethod) handler).getMethodAnnotation(AuthAccess.class);
+//            if (annotation != null) {
+//                return true;
+//            }
+//        }
 
 
 //        //1.获取请求ur1.
@@ -33,7 +43,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 //
 //        //2.判惭请求ur1中是否包含1ogin,如果包含，说明是登录操作，放行。
 //        if(s.contains("login")){
-//
 //            return true;
 //        }
 //
