@@ -20,4 +20,18 @@
         community_id,community_name,post_count,
         like_count,deleted
     </sql>
+    <!--根据社区用户名进行模糊查询-->
+    <select id="getCommunityUserByCommunityUserName" resultType="com.usst.usstcafeteriahub.model.entity.CommunityUser">
+        select
+        <include refid="Base_Column_List"/>
+        from community_user
+        where user_name like concat('%',#{communityUserName},'%')
+    </select>
+    <!--根据user_id查找社区User-->
+    <select id="getCommunityUserByUserId" resultType="com.usst.usstcafeteriahub.model.entity.CommunityUser">
+        select
+        <include refid="Base_Column_List"/>
+        from community_user
+        where user_id = #{userId}
+    </select>
 </mapper>

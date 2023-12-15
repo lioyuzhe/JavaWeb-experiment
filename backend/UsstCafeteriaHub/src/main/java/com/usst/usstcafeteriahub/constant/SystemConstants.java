@@ -1,5 +1,9 @@
 package com.usst.usstcafeteriahub.constant;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import java.io.File;
+
 /**
  * 系统常量类
  * @author 李英杰
@@ -22,6 +26,45 @@ public class SystemConstants {
     // 这时我们项目的api接口的访问url，密码为usst
     public static final String APIFOX_URL = "https://apifox.com/apidoc/shared-37ddae17-4d78-454f-ad63-7a6319abd441";
     public static final String APIFOX_PROJECT_ID = "3713980";
+
+
+    //
+    public static final String USER_NAME_PREFIX = "user_";
+    public static final String Admin_NAME_PREFIX = "admin_";
+    public static final String CAFETERIA_ADMIN_NAME_PREFIX = "cafeteriaAdmin_";
+
+
+    // 文件路径
+    @Value("${ip:localhost}")
+    public static String ip;
+
+    @Value("${server.port}")
+    public static String port;
+
+    public static final String ROOT_PATH =  System.getProperty("user.dir") + File.separator + "src/main/resources/files";
+
+    public static final String ADMIN_FILE_PATH = ROOT_PATH + File.separator+"admins";
+
+    public static final String CAFETERIA_ADMIN_FILE_PATH = ROOT_PATH + File.separator+"cafeteriaAdmins";
+    public static final String STUDENT_FILE_PATH = ROOT_PATH + File.separator+"students";
+    public static final String TEACHER_FILE_PATH = ROOT_PATH + File.separator+"teachers";
+
+    public static final String PUBLIC_FILE_PATH = ROOT_PATH + File.separator+"public";
+
+    // 所有菜品的图片都放在这个文件夹里面，就不分哪个食堂的了，包括所有和食堂有关的文件全部放在这里
+    public static final String CAFETERIA_FILE_PATH = ROOT_PATH + File.separator+"cafeterias";
+     // 所有和社区有关的文件全部放在这里
+    public static final String COMMUNITY_FILE_PATH = ROOT_PATH + File.separator+"communities";
+
+
+    // 文件访问url
+    public static final String BASE_PATH = "http://" + ip + ":" + port ;
+
+    public static final String DEFAULT_AVATAR_URL = BASE_PATH+ File.separator + "files/getDefaultAvatar";
+
+
+     // 默认头像路径
+    public static final String DEFAULT_AVATAR_PATH = PUBLIC_FILE_PATH + File.separator+"defaultAvatar.png";
 
 
 

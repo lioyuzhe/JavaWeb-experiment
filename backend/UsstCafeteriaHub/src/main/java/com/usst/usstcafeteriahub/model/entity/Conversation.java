@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -14,7 +15,6 @@ import lombok.Data;
 @TableName(value ="conversation")
 @Data
 public class Conversation implements Serializable {
-    @TableId(type = IdType.AUTO)
     private Long conversationId;
 
     private Long userOneId;
@@ -29,9 +29,9 @@ public class Conversation implements Serializable {
 
     private String userTwoAvatar;
 
-    private Long lastMessageId;
+    private String lastMessage;
 
-    private Date lastMessageTime;
+    private LocalDateTime lastMessageTime;
 
     private static final long serialVersionUID = 1L;
 }
