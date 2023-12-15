@@ -12,8 +12,8 @@ const request = axios.create({
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
-    let user = JSON.parse(localStorage.getItem("honey-user") || '{}')
-    config.headers['token'] = user.token  // 设置请求头
+    // let user = JSON.parse(localStorage.getItem("honey-user") || '{}')
+    // config.headers['token'] = user.token  // 设置请求头
 
     return config
 }, error => {
@@ -31,9 +31,9 @@ request.interceptors.response.use(
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
         }
-        if (res.code === '401') {
-            router.push('/login')
-        }
+        // if (res.code === '401') {
+        //     router.push('/login')
+        // }
         return res;
     },
     error => {

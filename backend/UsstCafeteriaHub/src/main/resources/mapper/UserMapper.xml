@@ -24,4 +24,11 @@
         phone,status,activity_level,
         role,deleted
     </sql>
+    <!--根据用户名进行模糊查询-->
+    <select id="getUserByName" resultType="com.usst.usstcafeteriahub.model.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where name like concat('%',#{name},'%')
+    </select>
 </mapper>

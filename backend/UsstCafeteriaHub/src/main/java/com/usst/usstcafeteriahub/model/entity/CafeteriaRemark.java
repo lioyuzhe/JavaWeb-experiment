@@ -27,6 +27,8 @@ public class CafeteriaRemark implements Serializable {
 
     private String content;
 
+    private Double score;
+
     private String reply;
 
     private Integer status;

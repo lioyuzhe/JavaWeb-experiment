@@ -21,4 +21,34 @@
         name,price,cuisine,
         image_url,status,deleted
     </sql>
+    <!--根据菜系筛选菜品-->
+    <select id="getDishByCuisine" resultType="com.usst.usstcafeteriahub.model.entity.Dish">
+        select
+        <include refid="Base_Column_List"/>
+        from dish
+        where cuisine = #{cuisine}
+    </select>
+    <!--根据价格升序获取菜品列表-->
+    <select id="getDishOrderByPriceAsc" resultType="com.usst.usstcafeteriahub.model.entity.Dish">
+        select
+        <include refid="Base_Column_List"/>
+        from dish
+        where cafeteria_id = #{cafeteriaId}
+        order by price asc
+    </select>
+    <!--根据价格降序获取菜品列表-->
+    <select id="getDishOrderByPriceDesc" resultType="com.usst.usstcafeteriahub.model.entity.Dish">
+        select
+        <include refid="Base_Column_List"/>
+        from dish
+        where cafeteria_id = #{cafeteriaId}
+        order by price desc
+    </select>
+    <!--根据食堂id获取菜品-->
+    <select id="getDishByCafeteriaID" resultType="com.usst.usstcafeteriahub.model.entity.Dish">
+        select
+        <include refid="Base_Column_List"/>
+        from dish
+        where cafeteria_id = #{cafeteriaId}
+    </select>
 </mapper>

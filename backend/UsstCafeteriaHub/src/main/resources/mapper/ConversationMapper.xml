@@ -12,13 +12,46 @@
             <result property="userTwoId" column="user_two_id" jdbcType="BIGINT"/>
             <result property="userTwoName" column="user_two_name" jdbcType="VARCHAR"/>
             <result property="userTwoAvatar" column="user_two_avatar" jdbcType="VARCHAR"/>
-            <result property="lastMessageId" column="last_message_id" jdbcType="BIGINT"/>
+            <result property="lastMessage" column="last_message" jdbcType="VARCHAR"/>
             <result property="lastMessageTime" column="last_message_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         conversation_id,user_one_id,user_one_name,
         user_one_avatar,user_two_id,user_two_name,
-        user_two_avatar,last_message_id,last_message_time
+        user_two_avatar,last_message,last_message_time
     </sql>
+    <!--根据两用户User创建会话-->
+    <insert id="createConversation">
+        insert into conversation
+        (user_one_id, user_one_name, user_one_avatar,
+        user_two_id, user_two_name, user_two_avatar,
+        last_message, last_message_time)
+        values
+        (#{user.userId}, #{user.name}, #{user.avatar},
+        #{target.userId}, #{target.name}, #{target.avatar},
+        #{lastMessage}, #{lastMessageTime})
+    </insert>
+    <!--根据conversationId更新conversation表的last_message和last_message_time-->
+    <update id="updateLastMessageAndTime">
+        update conversation
+        set last_message = #{lastMessage}, last_message_time = #{lastMessageTime}
+        where conversation_id = #{conversationId}
+    </update>
+    <!--根据用户id获取私信列表，且read_status为0的在前，时间降序-->
+    <select id="getConversationsByUserId" resultType="com.usst.usstcafeteriahub.model.entity.Conversation">
+        select
+        <include refid="Base_Column_List"/>
+        from conversation
+        where user_one_id = #{userId} or user_two_id = #{userId}
+        order by read_status asc, last_message_time desc
+    </select>
+    <!--获取用户间会话-->
+    <select id="selectByUserIdAndTargetId" resultType="com.usst.usstcafeteriahub.model.entity.Conversation">
+        select
+        <include refid="Base_Column_List"/>
+        from conversation
+        where (user_one_id = #{userId} and user_two_id = #{targetId})
+        or (user_one_id = #{targetId} and user_two_id = #{userId})
+    </select>
 </mapper>

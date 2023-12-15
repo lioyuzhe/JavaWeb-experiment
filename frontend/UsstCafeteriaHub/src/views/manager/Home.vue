@@ -25,7 +25,7 @@
 
     <div style="display: flex; margin: 15px 0">
       <el-card style="width: 50%; margin-right: 10px">
-        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">系统公告</div>
+        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">投诉栏</div>
         <el-timeline style="padding: 0">
           <el-timeline-item v-for="item in notices" :key="item.id" :timestamp="item.time" placement="top">
             <el-card>

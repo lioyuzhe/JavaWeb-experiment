@@ -19,4 +19,12 @@
         title,content,create_time,
         deleted
     </sql>
+    <!--按照食堂ID筛选食堂公告-->
+    <select id="getCafeteriaNoticesByCafeteriaID" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaNotice">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM cafeteria_notice
+        WHERE cafeteria_id = #{id}
+        AND deleted = 0
+    </select>
 </mapper>

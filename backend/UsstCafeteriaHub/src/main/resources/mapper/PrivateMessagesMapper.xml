@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.PrivateMessages">
             <id property="messageId" column="message_id" jdbcType="BIGINT"/>
+            <result property="conversationId" column="conversation_id" jdbcType="BIGINT"/>
             <result property="senderId" column="sender_id" jdbcType="BIGINT"/>
             <result property="senderName" column="sender_name" jdbcType="VARCHAR"/>
             <result property="senderAvatar" column="sender_avatar" jdbcType="VARCHAR"/>
@@ -24,5 +25,33 @@
         receiver_avatar,content,timestamp,
         read_status,deleted
     </sql>
+    <!--&lt;!&ndash;根据用户id获取私信列表，且read_status为0的在前，时间降序&ndash;&gt;-->
+    <!--<select id="getPrivateMessagesById" resultType="com.usst.usstcafeteriahub.model.entity.PrivateMessages">-->
+    <!--    select-->
+    <!--    <include refid="Base_Column_List"/>-->
+    <!--    from private_messages-->
+    <!--    where (sender_id = #{userId} or receiver_id = #{userId})-->
+    <!--    and deleted = 0-->
+    <!--    order by read_status asc, timestamp desc-->
+    <!--</select>-->
+
+    <!--根据用户id获取消息列表，时间升序-->
+    <select id="getPrivateMessages" resultType="com.usst.usstcafeteriahub.model.entity.PrivateMessages">
+        select
+        <include refid="Base_Column_List"/>
+        from private_messages
+        where (sender_id = #{userId} or receiver_id = #{userId})
+        and deleted = 0
+        order by timestamp asc
+    </select>
+    <!--根据conversationId获取私信列表，时间升序-->
+    <select id="getPrivateMessagesByConversationId" resultType="com.usst.usstcafeteriahub.model.entity.PrivateMessages">
+        select
+        <include refid="Base_Column_List"/>
+        from private_messages
+        where conversation_id = #{conversationId}
+        and deleted = 0
+        order by timestamp asc
+    </select>
 
 </mapper>
