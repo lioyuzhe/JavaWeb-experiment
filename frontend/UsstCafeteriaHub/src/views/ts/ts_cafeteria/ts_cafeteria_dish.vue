@@ -16,11 +16,15 @@
     </div>
     <!-- 弹窗组件 -->
     <el-dialog :visible.sync="dialogVisible">
-      <h2>{{ selectedDish.name }}</h2>
-      <img :src="selectedDish.imageUrl" alt="Dish Image" class="dialog-image" />
+<!--      <h2>{{ selectedDish.name }}</h2>-->
+      <div>
+        <img :src="selectedDish.imageUrl" alt="Dish Image" class="dialog-image" />
+      </div>
+
 
       <div class="dish-details">
-        <p>菜品详情信息：{{ selectedDish.details }}</p>
+<!--        <p>菜品类别：{{ selectedDish.cuisine }}</p>-->
+<!--        <p>菜品价格：{{ selectedDish.price }} 元</p>-->
         <p class="rating-label">菜品评分：</p>
         <el-rate v-model="rating"></el-rate> <!-- 星级评分组件 -->
         <p class="review-label">菜品评价：</p>
@@ -38,9 +42,6 @@
         </div>
         <el-button type="primary" @click="submitReview">发布</el-button>
         <el-button @click="cancelReview">取消</el-button>
-
-<!--        <el-button @click="test1">{{this.test}}</el-button>-->
-
       </div>
     </el-dialog>
   </div>
@@ -75,17 +76,28 @@ export default {
         // ... 更多菜品
       ],
       dialogVisible: false, // 控制弹窗显示
-      selectedDish: {}, // 存储被选中的菜品信息
+      selectedDish: null,
+      // dishes: [],
       rating: 0, // 评分
       review: '', // 评价内容
-
-      // test:'',
     };
+  },
+  created() {
+    this.fetchDishes();
   },
   methods: {
     viewDetails(dish) {
       this.selectedDish = dish; // 设置被选中的菜品
       this.dialogVisible = true; // 显示弹窗
+    },
+    async fetchDishes() {
+      try {
+        const response = await this.$request.get('/dishes/actions/getDishByCafeteriaID?cafeteriaId=1');
+        this.dishes = response.data;
+        console.log(this.dishes);
+      } catch (error) {
+        console.error('Error fetching dishes:', error);
+      }
     },
     addImage() {
       // 实现添加图片的逻辑
@@ -96,17 +108,6 @@ export default {
     cancelReview() {
       // 实现取消操作的逻辑
     },
-    // test1(){
-    //   this.$request.get('/test/test',).then(res => {
-    //     console.log("请求到达");
-    //     if (res.code === 200) {
-    //       this.$message.success('测试成功');
-    //       this.test=res.data;
-    //     } else {
-    //       this.$message.error(res.message);
-    //     }
-    //   })
-    // },
   }
 };
 </script>

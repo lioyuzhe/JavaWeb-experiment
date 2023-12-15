@@ -1,10 +1,8 @@
 <template>
   <el-container>
     <!-- 头部导航栏 -->
-
   <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
     <el-row type="flex" justify="space-between" align="middle">
-
         <el-col :span="18">
           <el-menu mode="horizontal" class="menu">
             <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
@@ -22,9 +20,7 @@
       </el-row>
     </el-header>
 
-
     <el-main style="margin-top: 60px;">
-
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -44,13 +40,13 @@ export default {
       let url = '';
       switch (destination) {
         case 'home':
-          url = 'http://localhost:7000/ts_home';
+          url = 'http://localhost:7000/ts/ts_home';
           break;
         case 'community':
-          url = 'http://localhost:7000/ts_community';
+          url = 'http://localhost:7000/ts/ts_community';
           break;
         case 'canteen':
-          url = 'http://localhost:7000/ts_cafeteria_introduction';
+          url = 'http://localhost:7000/ts/ts_cafeteria_introduction';
           break;
         default:
           // 默认地址或错误处理
@@ -63,12 +59,6 @@ export default {
 </script>
 
 <style scoped>
-.el-container {
-  /* 确保容器填满整个视口的宽度 */
-  width: 100%;
-  margin: 0;
-}
-
 .header {
   /* 设定头部的样式和对齐 */
   background-color: #fff; /* 根据需要设置背景颜色 */

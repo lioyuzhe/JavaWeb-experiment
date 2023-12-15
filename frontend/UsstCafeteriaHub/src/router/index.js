@@ -36,7 +36,7 @@ const routes = [
   { path: '/test', name: 'test', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
 // 师生 teacher and student  有冲突我把你们的都保留了，加了注释 ，你们自己选择要不要修改  -- 李英杰  
   {
-    path: '/',
+    path: '/ts',
     name: 'ts',
     component: () => import('../views/Ts.vue'),
     children: [

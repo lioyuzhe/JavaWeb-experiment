@@ -12,12 +12,16 @@ te<template>
       <div class="top-container" style="position: fixed; top: 70px; margin-left: 120px;">
         <!-- 选择食堂菜单 -->
         <el-menu class="cafeteria-select" mode="horizontal" style="left: 10px">
-          <el-menu-item index="1" style="width: 100px;">一食堂</el-menu-item>
-          <el-menu-item index="2" style="width: 100px;">二食堂</el-menu-item>
-          <el-menu-item index="3" style="width: 100px;">三食堂</el-menu-item>
-          <el-menu-item index="4" style="width: 100px;">四食堂</el-menu-item>
-          <el-menu-item index="5" style="width: 100px;">五食堂</el-menu-item>
-          <el-menu-item index="6" style="width: 100px;">六食堂</el-menu-item>
+
+          <!-- 使用 v-for 遍历食堂数据 -->
+          <el-menu-item
+              v-for="cafeteria in cafeterias"
+              :key="cafeteria.cafeteria_id"
+              :index="cafeteria.cafeteria_id"
+              style="width: 100px;"
+          >
+            {{ cafeteria.name }} <!-- 显示食堂名称 -->
+          </el-menu-item>
         </el-menu>
         <!-- 食堂搜索框 -->
         <div class="right-container">
@@ -25,15 +29,6 @@ te<template>
           <el-input class="cafeteria-search" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
           <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索食堂</el-button>
         </div>
-
-        <!--        &lt;!&ndash; 菜品搜索框 &ndash;&gt;-->
-<!--        <el-input-->
-<!--            class="dish-search"-->
-<!--            placeholder="请输入菜品名称"-->
-<!--            prefix-icon="el-icon-search">-->
-<!--        </el-input>-->
-<!--        <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>-->
-
       </div>
       <!-- 内容区域 -->
       <div class="content-area" style="margin-top: 50px; margin-left: 150px;">
@@ -51,14 +46,17 @@ export default {
     return {
       isFixed: false,
       offsetTop: 0, // 父组件底部到页面顶部的距离
+      cafeterias: [], // 存储从后端接收的食堂数据
     };
   },
   components: {
     TsCafeteriaContent
   },
   mounted() {
-    this.offsetTop = this.$el.querySelector('.parent-component').offsetHeight;
-    window.addEventListener('scroll', this.handleScroll);
+    // 在组件挂载后，从后端请求食堂数据
+    this.fetchCafeterias();
+    // this.offsetTop = this.$el.querySelector('.parent-component').offsetHeight;
+    // window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
     handleScroll() {
@@ -75,7 +73,18 @@ export default {
         // 滚动到标题栏位置
         sectionElement.scrollIntoView({ behavior: 'smooth' });
       }
-    }
+    },
+    fetchCafeterias() {
+      // 发起后端请求，获取食堂数据
+      this.$request.get('/cafeterias/actions/getCafeteria') // 替换为实际的后端接口地址
+          .then((response) => {
+            // 将从后端接收的数据存储到 cafeterias 中
+            this.cafeterias = response.data;
+          })
+          .catch((error) => {
+            console.error('Failed to fetch cafeterias', error);
+          });
+    },
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
