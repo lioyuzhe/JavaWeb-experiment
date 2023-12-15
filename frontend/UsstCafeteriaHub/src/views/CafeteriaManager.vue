@@ -14,18 +14,20 @@
               <i class="el-icon-s-home"></i>
               <span slot="title">系统首页</span>
             </el-menu-item>
-            <el-submenu index="info" >
+            <el-submenu index="info">
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>信息管理</span>
               </template>
-              <el-menu-item index="/user" v-if="user.role === '管理员'">用户信息</el-menu-item>
-              <el-menu-item index="/news">新闻信息</el-menu-item>
-              <el-menu-item index="/notice" v-if="user.role === '管理员'">系统公告</el-menu-item>
-              <el-menu-item index="/logs" v-if="user.role === '管理员'">系统日志</el-menu-item>
-              <el-menu-item index="/charts" v-if="user.role === '管理员'">数据统计</el-menu-item>
-              <el-menu-item index="/orders">订单管理</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/home" >食堂管理员首页</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/cafeteria_info">食堂管理</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/cafeteria_dish" >菜品管理</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/cafeteria_remark" >食堂评价管理</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/announcement" >活动公告</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/cafeteria_vote" >投票信息管理</el-menu-item>
+              <el-menu-item index="/cafeteria_manager/cafeteria_complaint" >投诉管理</el-menu-item>
             </el-submenu>
+
           </el-menu>
   
         </el-aside>

@@ -35,6 +35,15 @@ public class RegisterController {
     @ApiOperation(value = "注册用户")
     @PostMapping("/register")
     public BaseResponse register(@RequestBody RegisterDTO registerDTO){
+        if (registerDTO == null) {
+            return Result.error("参数为空");
+        }
+        if (registerDTO.getAccount() == null || registerDTO.getPassword() == null || registerDTO.getRole() == null) {
+            return Result.error("参数不合法");
+        }
+//        if (registerDTO.getConfirmPass()!=null && !registerDTO.getConfirmPass().equals(registerDTO.getPassword())) {
+//            return Result.error("两次密码不一致");
+//        }  // 前端已经做了判断
         Integer role = registerDTO.getRole();
         if(role==0){
             return adminService.registerAdmin(registerDTO);

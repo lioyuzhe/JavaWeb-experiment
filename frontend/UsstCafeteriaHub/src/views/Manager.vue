@@ -5,7 +5,7 @@
       <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #001529">
         <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
           <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
-          <span class="logo-title" v-show="!isCollapse">honey2024</span>
+          <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
         </div>
 
         <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#001529" text-color="rgba(255, 255, 255, 0.65)"
@@ -14,18 +14,20 @@
             <i class="el-icon-s-home"></i>
             <span slot="title">系统首页</span>
           </el-menu-item>
-          <el-submenu index="info" >
+          <el-submenu index="info">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>信息管理</span>
             </template>
-            <el-menu-item index="/user" v-if="user.role === '管理员'">用户信息</el-menu-item>
-            <el-menu-item index="/news">新闻信息</el-menu-item>
-            <el-menu-item index="/notice" v-if="user.role === '管理员'">系统公告</el-menu-item>
-            <el-menu-item index="/logs" v-if="user.role === '管理员'">系统日志</el-menu-item>
-            <el-menu-item index="/charts" v-if="user.role === '管理员'">数据统计</el-menu-item>
-            <el-menu-item index="/orders">订单管理</el-menu-item>
+            <el-menu-item index="/manager/home" >管理员首页</el-menu-item>
+            <el-menu-item index="/manager/user" >用户管理</el-menu-item>
+            <el-menu-item index="/manager/cafeteria_manager" >食堂管理员管理</el-menu-item>
+            <el-menu-item index="/manager/cafeteria" >食堂管理</el-menu-item>
+            <el-menu-item index="/manager/remark" >评价信息管理</el-menu-item>
+            <el-menu-item index="/manager/community" >社区信息管理</el-menu-item>
+            <el-menu-item index="/manager/person" >个人信息</el-menu-item>
           </el-submenu>
+
         </el-menu>
 
       </el-aside>
@@ -36,7 +38,7 @@
 
           <i :class="collapseIcon" style="font-size: 26px" @click="handleCollapse"></i>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left: 20px">
-            <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/manager' }">主页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: $route.path }">{{ $route.meta.name }}</el-breadcrumb-item>
           </el-breadcrumb>
 
@@ -48,8 +50,8 @@
                 <span>{{ user.name }}</span>
               </div>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="$router.push('/person')">个人信息</el-dropdown-item>
-                <el-dropdown-item @click.native="$router.push('/password')">修改密码</el-dropdown-item>
+                <el-dropdown-item @click.native="$router.push('/manager/person')">个人信息</el-dropdown-item>
+                <el-dropdown-item @click.native="$router.push('/manager/password')">修改密码</el-dropdown-item>
                 <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -85,7 +87,7 @@ export default {
   },
   mounted() {   // 页面加载完成之后触发
     if (!this.user.id) {   // 当前的浏览器没有用户信息
-      this.$router.push('/login')
+      // this.$router.push('/login')
     }
   },
   methods: {
@@ -94,7 +96,7 @@ export default {
     },
     logout() {
       localStorage.removeItem('honey-user')  // 清除当前的token和用户数据
-      this.$router.push('/login')
+      // this.$router.push('/login')
     },
     handleFull() {
       document.documentElement.requestFullscreen()
