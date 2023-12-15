@@ -47,6 +47,8 @@ public class CafeteriaAdminController {
     private CommunityUserService communityUserService;
     @Resource
     private CommunityMessageService communityMessageService;
+    @Resource
+    private CafeteriaNoticeService cafeteriaNoticeService;
 
 
     @ApiOperation(value = "测试接口")
@@ -243,7 +245,14 @@ public class CafeteriaAdminController {
     }
 
 
-    // 活动公告
+//    // 活动公告
+//    @ApiOperation("获取所有食堂活动公告")
+//    @GetMapping("/getAllCafeteriaNotice")
+//    public BaseResponse getAllCafeteriaNotice(){
+//        return Result.success();
+//    }
+
+
 
 
 

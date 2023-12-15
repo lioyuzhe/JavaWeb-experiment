@@ -13,12 +13,14 @@
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="likeCount" column="like_count" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         message_id,community_id,community_name,
         user_id,user_name,title,
-        content,like_count,deleted
+        content,like_count,create_time,
+        deleted
     </sql>
 </mapper>
