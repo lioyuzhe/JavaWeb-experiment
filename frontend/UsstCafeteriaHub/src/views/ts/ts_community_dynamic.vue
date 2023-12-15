@@ -4,7 +4,7 @@
 
 <template>
 <div>
-  这是动态
+  这是用户动态
 </div>
 </template>
 
