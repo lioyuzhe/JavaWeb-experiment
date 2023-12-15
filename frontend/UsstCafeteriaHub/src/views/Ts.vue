@@ -35,6 +35,7 @@ export default {
   name: 'Ts',
   data() {
     return {
+      user: null, // 用来调试的用户信息
       hasUnread: true, // 是否有未读信息
       avatarUrl: '/ts_images/avatar.png' // 您的猫猫头像URL
     };
@@ -44,13 +45,13 @@ export default {
       let url = '';
       switch (destination) {
         case 'home':
-          url = 'http://localhost:7000/ts_home';
+          url = 'http://localhost:7000/ts/ts_home';
           break;
         case 'community':
-          url = 'http://localhost:7000/ts_community';
+          url = 'http://localhost:7000/ts/ts_community';
           break;
         case 'canteen':
-          url = 'http://localhost:7000/ts_cafeteria_introduction';
+          url = 'http://localhost:7000/ts/ts_cafeteria_introduction';
           break;
         default:
           // 默认地址或错误处理
@@ -58,6 +59,22 @@ export default {
       }
       window.location.href = url;
     }
+  },
+  mounted() {
+    this.user = {
+      user_id: 1,
+      account: 'user1',
+      name: 'klein',
+      password: '12345678',
+      avatar: 'avatar1.jpg',
+      email: 'klein@example.com',
+      phone: '13900000001',
+      status: 0,
+      activity_level: 10,
+      role: 0,
+      deleted: 0
+    };
+    localStorage.setItem("user", JSON.stringify(this.user));
   }
 };
 </script>
