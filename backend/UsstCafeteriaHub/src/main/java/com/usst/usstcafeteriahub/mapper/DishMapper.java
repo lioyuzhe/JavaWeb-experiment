@@ -39,7 +39,7 @@ public interface DishMapper extends BaseMapper<Dish> {
      * @param cafeteriaId
      * @return
      */
-    List<Dish> getDishByCafeteriaID(Integer cafeteriaId);
+    List<Dish> getDishByCafeteriaID(Long cafeteriaId);
 }
 
 

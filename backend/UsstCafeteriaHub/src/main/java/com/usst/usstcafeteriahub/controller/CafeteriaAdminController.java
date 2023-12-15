@@ -22,7 +22,7 @@ import static com.usst.usstcafeteriahub.constant.WebConstants.CAFETERIA_ADMIN_LO
  */
 @Slf4j
 @RestController
-@RequestMapping("/CafeteriaAdmins/actions")
+@RequestMapping("/cafeteriaAdmins/actions")
 public class CafeteriaAdminController {
 
     @Resource

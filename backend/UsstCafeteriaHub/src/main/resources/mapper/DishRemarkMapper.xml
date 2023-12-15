@@ -20,4 +20,21 @@
         dish_id,dish_name,content,
         score,deleted
     </sql>
+    <!--根据菜品ID获取菜品评价-->
+    <select id="getDishRemarkByDishId" resultType="com.usst.usstcafeteriahub.model.entity.DishRemark">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dish_remark
+        WHERE dish_id = #{dishId}
+        AND deleted = 0
+    </select>
+    <!--根据用户ID和菜品ID获取菜品评价-->
+    <select id="getDishRemarkByUserIdAndDishId" resultType="com.usst.usstcafeteriahub.model.entity.DishRemark">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dish_remark
+        WHERE user_id = #{userId}
+        AND dish_id = #{dishId}
+        AND deleted = 0
+    </select>
 </mapper>

@@ -33,7 +33,8 @@ public class CafeteriaRemarkController {
 
     @ApiOperation("按照食堂ID筛选食堂评价")
     @GetMapping("/getCafeteriaRemarksByCafeteriaID")
-    public BaseResponse getCafeteriaRemarksByCafeteriaID(@RequestParam Integer id){
+
+    public BaseResponse getCafeteriaRemarksByCafeteriaID(@RequestParam Long id){
         if(id == null){
             return Result.error("参数为空");
         }
@@ -43,6 +44,17 @@ public class CafeteriaRemarkController {
         return Result.success(list);
     }
 
+    @ApiOperation("按照用户ID筛选食堂评价")
+    @GetMapping("/getCafeteriaRemarksByUserID")
+    public BaseResponse getCafeteriaRemarksByUserID(@RequestParam Long id){
+        if(id == null){
+            return Result.error("参数为空");
+        }
+        log.info("传入用户id参数: {}", id);
+        List<CafeteriaRemark> list = cafeteriaRemarkService.getCafeteriaRemarksByUserID(id);
+        log.info("获取食堂评价列表: {}", list);
+        return Result.success(list);
+    }
 
     @ApiOperation("添加食堂评价")
     @PostMapping("/addCafeteriaRemark")

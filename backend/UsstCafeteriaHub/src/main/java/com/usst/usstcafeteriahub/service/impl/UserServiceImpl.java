@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+
 
 import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
 import static com.usst.usstcafeteriahub.constant.WebConstants.USER_LOGIN_STATE;
@@ -73,7 +75,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return 2;
     }
 
-
+    /**
+     * 根据用户名进行模糊查询
+     * @param name
+     * @return
+     */
+    @Override
+    public List<User> getUserByName(String name) {
+        return userMapper.getUserByName(name);
+    }
 
 
     @Override

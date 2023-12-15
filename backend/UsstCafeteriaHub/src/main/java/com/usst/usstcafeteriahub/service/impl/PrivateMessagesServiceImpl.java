@@ -24,11 +24,17 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
     @Resource
     private ConversationMapper conversationMapper;
 
+    /**
+     * 创建新私信 同时更新conversation表的last_message和last_message_time
+     * @param privateMessages
+     * @return
+     */
     @Override
     public boolean addPrivateMessages(PrivateMessages privateMessages) {
         privateMessages.setTimestamp(LocalDateTime.now());//设置时间戳
         privateMessages.setReadStatus(0);//设置未读
-
+        //更新conversation表的last_message和last_message_time
+        conversationMapper.updateLastMessageAndTime(privateMessages.getConversationId(), privateMessages.getContent(), privateMessages.getTimestamp());
         int result = privateMessagesMapper.insert(privateMessages);
         if (result == 1) {
             return true;
@@ -52,7 +58,7 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
     //  * @return
     //  */
     // @Override
-    // public PrivateMessages getPrivateMessagesById(Integer id) {
+    // public PrivateMessages getPrivateMessagesById(Long id) {
     //     PrivateMessages privateMessages = privateMessagesMapper.getPrivateMessagesById(id);
     //     return privateMessages;
     // }
@@ -63,7 +69,7 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
      * @return
      */
     @Override
-    public List<PrivateMessages> getPrivateMessages(Integer id) {
+    public List<PrivateMessages> getPrivateMessages(Long id) {
         return privateMessagesMapper.getPrivateMessages(id);
     }
 
@@ -73,7 +79,7 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
      * @return
      */
     @Override
-    public List<PrivateMessages> getPrivateMessagesByConversationId(Integer conversationId) {
+    public List<PrivateMessages> getPrivateMessagesByConversationId(Long conversationId) {
         return privateMessagesMapper.getPrivateMessagesByConversationId(conversationId);
     }
 

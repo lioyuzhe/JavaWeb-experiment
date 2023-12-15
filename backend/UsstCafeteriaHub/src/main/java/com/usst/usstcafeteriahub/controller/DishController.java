@@ -40,7 +40,7 @@ public class DishController {
 
     @ApiOperation("根据菜品所属食堂获取菜品列表")
     @GetMapping("/getDishByCafeteriaID")
-    public BaseResponse getDishByCafeteriaID(@RequestParam("cafeteriaId") Integer cafeteriaId) {
+    public BaseResponse getDishByCafeteriaID(@RequestParam("cafeteriaId") Long cafeteriaId) {
         List<Dish> list = dishService.getDishByCafeteriaID(cafeteriaId);
         log.info("根据菜品所属食堂获取菜品列表: {}", list);
         return Result.success(list);

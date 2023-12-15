@@ -31,5 +31,5 @@ public interface DishService extends IService<Dish> {
      * @param cafeteriaId
      * @return
      */
-    List<Dish> getDishByCafeteriaID(Integer cafeteriaId);
+    List<Dish> getDishByCafeteriaID(Long cafeteriaId);
 }

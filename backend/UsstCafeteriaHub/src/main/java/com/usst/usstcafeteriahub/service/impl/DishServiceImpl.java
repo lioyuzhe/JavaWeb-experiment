@@ -49,7 +49,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
      * @return
      */
     @Override
-    public List<Dish> getDishByCafeteriaID(Integer cafeteriaId) {
+    public List<Dish> getDishByCafeteriaID(Long cafeteriaId) {
         return dishMapper.getDishByCafeteriaID(cafeteriaId);
     }
 }
