@@ -48,6 +48,15 @@ public class CommunityMessageServiceImpl extends ServiceImpl<CommunityMessageMap
     public List<CommunityMessage> getCommunityMessageByLike() {
         return communityMessageMapper.getCommunityMessageByLike();
     }
+
+    /**
+     * 根据时间降序返回社区信息
+     * @return
+     */
+    @Override
+    public List<CommunityMessage> getCommunityMessageByTime() {
+        return communityMessageMapper.getCommunityMessageByTime();
+    }
 }
 
 

@@ -44,5 +44,12 @@
         from community_message
         order by like_count desc
     </select>
+    <!--根据时间降序返回社区信息-->
+    <select id="getCommunityMessageByTime" resultType="com.usst.usstcafeteriahub.model.entity.CommunityMessage">
+        select
+        <include refid="Base_Column_List"/>
+        from community_message
+        order by create_time desc
+    </select>
 
 </mapper>

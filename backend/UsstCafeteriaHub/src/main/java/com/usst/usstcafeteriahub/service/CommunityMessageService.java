@@ -31,4 +31,10 @@ public interface CommunityMessageService extends IService<CommunityMessage> {
      * @return
      */
     List<CommunityMessage> getCommunityMessageByLike();
+
+    /**
+     * 根据时间降序返回社区信息
+     * @return
+     */
+    List<CommunityMessage> getCommunityMessageByTime();
 }

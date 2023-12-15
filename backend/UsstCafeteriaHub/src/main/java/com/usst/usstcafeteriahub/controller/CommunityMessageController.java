@@ -9,6 +9,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -63,6 +64,17 @@ public class CommunityMessageController {
         return Result.success(list);
     }
 
+    @ApiOperation("根据时间由近到远获取文章列表")
+    @GetMapping("/getCommunityMessageByTime")
+    public BaseResponse getCommunityMessageByTime() {
+        List<CommunityMessage> list = communityMessageService.getCommunityMessageByTime();
+        if (list == null) {
+            return Result.error("查询失败");
+        }
+        log.info("根据时间由近到远获取文章列表: {}", list);
+        return Result.success(list);
+    }
+
     @ApiOperation("添加文章")
     @PostMapping("/addCommunityMessage")
     public BaseResponse addCommunityMessage(@RequestBody CommunityMessage communityMessage) {
@@ -70,7 +82,7 @@ public class CommunityMessageController {
             return Result.error("参数为空");
         }
         log.info("添加文章: {}", communityMessage);
-        // 这里记得localDateTime要自己设置
+        communityMessage.setCreateTime(LocalDateTime.now());
         boolean save = communityMessageService.save(communityMessage);
         if(!save){
             return Result.error("添加失败");
