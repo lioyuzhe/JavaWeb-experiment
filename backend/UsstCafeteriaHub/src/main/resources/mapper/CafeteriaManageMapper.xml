@@ -15,10 +15,26 @@
         manage_id,admin_id,cafeteria_id,
         deleted
     </sql>
-    <select id="getCafeteriaAdmins" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin">
-       select
-         <include refid="Base_Column_List"/>
-         from cafeteria_manage
-            where cafeteria_id = #{cafeteriaId}
+    <!--&lt;!&ndash;映射有问题&ndash;&gt;-->
+    <!--<select id="getCafeteriaAdmins" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaAdmin">-->
+    <!--   select-->
+    <!--     <include refid="Base_Column_List"/>-->
+    <!--     from cafeteria_manage-->
+    <!--        where cafeteria_id = #{cafeteriaId}-->
+    <!--</select>-->
+
+    <!--按照食堂ID筛选食堂管理-->
+    <select id="getCafeteriaManagesByCafeteriaID" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaManage">
+        select
+        <include refid="Base_Column_List"/>
+        from cafeteria_manage
+        where cafeteria_id = #{id}
+    </select>
+    <!--按照食堂管理员ID筛选食堂管理-->
+    <select id="getCafeteriaManagesByAdminID" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaManage">
+        select
+        <include refid="Base_Column_List"/>
+        from cafeteria_manage
+        where admin_id = #{id}
     </select>
 </mapper>

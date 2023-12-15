@@ -18,21 +18,21 @@ public interface PrivateMessagesMapper extends BaseMapper<PrivateMessages> {
     //  * @param id
     //  * @return
     //  */
-    // PrivateMessages getPrivateMessagesById(Integer id);
+    // PrivateMessages getPrivateMessagesById(Long id);
 
     /**
      * 根据用户id获取消息列表，时间升序
      * @param id
      * @return
      */
-    List<PrivateMessages> getPrivateMessages(Integer id);
+    List<PrivateMessages> getPrivateMessages(Long id);
 
     /**
      * 根据conversationId获取私信列表，时间升序
      * @param conversationId
      * @return
      */
-    List<PrivateMessages> getPrivateMessagesByConversationId(Integer conversationId);
+    List<PrivateMessages> getPrivateMessagesByConversationId(Long conversationId);
 }
 
 

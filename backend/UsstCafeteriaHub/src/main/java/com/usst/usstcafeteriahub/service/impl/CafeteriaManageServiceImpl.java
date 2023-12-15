@@ -28,12 +28,32 @@ public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMappe
 
     @Override
     public BaseResponse getCafeteriaAdmins(Integer id) {
-       List<CafeteriaManage> result =  cafeteriaManageMapper.getCafeteriaAdmins(id);
-       List<CafeteriaAdmin> cafeteriaAdmins = cafeteriaAdminService.list();
-       for (CafeteriaManage cafeteriaManage : result) {
-
-       }
+       // List<CafeteriaManage> result =  cafeteriaManageMapper.getCafeteriaAdmins(id);
+       // List<CafeteriaAdmin> cafeteriaAdmins = cafeteriaAdminService.list();
+       // for (CafeteriaManage cafeteriaManage : result) {
+       //
+       // }
        return null;
+    }
+
+    /**
+     * 按照食堂ID筛选食堂管理
+     * @param id
+     * @return
+     */
+    @Override
+    public List<CafeteriaManage> getCafeteriaManagesByCafeteriaID(Long id) {
+        return cafeteriaManageMapper.getCafeteriaManagesByCafeteriaID(id);
+    }
+
+    /**
+     * 按照食堂管理员ID筛选食堂管理
+     * @param id
+     * @return
+     */
+    @Override
+    public List<CafeteriaManage> getCafeteriaManagesByAdminID(Long id) {
+        return cafeteriaManageMapper.getCafeteriaManagesByAdminID(id);
     }
 }
 

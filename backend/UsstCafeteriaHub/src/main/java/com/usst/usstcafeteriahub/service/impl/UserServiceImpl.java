@@ -16,6 +16,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 
 import static com.usst.usstcafeteriahub.constant.SystemConstants.*;
 
@@ -68,7 +69,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return 2;
     }
 
-
+    /**
+     * 根据用户名进行模糊查询
+     * @param name
+     * @return
+     */
+    @Override
+    public List<User> getUserByName(String name) {
+        return userMapper.getUserByName(name);
+    }
 
 
     @Override

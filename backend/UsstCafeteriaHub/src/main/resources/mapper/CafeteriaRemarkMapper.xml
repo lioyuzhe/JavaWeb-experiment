@@ -24,4 +24,20 @@
         score,reply,status,
         create_time,deleted
     </sql>
+    <!--按照传入的食堂ID筛选食堂评价-->
+    <select id="getCafeteriaRemarksByCafeteriaID" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaRemark">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM cafeteria_remark
+        WHERE cafeteria_id = #{cafeteriaId}
+        AND deleted = 0
+    </select>
+    <!--按照传入的用户ID筛选食堂评价-->
+    <select id="getCafeteriaRemarksByUserID" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaRemark">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM cafeteria_remark
+        WHERE user_id = #{id}
+        AND deleted = 0
+    </select>
 </mapper>

@@ -24,7 +24,7 @@ public class PrivateMessageController {
 
     @ApiOperation("根据conversationId获取私信列表（聊天记录）时间升序")
     @GetMapping("/getPrivateMessagesByConversationId")
-    public BaseResponse getPrivateMessagesByConversationId(@RequestParam Integer conversationId) {
+    public BaseResponse getPrivateMessagesByConversationId(@RequestParam Long conversationId) {
         if (conversationId == null){
             return Result.error("参数为空");
         }
@@ -35,7 +35,7 @@ public class PrivateMessageController {
 
     @ApiOperation("(废置)根据用户id获取私信列表（聊天记录）时间升序")
     @GetMapping("/getPrivateMessages")
-    public BaseResponse getPrivateMessages(@RequestParam Integer id) {
+    public BaseResponse getPrivateMessages(@RequestParam Long id) {
         if (id == null){
             return Result.error("参数为空");
         }
@@ -46,7 +46,7 @@ public class PrivateMessageController {
 
     // @ApiOperation("（废置）根据用户id获取私信，未读优先，时间降序")
     // @GetMapping("/getPrivateMessagesById")
-    // public BaseResponse getPrivateMessagesById(@RequestParam Integer id) {
+    // public BaseResponse getPrivateMessagesById(@RequestParam Long id) {
     //     if (id == null) {
     //         return Result.error("参数为空");
     //     }
@@ -82,5 +82,7 @@ public class PrivateMessageController {
         }
         return Result.success("设置成功");
     }
+
+
 
 }
