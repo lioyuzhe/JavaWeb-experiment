@@ -28,19 +28,19 @@ public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMappe
     @Resource
     private CafeteriaAdminService cafeteriaAdminService;
 
-    @Override
-    public BaseResponse getCafeteriaAdmins(Integer id) {
-       List<CafeteriaManage> result =  cafeteriaManageMapper.getCafeteriaAdmins(id);
-       List<CafeteriaAdmin> cafeteriaAdmins = new ArrayList<>();
-       for (CafeteriaManage cafeteriaManage : result) {
-            CafeteriaAdmin cafeteriaAdmin = cafeteriaAdminService.getById(cafeteriaManage.getAdminId());
-            if (cafeteriaAdmin != null) {
-               cafeteriaAdmins.add(cafeteriaAdmin);
-            }
-       }
-       return Result.success(cafeteriaAdmins);
-
-    }
+//    @Override
+//    public BaseResponse getCafeteriaAdmins(Long id) {
+//       List<CafeteriaManage> result =  cafeteriaManageMapper.getCafeteriaAdmins(id);
+//       List<CafeteriaAdmin> cafeteriaAdmins = new ArrayList<>();
+//       for (CafeteriaManage cafeteriaManage : result) {
+//            CafeteriaAdmin cafeteriaAdmin = cafeteriaAdminService.getById(cafeteriaManage.getAdminId());
+//            if (cafeteriaAdmin != null) {
+//               cafeteriaAdmins.add(cafeteriaAdmin);
+//            }
+//       }
+//       return Result.success(cafeteriaAdmins);
+//
+//    }
 
     /**
      * 按照食堂ID筛选食堂管理
