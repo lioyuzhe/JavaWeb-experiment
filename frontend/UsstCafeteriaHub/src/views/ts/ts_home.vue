@@ -4,7 +4,7 @@
     <div class="left-content">
       <!-- 动态轮播部分 -->
       <div class="dynamic-carousel">
-        <el-carousel interval=4000 type="card" height="200px">
+        <el-carousel :interval=4000 type="card" height="200px">
           <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id" @click="viewDetails(promo)">
             <el-card>
               <img :src="promo.image_url" alt="促销图片">
@@ -19,7 +19,7 @@
       <!-- 功能入口部分 -->
       <div class="feature-entrances">
         <el-row :gutter="20">
-          <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id">
+          <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id" @click="viewDetails(entry)">
             <el-card>
               <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
               <div>
@@ -74,6 +74,7 @@
   </div>
 </template>
 
+
 <script>
 export default {
   name: 'ts_home',
@@ -121,8 +122,7 @@ export default {
           title: '菜品排名',
           description: '最新高评价菜品排名',
           imageUrl: 'path/to/dish-rank-image.jpg'
-        },
-        // 您可以继续添加更多的入口...
+        }
       ],
 
       avatarUrl: '/ts_images/avatar.png',
@@ -192,6 +192,7 @@ export default {
       this.activeTab = tab;
     },
     viewDetails(item) {
+      console.log('View details:', item); // 调试信息
       this.selectedItem = item;
       this.dialogVisible = true;
     },
@@ -298,4 +299,6 @@ export default {
     height: auto; /* 移动视图高度自适应 */
   }
 }
+
+
 </style>
