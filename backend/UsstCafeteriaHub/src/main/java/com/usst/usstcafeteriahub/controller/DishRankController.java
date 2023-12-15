@@ -24,13 +24,14 @@ public class DishRankController {
     @Resource
     private DishRankService dishRankService;
 
-    @ApiOperation("获取菜品排行榜,按排名rank排序")
+    @ApiOperation("获取菜品排行榜,Score由高到低排列")
     @GetMapping("/getDishRank")
     public BaseResponse getDishRank() {
         List<DishRank> list = dishRankService.getDishRank();
         log.info("获取菜品排行榜: {}", list);
         return Result.success(list);
     }
+
 
 
 }

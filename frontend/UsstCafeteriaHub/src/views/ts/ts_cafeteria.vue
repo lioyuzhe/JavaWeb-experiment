@@ -1,48 +1,50 @@
-<template>
+te<template>
   <div class="main-container">
     <!-- 侧边栏 -->
-    <el-menu class="sidebar" style="width: 20%;" default-active="1">
-      <el-menu-item index="1">食堂介绍</el-menu-item>
-      <el-menu-item index="2">食堂菜品</el-menu-item>
-      <el-menu-item index="3">投票调查</el-menu-item>
-      <el-menu-item index="4">投诉食堂</el-menu-item>
+    <el-menu class="sidebar" style="position: fixed; top: 140px; width:120px; height: calc(100% - 60px); z-index: 1000;">
+      <el-menu-item index="introduction" @click="scrollToSection('introduction')">食堂介绍</el-menu-item>
+      <el-menu-item index="dish" @click="scrollToSection('dish')">食堂菜品</el-menu-item>
+      <el-menu-item index="vote" @click="scrollToSection('vote')">投票调查</el-menu-item>
+      <el-menu-item index="complaint" @click="scrollToSection('complaint')">投诉食堂</el-menu-item>
     </el-menu>
-
-    <!-- 右侧内容区域 -->
-    <div class="content" style="width: 80%;">
-      <!-- 顶部搜索和食堂选择区域 -->
-      <div class="top-container">
+    <div class="content" style="width: 100%;">
+      <!-- 顶部栏 -->
+      <div class="top-container" style="position: fixed; top: 70px; margin-left: 120px;">
+        <!-- 选择食堂菜单 -->
+        <el-menu class="cafeteria-select" mode="horizontal" style="left: 10px">
+          <el-menu-item index="1" style="width: 100px;">一食堂</el-menu-item>
+          <el-menu-item index="2" style="width: 100px;">二食堂</el-menu-item>
+          <el-menu-item index="3" style="width: 100px;">三食堂</el-menu-item>
+          <el-menu-item index="4" style="width: 100px;">四食堂</el-menu-item>
+          <el-menu-item index="5" style="width: 100px;">五食堂</el-menu-item>
+          <el-menu-item index="6" style="width: 100px;">六食堂</el-menu-item>
+        </el-menu>
         <!-- 食堂搜索框 -->
-        <el-input
-            class="cafeteria-search"
-            placeholder="搜索食堂"
-            prefix-icon="el-icon-search">
-        </el-input>
-        <!-- 食堂选择列表 -->
-        <div class="cafeteria-select">
-          <el-button style="width: 100px;">一食堂</el-button>
-          <el-button style="width: 100px;">二食堂</el-button>
-          <el-button style="width: 100px;">三食堂</el-button>
-          <!-- 更多按钮 -->
-          <el-button class="more-cafeterias" icon="el-icon-arrow-right"></el-button>
+        <div class="right-container">
+          <!-- 食堂搜索框 -->
+          <el-input class="cafeteria-search" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
+          <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索食堂</el-button>
         </div>
-        <!-- 菜品搜索框 -->
-        <el-input
-            class="dish-search"
-            placeholder="搜索菜品"
-            prefix-icon="el-icon-search">
-        </el-input>
+
+        <!--        &lt;!&ndash; 菜品搜索框 &ndash;&gt;-->
+<!--        <el-input-->
+<!--            class="dish-search"-->
+<!--            placeholder="请输入菜品名称"-->
+<!--            prefix-icon="el-icon-search">-->
+<!--        </el-input>-->
+<!--        <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>-->
+
       </div>
       <!-- 内容区域 -->
-      <div class="content-area">
-        <!-- 内容区域的子组件或元素 -->
-        <router-view></router-view>
+      <div class="content-area" style="margin-top: 50px; margin-left: 150px;">
+        <ts-cafeteria-content ref="cafeteriaContent"></ts-cafeteria-content>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import TsCafeteriaContent from './ts_cafeteria_content.vue';
 export default {
   name: 'TsCafeteria',
   data() {
@@ -50,6 +52,9 @@ export default {
       isFixed: false,
       offsetTop: 0, // 父组件底部到页面顶部的距离
     };
+  },
+  components: {
+    TsCafeteriaContent
   },
   mounted() {
     this.offsetTop = this.$el.querySelector('.parent-component').offsetHeight;
@@ -63,6 +68,14 @@ export default {
         this.isFixed = false;
       }
     },
+    scrollToSection(sectionId) {
+      // 获取选中板块的标题栏位置
+      const sectionElement = document.getElementById(sectionId);
+      if (sectionElement) {
+        // 滚动到标题栏位置
+        sectionElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -71,7 +84,6 @@ export default {
 </script>
 
 <style scoped>
-
 .main-container {
   display: flex;
 }
@@ -96,8 +108,19 @@ export default {
   margin-right: 5px;
 }
 
+.right-container {
+  display: flex;        /* 使用Flexbox */
+  justify-content: flex-end; /* 组件对齐到右边 */
+  align-items: center;  /* 垂直居中对齐 */
+}
+
+.cafeteria-search {
+  width: 200px; /* 设置搜索框的宽度 */
+  margin-right: 10px; /* 组件之间的间距 */
+}
+
 .dish-search {
-  margin-left: auto; /* 自动占据所有剩余空间，将元素推到最右边 */
+  //margin-left: auto; /* 自动占据所有剩余空间，将元素推到最右边 */
 }
 
 .content-area {

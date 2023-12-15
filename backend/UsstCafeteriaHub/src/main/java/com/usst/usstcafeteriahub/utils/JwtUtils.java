@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class JwtUtils {
-    private static final String signKey = "spm3";
+    private static final String signKey = "usstcafeteriahub";
     private static final long expire = 43200000L; // 12 hours
 
     /**

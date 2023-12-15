@@ -6,7 +6,7 @@
       </div>
       <div style="flex: 1; display: flex; align-items: center; justify-content: center">
         <el-form :model="user" style="width: 80%" :rules="rules" ref="loginRef">
-          <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">欢迎登录后台管理系统</div>
+          <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">欢迎登录 上海理工大学食堂点评交流社区</div>
           <el-form-item prop="username">
             <el-input prefix-icon="el-icon-user" size="medium" placeholder="请输入账号" v-model="user.username"></el-input>
           </el-form-item>
@@ -21,6 +21,12 @@
               </div>
             </div>
           </el-form-item>
+          <el-radio-group v-model="radio">
+            <el-radio :label="0">系统管理员</el-radio>
+            <el-radio :label="1">食堂管理员</el-radio>
+            <el-radio :label="2">学生</el-radio>
+            <el-radio :label="3">老师</el-radio>
+          </el-radio-group>
           <el-form-item>
             <el-button type="primary" style="width: 100%" @click="login">登 录</el-button>
           </el-form-item>
@@ -31,7 +37,6 @@
         </el-form>
       </div>
     </div>
-
 
     <el-dialog title="忘记密码" :visible.sync="forgetPassDialogVis" width="30%">
       <el-form :model="forgetUserForm" label-width="80px" style="padding-right: 20px">
@@ -45,7 +50,9 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="forgetPassDialogVis = false">取 消</el-button>
         <el-button type="primary" @click="resetPassword">确 定</el-button>
+
       </div>
+
     </el-dialog>
 
   </div>
@@ -73,13 +80,15 @@ export default {
     }
 
     return {
+      radio:'0',
       forgetUserForm: {},   // 忘记密码的表单数据
       forgetPassDialogVis: false,
       code: '',  // 验证码组件传递过来的code
       user: {
         code: '',   // 表单里用户输入的code 验证码
         username: '',
-        password: ''
+        password: '',
+        role:this.radio,
       },
       rules: {
         username: [
@@ -91,13 +100,17 @@ export default {
         code: [
           { validator: validateCode, trigger: 'blur' }
         ],
-      }
+      },
+
     }
   },
   created() {
 
   },
   methods: {
+
+
+
     handleForgetPass() {   //  初始化表单的数据
       this.forgetUserForm = {}
       this.forgetPassDialogVis = true
