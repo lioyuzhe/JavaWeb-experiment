@@ -34,10 +34,7 @@ public class TestController {
     @GetMapping("/test")
     public BaseResponse test(){
 
-//        Admin admin = adminService.query().eq("account", "admin").one();
-//        AdminHolder.saveAdmin(admin);
-//        Admin admin1 = AdminHolder.getAdmin();
-//        System.out.println(admin1);
+
 
         return Result.success("功能还未开发");
     }

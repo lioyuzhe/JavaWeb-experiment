@@ -1,11 +1,19 @@
 <template>
   <div class="dish-container">
-    <el-card class="dish-item" v-for="dish in dishes" :key="dish.id" @click.native="viewDetails(dish)">
-      <img :src="dish.imageUrl" :alt="dish.name" class="dish-image" @click="viewDetails(dish)" />
-      <div slot="header" class="clearfix">
-        <span class="dish-name" @click="viewDetails(dish)">{{ dish.name }}</span>
-      </div>
-    </el-card>
+    <!-- 搜索框容器 -->
+    <div class="dish-top-container">
+      <el-input class="dish-search" placeholder="请输入菜品" prefix-icon="el-icon-search"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>
+    </div>
+    <!-- 菜品展示 -->
+    <div class="dish-container">
+      <el-card class="dish-item" v-for="dish in dishes" :key="dish.id" @click.native="viewDetails(dish)">
+        <img :src="dish.imageUrl" :alt="dish.name" class="dish-image" @click="viewDetails(dish)" />
+        <div slot="header" class="clearfix">
+          <span class="dish-name" @click="viewDetails(dish)">{{ dish.name }}</span>
+        </div>
+      </el-card>
+    </div>
     <!-- 弹窗组件 -->
     <el-dialog :visible.sync="dialogVisible">
       <h2>{{ selectedDish.name }}</h2>
@@ -30,6 +38,9 @@
         </div>
         <el-button type="primary" @click="submitReview">发布</el-button>
         <el-button @click="cancelReview">取消</el-button>
+
+<!--        <el-button @click="test1">{{this.test}}</el-button>-->
+
       </div>
     </el-dialog>
   </div>
@@ -67,6 +78,8 @@ export default {
       selectedDish: {}, // 存储被选中的菜品信息
       rating: 0, // 评分
       review: '', // 评价内容
+
+      // test:'',
     };
   },
   methods: {
@@ -83,11 +96,33 @@ export default {
     cancelReview() {
       // 实现取消操作的逻辑
     },
+    // test1(){
+    //   this.$request.get('/test/test',).then(res => {
+    //     console.log("请求到达");
+    //     if (res.code === 200) {
+    //       this.$message.success('测试成功');
+    //       this.test=res.data;
+    //     } else {
+    //       this.$message.error(res.message);
+    //     }
+    //   })
+    // },
   }
 };
 </script>
 
 <style scoped>
+
+.dish-top-container {
+  display: flex;        /* 使用Flexbox */
+  justify-content: flex-end; /* 组件对齐到右边 */
+  align-items: center;  /* 垂直居中对齐 */
+}
+
+.dish-search {
+  width: 200px; /* 设置搜索框的宽度 */
+  margin-right: 10px; /* 组件之间的间距 */
+}
 
 /* 特定段落的底部外边距 */
 .rating-label,
