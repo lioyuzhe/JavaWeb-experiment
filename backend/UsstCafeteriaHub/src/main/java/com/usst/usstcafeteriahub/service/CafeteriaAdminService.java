@@ -18,4 +18,12 @@ public interface CafeteriaAdminService extends IService<CafeteriaAdmin> {
     BaseResponse registerCafeteriaAdmin(RegisterDTO registerDTO);
 
     BaseResponse loginCafeteriaAdmin(LoginDTO loginDTO, HttpServletRequest request);
+
+    BaseResponse addAdmin(CafeteriaAdmin admin);
+
+    BaseResponse deleteAdmin(CafeteriaAdmin admin);
+
+    BaseResponse updateAdmin(CafeteriaAdmin admin);
+
+    BaseResponse getCafeteriaByCafeteriaAdminId(Long adminId);
 }

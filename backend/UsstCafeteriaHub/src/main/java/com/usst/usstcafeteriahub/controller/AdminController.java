@@ -5,12 +5,15 @@ import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
-import com.usst.usstcafeteriahub.utils.AdminHolder;
+//import com.usst.usstcafeteriahub.utils.AdminHolder;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import static com.usst.usstcafeteriahub.constant.WebConstants.ADMIN_LOGIN_STATE;
 
 
 /**
@@ -54,11 +57,11 @@ public class AdminController {
 
     // 管理员管理
 
-    @ApiOperation("获取当前管理员的信息")
+    @ApiOperation("获取当前管理员的信息") // 这里前端其实有处理，不过还是加上吧
     @GetMapping("/getCurrentAdmin")
-    public BaseResponse getCurrentAdmin(){
-        Admin admin = AdminHolder.getAdmin();
-        if(admin==null) return Result.error("尚未登录");
+    public BaseResponse getCurrentAdmin(HttpServletRequest request){
+        Object userObj = request.getSession().getAttribute(ADMIN_LOGIN_STATE);
+        Admin admin = (Admin) userObj;
         return Result.success(admin);
     }
 
@@ -533,6 +536,7 @@ public class AdminController {
         return Result.success(cafeteriaRemarkService.list());
     }
 
+    // 菜品评价信息管理
     @ApiOperation(value = "菜品评价信息删除")
     @PostMapping("/deleteDishRemark")
     public BaseResponse deleteDishRemark(@RequestBody DishRemark dishRemark){
