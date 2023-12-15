@@ -92,6 +92,8 @@ export default {
   display: flex;
   align-items: center;
   padding: 10px;
+  z-index: 1000; /* 或者更高的值，确保高于其他元素 */
+  position: relative; /* 或 absolute/fixed，z-index 需要定位属性配合使用 */
 }
 
 .cafeteria-search {

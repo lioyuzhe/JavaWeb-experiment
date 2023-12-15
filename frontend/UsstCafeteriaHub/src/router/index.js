@@ -39,6 +39,7 @@ const routes = [
     children: [
       { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
       { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
+      { path: 'ts_community_dynamic', name: 'ts_community_dynamic', meta: { name: '师生社区动态' }, component: () => import('../views/ts/ts_community_dynamic') },
       {
         path: '/',
         name: 'ts_cafeteria',
