@@ -6,7 +6,7 @@
       </div>
       <div style="flex: 1; display: flex; align-items: center; justify-content: center">
         <el-form :model="user" style="width: 80%" :rules="rules" ref="registerRef">
-          <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">欢迎注册后台管理系统</div>
+          <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">注册  </div>
           <el-form-item prop="username">
             <el-input prefix-icon="el-icon-user" size="medium" placeholder="请输入账号" v-model="user.username"></el-input>
           </el-form-item>
@@ -18,8 +18,10 @@
           </el-form-item>
           <el-form-item prop="role">
             <el-radio-group v-model="user.role">
-              <el-radio label="用户"></el-radio>
-              <el-radio label="商家"></el-radio>
+              <el-radio :label=0>系统管理员</el-radio>
+              <el-radio :label=1>食堂管理员</el-radio>
+              <el-radio :label=2>学生</el-radio>
+              <el-radio :label=3>老师</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item>
@@ -52,9 +54,10 @@ export default {
     }
     return {
       user: {
-        username: '',
+        account: '',
         password: '',
-        confirmPass: ''
+        confirmPass: '',
+        role: 0
       },
       rules: {
         username: [
@@ -81,10 +84,16 @@ export default {
         if (valid) {
           // 验证通过
           this.$request.post('/register', this.user).then(res => {
-            if (res.code === '200') {
+            if (res.code === 200 && this.user.role === 0) {
               this.$router.push('/login')
               this.$message.success('注册成功')
-            } else {
+            }else if(res.code === 200 && this.user.role === 1){
+              this.$router.push('/login')
+              this.$message.success('注册成功')
+            }else if (res.code === 200 && (this.user.role === 2 || this.user.role === 3) ) {
+              this.$router.push('/login')
+              this.$message.success('注册成功')
+            }else {
               this.$message.error(res.msg)
             }
           })
