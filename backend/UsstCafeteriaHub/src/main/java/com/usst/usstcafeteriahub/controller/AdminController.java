@@ -5,12 +5,15 @@ import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
-import com.usst.usstcafeteriahub.utils.AdminHolder;
+//import com.usst.usstcafeteriahub.utils.AdminHolder;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import static com.usst.usstcafeteriahub.constant.WebConstants.ADMIN_LOGIN_STATE;
 
 
 /**
@@ -54,11 +57,11 @@ public class AdminController {
 
     // 管理员管理
 
-    @ApiOperation("获取当前管理员的信息")
+    @ApiOperation("获取当前管理员的信息") // 这里前端其实有处理，不过还是加上吧
     @GetMapping("/getCurrentAdmin")
-    public BaseResponse getCurrentAdmin(){
-        Admin admin = AdminHolder.getAdmin();
-        if(admin==null) return Result.error("尚未登录");
+    public BaseResponse getCurrentAdmin(HttpServletRequest request){
+        Object userObj = request.getSession().getAttribute(ADMIN_LOGIN_STATE);
+        Admin admin = (Admin) userObj;
         return Result.success(admin);
     }
 
@@ -372,9 +375,6 @@ public class AdminController {
 
 
 
-
-
-
     // 社区管理
     @ApiOperation(value = "查看社区信息")
     @GetMapping("/getCommunityById")
@@ -391,31 +391,206 @@ public class AdminController {
     @ApiOperation(value = "查看社区用户")
     @GetMapping("/getCommunityUsers")
     public BaseResponse getCommunityUsers(){
-//        // 只有一个社区，id为1
-//        Community community = communityService.getById(1);
-//        log.info("根据id获取社区: {}", community);
-//        if (community == null){
-//            return Result.error("该社区不存在");
-//        }
         return Result.success(communityUserService.list());
     }
 
     @ApiOperation(value = "查看社区消息")
     @GetMapping("/getCommunityMessages")
     public BaseResponse getCommunityMessages(){
-//        // 只有一个社区，id为1
-//        Community community = communityService.getById(1);
-//        log.info("根据id获取社区: {}", community);
-//        if (community == null){
-//            return Result.error("该社区不存在");
-//        }
         return Result.success(communityMessageService.list());
+    }
 
+    @ApiOperation(value = "删除社区消息")
+    @PostMapping("/deleteCommunityMessage")
+    public BaseResponse deleteCommunityMessage(@RequestBody CommunityMessage communityMessage){
+        if (communityMessage == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        CommunityMessage communityMessage1 = communityMessageService.getById(communityMessage);
+        if(communityMessage1 == null){
+            return Result.error("该社区消息不存在");
+        }
+        // 删除
+        if (communityMessageService.removeById(communityMessage)){
+            return Result.success("删除成功");
+        }else{
+            return Result.error("删除失败");
+        }
+    }
+
+    @ApiOperation(value = "删除社区用户")
+    @PostMapping("/deleteCommunityUser")
+    public BaseResponse deleteCommunityUser(@RequestBody CommunityUser communityUser){
+        if (communityUser == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        CommunityUser communityUser1 = communityUserService.getById(communityUser);
+        if(communityUser1 == null){
+            return Result.error("该社区用户不存在");
+        }
+        // 删除
+        if (communityUserService.removeById(communityUser)){
+            return Result.success("删除成功");
+        }else{
+            return Result.error("删除失败");
+        }
+    }
+
+    @ApiOperation(value = "修改社区用户")
+    @PostMapping("/updateCommunityUser")
+    public BaseResponse updateCommunityUser(@RequestBody CommunityUser communityUser){
+        if (communityUser == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        CommunityUser communityUser1 = communityUserService.getById(communityUser);
+        if(communityUser1 == null){
+            return Result.error("该社区用户不存在");
+        }
+        // 更新
+        if (communityUserService.updateById(communityUser)){
+            return Result.success("更新成功");
+        }else{
+            return Result.error("更新失败");
+        }
+    }
+
+
+    @ApiOperation(value = "修改社区消息")
+    @PostMapping("/updateCommunityMessage")
+    public BaseResponse updateCommunityMessage(@RequestBody CommunityMessage communityMessage){
+        if (communityMessage == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        CommunityMessage communityMessage1 = communityMessageService.getById(communityMessage);
+        if(communityMessage1 == null){
+            return Result.error("该社区消息不存在");
+        }
+        // 更新
+        if (communityMessageService.updateById(communityMessage)){
+            return Result.success("更新成功");
+        }else{
+            return Result.error("更新失败");
+        }
     }
 
 
 
+    // 评价信息管理
+    @ApiOperation(value = "食堂评价信息删除")
+    @PostMapping("/deleteCafeteriaRemark")
+    public BaseResponse deleteCafeteriaRemark(@RequestBody CafeteriaRemark cafeteriaRemark){
+        if (cafeteriaRemark == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        CafeteriaRemark cafeteriaRemark1 = cafeteriaRemarkService.getById(cafeteriaRemark);
+        if(cafeteriaRemark1 == null){
+            return Result.error("该食堂评价信息不存在");
+        }
+        // 删除
+        if (cafeteriaRemarkService.removeById(cafeteriaRemark)){
+            return Result.success("删除成功");
+        }else{
+            return Result.error("删除失败");
+        }
+    }
 
+
+    @ApiOperation(value = "食堂评价信息修改")
+    @PostMapping("/updateCafeteriaRemark")
+    public BaseResponse updateCafeteriaRemark(@RequestBody CafeteriaRemark cafeteriaRemark){
+        if (cafeteriaRemark == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        CafeteriaRemark cafeteriaRemark1 = cafeteriaRemarkService.getById(cafeteriaRemark);
+        if(cafeteriaRemark1 == null){
+            return Result.error("该食堂评价信息不存在");
+        }
+        // 更新
+        if (cafeteriaRemarkService.updateById(cafeteriaRemark)){
+            return Result.success("更新成功");
+        }else{
+            return Result.error("更新失败");
+        }
+    }
+
+    @ApiOperation(value = "食堂评价信息查询")
+    @GetMapping("/getCafeteriaRemarkById")
+    public BaseResponse getCafeteriaRemarkById(@RequestParam Integer id){
+        CafeteriaRemark cafeteriaRemark = cafeteriaRemarkService.getById(id);
+        log.info("根据id获取食堂评价信息: {}", cafeteriaRemark);
+        if (cafeteriaRemark == null){
+            return Result.error("该食堂评价信息不存在");
+        }
+        return Result.success(cafeteriaRemark);
+    }
+
+    @ApiOperation(value = "查看所有食堂评价信息")
+    @GetMapping("/getCafeteriaRemarks")
+    public BaseResponse getCafeteriaRemarks(){
+        return Result.success(cafeteriaRemarkService.list());
+    }
+
+    // 菜品评价信息管理
+    @ApiOperation(value = "菜品评价信息删除")
+    @PostMapping("/deleteDishRemark")
+    public BaseResponse deleteDishRemark(@RequestBody DishRemark dishRemark){
+        if (dishRemark == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        DishRemark dishRemark1 = dishRemarkService.getById(dishRemark);
+        if(dishRemark1 == null){
+            return Result.error("该菜品评价信息不存在");
+        }
+        // 删除
+        if (dishRemarkService.removeById(dishRemark)){
+            return Result.success("删除成功");
+        }else{
+            return Result.error("删除失败");
+        }
+    }
+
+    @ApiOperation(value = "菜品评价信息修改")
+    @PostMapping("/updateDishRemark")
+    public BaseResponse updateDishRemark(@RequestBody DishRemark dishRemark){
+        if (dishRemark == null){
+            return Result.error("参数不能为空");
+        }
+        // 判断是否存在
+        DishRemark dishRemark1 = dishRemarkService.getById(dishRemark);
+        if(dishRemark1 == null){
+            return Result.error("该菜品评价信息不存在");
+        }
+        // 更新
+        if (dishRemarkService.updateById(dishRemark)){
+            return Result.success("更新成功");
+        }else{
+            return Result.error("更新失败");
+        }
+    }
+
+    @ApiOperation(value = "菜品评价信息查询")
+    @GetMapping("/getDishRemarkById")
+    public BaseResponse getDishRemarkById(@RequestParam Integer id){
+        DishRemark dishRemark = dishRemarkService.getById(id);
+        log.info("根据id获取菜品评价信息: {}", dishRemark);
+        if (dishRemark == null){
+            return Result.error("该菜品评价信息不存在");
+        }
+        return Result.success(dishRemark);
+    }
+
+    @ApiOperation(value = "查看所有菜品评价信息")
+    @GetMapping("/getDishRemarks")
+    public BaseResponse getDishRemarks(){
+        return Result.success(dishRemarkService.list());
+    }
 
 
 
