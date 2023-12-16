@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Dish接口
+ * 菜品 接口
  * @author 黄泽旭
  */
 @RestController

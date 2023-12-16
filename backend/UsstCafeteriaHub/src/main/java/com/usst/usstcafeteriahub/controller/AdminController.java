@@ -362,16 +362,16 @@ public class AdminController {
         }
     }
 
-    @ApiOperation(value = "获取食堂的管理员")
-    @GetMapping("/getCafeteriaAdmins")
-    public BaseResponse getCafeteriaAdmins(@RequestParam Integer id){
-        Cafeteria cafeteria = cafeteriaService.getById(id);
-        log.info("根据id获取食堂: {}", cafeteria);
-        if (cafeteria == null){
-            return Result.error("该食堂不存在");
-        }
-        return cafeteriaManageService.getCafeteriaAdmins(id);
-    }
+    // @ApiOperation(value = "获取食堂的管理员")
+    // @GetMapping("/getCafeteriaAdmins")
+    // public BaseResponse getCafeteriaAdmins(@RequestParam Integer id){
+    //     Cafeteria cafeteria = cafeteriaService.getById(id);
+    //     log.info("根据id获取食堂: {}", cafeteria);
+    //     if (cafeteria == null){
+    //         return Result.error("该食堂不存在");
+    //     }
+    //     return cafeteriaManageService.getCafeteriaAdmins(id);
+    // }
 
 
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * DishRemark 接口
+ * 菜品评价 接口
  * @author 黄泽旭
  */
 @Slf4j
