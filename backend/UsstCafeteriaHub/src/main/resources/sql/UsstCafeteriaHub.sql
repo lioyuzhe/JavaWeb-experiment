@@ -429,6 +429,26 @@ CREATE TABLE `community_message` (
 
 
 
+-- ----------------------------
+-- Table structure for community_comment
+-- ----------------------------
+
+
+DROP TABLE IF EXISTS `community_comment`;
+CREATE TABLE `community_comment` (
+                                     `comment_id` bigint NOT NULL AUTO_INCREMENT COMMENT '评论ID',
+                                     `message_id` bigint NOT NULL COMMENT '信息ID，对应社区信息表的信息ID',
+                                     `user_id` bigint NOT NULL COMMENT '评论用户ID',
+                                     `user_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '评论用户名',
+                                     `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '评论内容',
+                                     `like_count` int  COMMENT '评论点赞数',
+                                     `create_time` datetime COMMENT '评论创建时间',
+                                     `deleted` tinyint(1)  DEFAULT '0' COMMENT '逻辑删除，默认为0表示不删除，1表示删除',
+                                     PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社区评论表' ROW_FORMAT=DYNAMIC;
+
+
+
 
 
 
