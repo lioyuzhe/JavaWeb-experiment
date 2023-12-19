@@ -35,7 +35,11 @@
               <i class="el-icon-plus"></i>
               <span>添加图片</span>
             </div>
-            <!-- 如果需要显示预览已添加的图片，可以在这里添加 -->
+            <!-- 图片预览区域 -->
+            <div v-if="imagePreviewUrl" class="image-preview">
+              <img :src="imagePreviewUrl" alt="Image preview" />
+            </div>
+            <input type="file" ref="fileInput" @change="handleFileChange" hidden>
           </div>
           <el-button type="primary" @click="submitReview">发布</el-button>
           <el-button @click="cancelReview">取消</el-button>
@@ -48,6 +52,11 @@
 <script>
 export default {
   name: 'TsCafeteriaDish',
+  props: {
+    userId: Number,
+    userName: String,
+    // 其他属性...
+  },
   data() {
     return {
       dialogVisible: false, // 控制弹窗显示
@@ -55,6 +64,7 @@ export default {
       dishes: [],
       rating: 0, // 评分
       review: '', // 评价内容
+      imagePreviewUrl: '', // 用于存储图片预览的 URL
     };
   },
   created() {
@@ -74,13 +84,69 @@ export default {
       }
     },
     addImage() {
-      // 实现添加图片的逻辑
+      // 触发文件输入的点击事件
+      this.$refs.fileInput.click();
+    },
+    handleFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // 创建一个 FileReader 对象用于读取文件
+        const reader = new FileReader();
+
+        // 当文件被读取时，设置 imagePreviewUrl 为读取的内容
+        reader.onload = (e) => {
+          this.imagePreviewUrl = e.target.result;
+        };
+
+        // 读取文件
+        reader.readAsDataURL(file);
+
+        // 这里还可以添加将文件上传到服务器的逻辑
+      }
     },
     submitReview() {
-      // 实现提交评价的逻辑
+      const payload = {
+        userId: this.userId, // 确保这些值已经通过 props 或 data 获取
+        userName: this.userName,
+        dishId: this.selectedDish.id,
+        dishName: this.selectedDish.name,
+        rating: this.rating,
+        review: this.review,
+        // 如果有图片，也应该包含在 payload 中
+        deleted: 0
+      };
+
+      // 发送数据
+      this.$request.post('/dishRemarks/actions/addDishRemark', payload)
+          .then(response => {
+            // 处理成功响应
+            this.$message({
+              message: '评价提交成功！',
+              type: 'success'
+            });
+            // 这里还可以添加更新界面的逻辑
+            // 例如，清空表单，关闭弹窗，刷新列表等
+          })
+          .catch(error => {
+            // 处理错误
+            let message = '提交失败，请稍后重试。';
+            // 如果错误中有更具体的信息，可以使用它
+            if (error.response && error.response.data) {
+              message = error.response.data.message || message;
+            }
+            this.$message({
+              message: message,
+              type: 'error'
+            });
+            // 可以在这里添加任何其他错误处理逻辑
+          });
     },
     cancelReview() {
       // 实现取消操作的逻辑
+      this.rating = 0;
+      this.review = '';
+      this.dialogVisible = false; // 如果使用弹窗
+      // 清除其他相关数据
     },
   }
 };
