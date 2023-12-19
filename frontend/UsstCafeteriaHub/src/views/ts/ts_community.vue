@@ -31,20 +31,20 @@
           <!-- 编辑器容器 -->
           <el-dialog :visible.sync="showDialog" title="发布动态" width="60%">
             <div>
-              <input v-model="newTitle" placeholder="标题" class="dynamic-title-input" />
+              <input v-model="postDynamicData.newTitle" placeholder="标题" class="dynamic-title-input" />
             </div>
             <div class="post-editor">
               <Toolbar
                   style="border-bottom: 1px solid #ccc"
                   :editor="editor"
-                  :defaultConfig="toolbarConfig"
-                  :mode="mode"
+                  :defaultConfig="postDynamicData.toolbarConfig"
+                  :mode="postDynamicData.mode"
               />
               <Editor
                   style="height: 300px; overflow-y: hidden;"
-                  v-model="html"
-                  :defaultConfig="editorConfig"
-                  :mode="mode"
+                  v-model="postDynamicData.html"
+                  :defaultConfig="postDynamicData.editorConfig"
+                  :mode="postDynamicData.mode"
                   @onCreated="onCreated"
               />
             </div>
@@ -58,8 +58,14 @@
             <div class="dynamic-item" v-for="post in dynamicList" :key="post.message_id">
               <!-- 动态元数据 -->
               <div class="dynamic-meta">
-                <span>{{ post.user_name }}</span> |
-                <span>{{ post.time }}</span>
+                <!-- 头像 -->
+                <img :src="post.avatar" alt="Avatar" class="dynamic-avatar"/>
+                <div class="dynamic-user-info">
+                  <!-- 用户名 -->
+                  <span class="dynamic-username">{{ post.user_name }}</span>
+                  <!-- 时间 -->
+                  <span class="dynamic-time">{{ post.time }}</span>
+                </div>
               </div>
               <!-- 显示标题 -->
               <h3>{{ post.title }}</h3>
@@ -80,7 +86,7 @@
               <!-- 评论区域 -->
               <div v-if="post.showComments" class="comments">
                 <!-- 现有评论列表 -->
-                <div v-for="comment in post.comments" :key="comment.content" class="comment">
+                <div v-for="comment in post.comments" :key="comment.comment_id" class="comment">
                   <strong>{{ comment.user_name }}：</strong>{{ comment.content }}
                 </div>
                 <!-- 添加新评论的输入框 -->
@@ -186,11 +192,12 @@ export default {
       postDynamicData: {
         newTitle: '',
         html: '',
-        communityId: 1,
-        communityName: '食堂',
+        communityId: '',
+        communityName: '',
         userId: '',
         userName: '',
         likeCount: 0,
+        created_time: '',
         deleted: 0,
         toolbarConfig: { },
         editorConfig: { placeholder: '请输入内容...' },
@@ -271,11 +278,17 @@ export default {
         title: this.postDynamicData.newTitle,
         content: this.postDynamicData.html,
         likeCount: this.postDynamicData.likeCount,
+        created_time: this.postDynamicData.created_time,
         deleted: this.postDynamicData.deleted
       };
+      console.log("postData", postData);
       // 发送请求
       request.post('/communityMessages/actions/addCommunityMessage', postData)
           .then(response => {
+            // 假设 response.data 包含了新发布的动态数据
+            const newDynamic = response.data;
+            // 将新动态添加到列表的开头
+            this.dynamicList.unshift(newDynamic);
             // 处理响应
             console.log('发布成功', response);
             this.resetPostDynamicData();
@@ -292,6 +305,7 @@ export default {
       // 可以根据需要重置其他字段
       this.showDialog = false;
     },
+
     async fetchDynamicList() {
       let url = '';
       if (this.sortType === 'time') {
@@ -368,17 +382,17 @@ export default {
       message.read_status = 1;
       this.showChatBox = true;
     },
-    sendMessage() {
-      const newMsg = {
-        id: Date.now(),
-        content: this.newMessageText,
-        timestamp: new Date().toLocaleTimeString(),
-        sender_id: this.currentUser.id,
-      };
-      // 假设selectedMessage.conversationContent是一个数组，存储对话内容
-      this.selectedMessage.conversationContent.push(newMsg);
-      this.newMessageText = ''; // 清空输入框
-    },
+    // sendMessage() {
+    //   const newMsg = {
+    //     id: Date.now(),
+    //     content: this.newMessageText,
+    //     timestamp: new Date().toLocaleTimeString(),
+    //     sender_id: this.currentUser.id,
+    //   };
+    //   // 假设selectedMessage.conversationContent是一个数组，存储对话内容
+    //   this.selectedMessage.conversationContent.push(newMsg);
+    //   this.newMessageText = ''; // 清空输入框
+    // },
 
     closeChat() {
       this.showChatBox = false;
@@ -389,8 +403,8 @@ export default {
     //从父组件中获取数据
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      this.userId = user.user_id;
-      this.userName = user.name;
+      this.postDynamicData.userId = user.user_id;
+      this.postDynamicData.userName = user.name;
     }
   },
   created() {
@@ -495,6 +509,31 @@ export default {
   flex-wrap: wrap;
   gap: 10px;
 }
+
+
+.dynamic-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.dynamic-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dynamic-username {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.dynamic-time {
+  color: #888;
+  font-size: 0.9em;
+}
+
 .dynamic-actions {
   display: flex;
   align-items: center;
