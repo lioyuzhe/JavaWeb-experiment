@@ -9,6 +9,7 @@ import com.usst.usstcafeteriahub.service.CafeteriaAdminService;
 import com.usst.usstcafeteriahub.service.CafeteriaManageService;
 import com.usst.usstcafeteriahub.mapper.CafeteriaManageMapper;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 * @createDate 2023-12-10 15:33:31
 */
 @Service
+@Slf4j
 public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMapper, CafeteriaManage>
     implements CafeteriaManageService{
 
@@ -27,6 +29,7 @@ public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMappe
     private CafeteriaManageMapper cafeteriaManageMapper;
     @Resource
     private CafeteriaAdminService cafeteriaAdminService;
+
 
 //    @Override
 //    public BaseResponse getCafeteriaAdmins(Long id) {
@@ -42,6 +45,7 @@ public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMappe
 //
 //    }
 
+
     /**
      * 按照食堂ID筛选食堂管理
      * @param id
@@ -49,7 +53,9 @@ public class CafeteriaManageServiceImpl extends ServiceImpl<CafeteriaManageMappe
      */
     @Override
     public List<CafeteriaManage> getCafeteriaManagesByCafeteriaID(Long id) {
-        return cafeteriaManageMapper.getCafeteriaManagesByCafeteriaID(id);
+        List<CafeteriaManage> list = cafeteriaManageMapper.getCafeteriaManagesByCafeteriaID(id);
+        log.info("Service调用mapper层获取食堂管理列表: {}", list);
+        return list;
     }
 
     /**

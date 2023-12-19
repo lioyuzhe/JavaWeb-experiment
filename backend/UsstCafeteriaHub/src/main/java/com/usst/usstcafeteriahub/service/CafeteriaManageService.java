@@ -13,7 +13,9 @@ import java.util.List;
 */
 public interface CafeteriaManageService extends IService<CafeteriaManage> {
 
+
 //    BaseResponse getCafeteriaAdmins(Integer id);
+
 
     /**
      * 按照食堂ID筛选食堂管理

@@ -26,4 +26,11 @@
         where cafeteria_id = #{cafeteriaId}
         order by total_score desc
     </select>
+    <!--根据菜品ID获取菜品排名-->
+    <select id="getDishRankByDishId" resultType="com.usst.usstcafeteriahub.model.entity.DishRank">
+        select
+        <include refid="Base_Column_List"/>
+        from dish_rank
+        where dish_id = #{dishId}
+    </select>
 </mapper>
