@@ -9,10 +9,11 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * CafeteriaNotice 接口
+ * 食堂公告 接口
  * @author 黄泽旭
  */
 @Slf4j
@@ -37,6 +38,7 @@ public class CafeteriaNoticeController {
             return Result.error("参数为空");
         }
         log.info("添加食堂公告: {}", cafeteriaNotice);
+        cafeteriaNotice.setCreateTime(LocalDateTime.now());
         boolean save = cafeteriaNoticeService.save(cafeteriaNotice);
         if(!save){
             return Result.error("添加失败");

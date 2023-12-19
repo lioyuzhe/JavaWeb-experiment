@@ -33,7 +33,6 @@
         select
         <include refid="Base_Column_List"/>
         from dish
-        where cafeteria_id = #{cafeteriaId}
         order by price asc
     </select>
     <!--根据价格降序获取菜品列表-->
@@ -41,7 +40,6 @@
         select
         <include refid="Base_Column_List"/>
         from dish
-        where cafeteria_id = #{cafeteriaId}
         order by price desc
     </select>
     <!--根据食堂id获取菜品-->
@@ -50,5 +48,12 @@
         <include refid="Base_Column_List"/>
         from dish
         where cafeteria_id = #{cafeteriaId}
+    </select>
+    <!--获取推荐菜品-->
+    <select id="getRecommendDish" resultType="com.usst.usstcafeteriahub.model.entity.Dish">
+        select
+        <include refid="Base_Column_List"/>
+        from dish
+        where status = 1
     </select>
 </mapper>

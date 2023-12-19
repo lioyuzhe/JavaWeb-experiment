@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Conversation 会话列表 接口
+ * 会话列表 接口
  * @author 黄泽旭
  */
 @Slf4j

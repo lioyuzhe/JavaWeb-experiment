@@ -37,4 +37,12 @@
         AND dish_id = #{dishId}
         AND deleted = 0
     </select>
+    <!--根据菜品ID获取数据条数-->
+    <select id="getCountByDishId" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM dish_remark
+        WHERE dish_id = #{dishId}
+        AND deleted = 0
+    </select>
 </mapper>

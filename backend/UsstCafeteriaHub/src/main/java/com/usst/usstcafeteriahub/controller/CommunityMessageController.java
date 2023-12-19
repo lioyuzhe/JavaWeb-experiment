@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * communityMessage接口
+ * 社区文章 接口
  * @author 黄泽旭
  */
 @RestController

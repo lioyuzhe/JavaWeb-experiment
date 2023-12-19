@@ -76,6 +76,11 @@ export default {
       console.log(`投票结果 - ${voteID}:`, selectedOption);
       // 在这里添加将投票结果提交到服务器的代码
     },
+    goToCafeteriaVote(entry) {
+      if (entry.id === 'vote') {
+        this.$router.push({ name: 'CafeteriaVote' }); // 使用路由的name进行跳转
+      }
+    },
   },
 
 

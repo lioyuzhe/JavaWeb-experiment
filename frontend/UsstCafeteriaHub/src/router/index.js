@@ -30,6 +30,11 @@ const routes = [
   //   ]
   // },
   {
+    path: '/ts_cafeteria_content',
+    name: 'ts_cafeteria_content',
+    component: () => import('../views/ts/ts_cafeteria_content.vue') // 根据你的实际文件路径
+  },
+  {
     path: '/manager',
     name: 'Manager',
     component: () => import('../views/Manager.vue'),
@@ -71,6 +76,7 @@ const routes = [
     name: 'ts',
     component: () => import('../views/Ts.vue'),
     children: [
+
       { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
       { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
       { path: 'ts_community_dynamic/:userId', name: 'ts_community_dynamic', meta: { name: '师生社区动态' }, component: () => import('../views/ts/ts_community_dynamic') },
@@ -85,10 +91,24 @@ const routes = [
           {path: 'ts_cafeteria_complaint', name: 'ts_cafeteria_complaint', meta: { name: '师生食堂投诉' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_complaint.vue')},
           {path: 'ts_cafeteria_vote', name: 'ts_cafeteria_vote', meta: { name: '师生食堂投票' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_vote.vue')}
         ]
+      },
+      {
+        path: '/',
+        name: 'ts_cafeteria',
+        meta: { name: '师生食堂' },
+        component: () => import('../views/ts/ts_cafeteria.vue'),
+        children: [
+          // ...已有的子路由...
+          {
+            path: 'ts_cafeteria_content', // 修改这里
+            name: 'ts_cafeteria_content',
+            meta: { name: '师生食堂内容' },
+            component: () => import('../views/ts/ts_cafeteria_content.vue')
+          }
+        ]
       }
     ]
   },
-
 ]
 
 const router = new VueRouter({
@@ -96,7 +116,6 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
 
 
 router.beforeEach((to, from, next) => {

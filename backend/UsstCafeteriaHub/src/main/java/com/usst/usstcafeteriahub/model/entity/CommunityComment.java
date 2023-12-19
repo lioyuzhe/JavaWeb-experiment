@@ -10,21 +10,23 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName cafeteria_notice
+ * @TableName community_comment
  */
-@TableName(value ="cafeteria_notice")
+@TableName(value ="community_comment")
 @Data
-public class CafeteriaNotice implements Serializable {
+public class CommunityComment implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long noticeId;
+    private Long commentId;
 
-    private Long cafeteriaId;
+    private Long messageId;
 
-    private String cafeteriaName;
+    private Long userId;
 
-    private String title;
+    private String userName;
 
     private String content;
+
+    private Integer likeCount;
 
     private LocalDateTime createTime;
 
