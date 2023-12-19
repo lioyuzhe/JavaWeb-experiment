@@ -19,4 +19,5 @@
         name,description,create_time,
         deleted
     </sql>
+
 </mapper>
