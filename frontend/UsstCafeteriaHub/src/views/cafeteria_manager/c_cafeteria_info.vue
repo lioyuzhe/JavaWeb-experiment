@@ -2,70 +2,73 @@
   <div>
     <el-container>
       <!--    侧边栏  -->
-      <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #001529">
-        <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
-          <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
-          <span class="logo-title" v-show="!isCollapse">honey2024</span>
-        </div>
-
-        <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#001529" text-color="rgba(255, 255, 255, 0.65)"
-                 active-text-color="#fff" style="border: none" :default-active="$route.path">
-          <el-menu-item index="/home">
-            <i class="el-icon-s-home"></i>
-            <span slot="title">系统首页</span>
-          </el-menu-item>
-          <el-submenu index="info" >
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>信息管理</span>
-            </template>
-            <el-menu-item index="/user" v-if="user.role === '管理员'">用户信息</el-menu-item>
-            <el-menu-item index="/news">新闻信息</el-menu-item>
-            <el-menu-item index="/notice" v-if="user.role === '管理员'">系统公告</el-menu-item>
-            <el-menu-item index="/logs" v-if="user.role === '管理员'">系统日志</el-menu-item>
-            <el-menu-item index="/charts" v-if="user.role === '管理员'">数据统计</el-menu-item>
-            <el-menu-item index="/orders">订单管理</el-menu-item>
-            <el-menu-item index="/test">食堂信息</el-menu-item>
-          </el-submenu>
-        </el-menu>
-
-      </el-aside>
 
       <el-container>
         <!--        头部区域-->
-        <el-header>
-
-          <i :class="collapseIcon" style="font-size: 26px" @click="handleCollapse"></i>
-          <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left: 20px">
-            <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: $route.path }">{{ $route.meta.name }}</el-breadcrumb-item>
-          </el-breadcrumb>
-
-          <div style="flex: 1; width: 0; display: flex; align-items: center; justify-content: flex-end">
-            <i class="el-icon-quanping" style="font-size: 26px" @click="handleFull"></i>
-            <el-dropdown placement="bottom">
-              <div style="display: flex; align-items: center; cursor: default">
-                <img :src="user.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" alt="" style="width: 40px; height: 40px; border-radius: 50%; margin: 0 5px">
-                <span>{{ user.name }}</span>
-              </div>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="$router.push('/person')">个人信息</el-dropdown-item>
-                <el-dropdown-item @click.native="$router.push('/password')">修改密码</el-dropdown-item>
-                <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-
-        </el-header>
 
         <!--        主体区域-->
         <el-main>
           <router-view @update:user="updateUser" />
-          <div v-for="canteen in canteens" :key="canteen.cafeteriaId">
-            <p>{{ canteen.name }}
-              <el-button @click="showCanteenInfo(canteen.cafeteriaId)">查看</el-button></p>
+          <div>
+            <el-button @click="addCafeteria()">添加食堂</el-button>
           </div>
-
+          <el-dialog :visible.sync="addDialogVisible" title="食堂添加" @close="addDialogVisible = false">
+            <div class="input-container">
+            <div>
+              <label>cafeteriaId:</label>
+              <el-input v-model="newcanteens[0]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>name:</label>
+              <el-input v-model="newcanteens[1]" style="width:50%"></el-input></div>
+            <div>
+              <label>location:</label>
+              <el-input v-model="newcanteens[2]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>description:</label>
+              <el-input v-model="newcanteens[3]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>adminId:</label>
+              <el-input v-model="newcanteens[4]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>adminName:</label>
+              <el-input v-model="newcanteens[5]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>openTime:</label>
+              <el-input v-model="newcanteens[6]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>closeTime:</label>
+              <el-input v-model="newcanteens[7]" style="width:50%"></el-input>
+            </div>
+            <div>
+              <label>deleted:</label>
+              <el-input v-model="newcanteens[8]" style="width:50%"></el-input>
+            </div>
+              <el-button type="primary" @click="addToBackend()">确定</el-button>
+              <el-button @click="addDialogVisible = false">取消</el-button>
+            </div>
+          </el-dialog>
+          <div v-for="canteen in canteens" :key="canteen.cafeteriaId">
+            <div style="display: flex; justify-content: space-between;">
+              <p style="margin-right: 10px;">{{ canteen.name }}</p>
+              <div>
+                <el-button @click="showCanteenInfo(canteen.cafeteriaId)">查看</el-button>
+                <el-button @click="decideToDelete(canteen)">删除</el-button>
+              </div>
+            </div>
+          </div>
+          <el-dialog :visible.sync="decideDialogVisible" title="食堂信息删除" @close="decideDialogVisible = false">
+            <p style="text-align: center; margin-bottom: 20px;font-size: 18px;">确定要删除{{this.tempcanteen.name}}吗</p>
+            <div style="text-align: center;">
+              <el-button @click="deleteToBackend">确定</el-button>
+              <el-button @click="decideDialogVisible = false">取消</el-button>
+            </div>
+          </el-dialog>
           <!-- el-dialog 用于展示食堂信息和编辑 -->
           <el-dialog :visible.sync="dialogVisible" title="食堂信息编辑" @close="dialogVisible = false">
             <el-table :data="currentCanteenInfo" style="width: 100%">
@@ -99,7 +102,11 @@ export default {
   name: 'HomeView',
   data() {
     return {
+      tempcanteen:[],//删除时临时存放选中餐厅信息
+      newcanteens:[], //存放新食堂信息
       canteens: [], // 存放从后端获取的多个食堂信息
+      decideDialogVisible: false,
+      addDialogVisible: false,
       dialogVisible: false,
       editableRowIndex: -1,
       currentCanteenInfo: [], // 存放当前选中食堂的信息
@@ -118,6 +125,55 @@ export default {
     this.fetchCanteens(); // 获取多个食堂信息
   },
   methods: {
+    deleteToBackend(){
+      this.$request.post('http://localhost:9090/cafeterias/actions/deleteCafeteria',{
+        cafeteriaId:this.tempcanteen.cafeteriaId,
+        name:this.tempcanteen.name,
+        location:this.tempcanteen.location,
+        description:this.tempcanteen.description,
+        adminId: this.tempcanteen.adminId,
+        adminName:this.tempcanteen.adminName,
+        openTime:this.tempcanteen.openTime,
+        closeTime:this.tempcanteen. closeTime,
+        deleted: this.tempcanteen.deleted,
+      })
+          .then(response => {
+            console.log('Successfully deleted');
+            this.$message.success("删除成功");
+            this.decideDialogVisible = false; // 关闭
+          })
+          .catch(error => {
+            console.error('Error saving to backend:', error);
+          });
+    },
+    decideToDelete(canteen){
+      this.tempcanteen=canteen;
+      this.decideDialogVisible = true;
+    },
+    addCafeteria(){
+      this.addDialogVisible = true;
+    },
+    addToBackend(){
+      this.$request.post('http://localhost:9090/cafeterias/actions/addCafeteria',{
+        cafeteriaId:this.newcanteens[0],
+        name:this.newcanteens[1],
+        location:this.newcanteens[2],
+        description:this.newcanteens[3],
+        adminId: this.newcanteens[4],
+        adminName:this.newcanteens[5],
+        openTime:this.newcanteens[6],
+        closeTime:this.newcanteens[7],
+        deleted: this.newcanteens[8],
+      })
+          .then(response => {
+            console.log('Successfully saved to backend');
+            this.$message.success("添加成功");
+            this.addDialogVisible = false; // 关闭
+          })
+          .catch(error => {
+            console.error('Error saving to backend:', error);
+          });
+    },
     saveRow(index) {
       this.editableRowIndex = -1; // 退出编辑状态
     },
@@ -158,7 +214,7 @@ export default {
     },
     saveToBackend() {
       //发送编辑后的食堂信息到后端
-      axios.post('http://localhost:9090/cafeterias/actions/updateCafeteria',{
+      this.$request.post('http://localhost:9090/cafeterias/actions/updateCafeteria',{
           cafeteriaId:this.currentCanteenInfo[0].value,
           name:this.currentCanteenInfo[1].value,
           location:this.currentCanteenInfo[2].value,
@@ -170,7 +226,7 @@ export default {
           deleted: this.currentCanteenInfo[8].value
       })
           .then(response => {
-            console.log('Successfully saved to backend:');
+            console.log('Successfully saved to backend');
             this.dialogVisible = false; // 关闭 el-dialog
           })
           .catch(error => {
@@ -195,3 +251,63 @@ export default {
   }
 }
 </script>
+<style>
+.el-menu--inline {
+  background-color: #000c17 !important;
+}
+.el-menu--inline .el-menu-item {
+  background-color: #000c17 !important;
+  padding-left: 49px !important;
+}
+.el-menu-item:hover, .el-submenu__title:hover {
+  color: #fff !important;
+}
+.el-submenu__title:hover i {
+  color: #fff !important;
+}
+.el-menu-item:hover i {
+  color: #fff !important;
+}
+.el-menu-item.is-active {
+  background-color: #1890ff !important;
+  border-radius: 5px !important;
+  width: calc(100% - 8px);
+  margin-left: 4px;
+}
+.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
+  margin-left: -4px;
+}
+.el-menu-item {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+.el-submenu__title {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+.el-submenu .el-menu-item {
+  min-width: 0 !important;
+}
+.el-menu--inline .el-menu-item.is-active {
+  padding-left: 45px !important;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container div {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  margin-bottom: 10px; /* 控制每个 div 之间的间距 */
+}
+
+.input-container div label {
+  width: 100px; /* 设定 label 宽度，确保对齐 */
+  margin-right: 20px; /* 可选项，控制 label 与 input 之间的间距 */
+}
+
+.input-container div el-input {
+  flex: 1; /* 每个 el-input 占据父元素 div 的剩余宽度 */
+}
+</style>

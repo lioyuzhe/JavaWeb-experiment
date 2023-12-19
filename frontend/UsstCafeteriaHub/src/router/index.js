@@ -54,6 +54,7 @@ const routes = [
     path: '/cafeteria_manager',
     name: 'cafeteria_manager',
     component: () => import('../views/CafeteriaManager.vue'),
+    redirect: 'cafeteria_manager/home',
     children: [
       { path: '403', name: 'Auth', meta: { name: '无权限' }, component: () => import('../views/cafeteria_manager/Auth') },
       { path: 'home', name: 'c_home', meta: { name: '食堂管理员首页' }, component: () => import('../views/cafeteria_manager/c_home.vue') },
