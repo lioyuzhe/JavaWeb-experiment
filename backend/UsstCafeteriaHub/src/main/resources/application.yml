@@ -11,6 +11,7 @@ spring:
     username: root
     password: klein
 
+
   session:
     timeout: 86400  # 1 day
 #  data:

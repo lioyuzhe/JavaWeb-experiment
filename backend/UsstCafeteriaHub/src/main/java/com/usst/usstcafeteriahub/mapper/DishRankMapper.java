@@ -14,10 +14,19 @@ import java.util.List;
 public interface DishRankMapper extends BaseMapper<DishRank> {
 
     /**
-     *
+     * 返回菜品排名并按照分数降序排序
      * @return
      */
     List<DishRank> getDishRankByScore();
+
+    /**
+     * 根据菜品ID获取菜品排名
+     * @param dishId
+     * @return
+     */
+    DishRank getDishRankByDishId(Long dishId);
+
+
 }
 
 

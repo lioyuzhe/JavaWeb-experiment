@@ -5,16 +5,6 @@
         <el-card class="complaint-card" shadow="hover">
           <h2 class="complaint-title">食堂投诉栏</h2>
           <el-form @submit.prevent="submitComplaint">
-            <el-form-item label="食堂名称">
-              <el-select v-model="complaint.cafeteria_id" placeholder="请选择">
-                <el-option
-                    v-for="cafeteria in cafeterias"
-                    :key="cafeteria.cafeteria_id"
-                    :label="cafeteria.cafeteria_name"
-                    :value="cafeteria.cafeteria_id">
-                </el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item label="投诉内容">
               <el-input
                   type="textarea"
@@ -34,27 +24,55 @@
 
 <script>
 export default {
+  props: {
+    userId: Number,
+    userName: String,
+    cafeteriaId: Number,
+    cafeteriaName: String,
+    // 其他可能的 props...
+  },
   data() {
     return {
       complaint: {
         cafeteria_id: null,
         content: ''
       },
-      cafeterias: [
-        // 假设这是从后端获取的食堂列表
-        { cafeteria_id: 1, cafeteria_name: '一食堂' },
-        { cafeteria_id: 2, cafeteria_name: '二食堂' },
-        { cafeteria_id: 3, cafeteria_name: '三食堂' },
-        { cafeteria_id: 4, cafeteria_name: 'xx食堂' },
-        // ...更多食堂
-      ]
     };
   },
   methods: {
     submitComplaint() {
-      // 这里应该有将投诉数据发送到后端的逻辑
-      console.log('提交的投诉信息:', this.complaint);
-      // 发送到后端的代码可以使用 axios 或其他 HTTP 客户端
+      const payload = {
+        userId: this.userId,
+        userName: this.userName,
+        cafeteriaId: this.cafeteriaId,
+        cafeteriaName: this.cafeteriaName,
+        content: this.complaint.content,
+      };
+
+      this.$request.post('/complaints/actions/addComplaint', payload)
+          .then(response => {
+            // 显示成功消息
+            this.$message({
+              message: '投诉提交成功，我们将尽快处理！',
+              type: 'success'
+            });
+            // 清空表单
+            this.complaint.content = '';
+            // 可以在这里添加其他的成功后逻辑，比如关闭弹窗或刷新列表
+          })
+          .catch(error => {
+            // 显示错误消息
+            let message = '提交投诉时出现错误，请稍后重试。';
+            // 如果错误中有更具体的信息，可以使用它
+            if (error.response && error.response.data) {
+              message = error.response.data.message || message;
+            }
+            this.$message({
+              message: message,
+              type: 'error'
+            });
+            // 可以在这里添加其他的错误处理逻辑
+          });
     },
   },
 };
