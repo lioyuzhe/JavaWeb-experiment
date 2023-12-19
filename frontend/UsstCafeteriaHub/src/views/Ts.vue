@@ -19,17 +19,20 @@
               trigger="hover"
               v-model="userProfileVisible"
           >
-            <p>用户活跃度：{{ user.activityLevel }}</p>
-            <p>用户id：{{ user.userId }}</p>
-            <p>用户账号：{{ user.account }}</p>
-            <p>用户名：{{ user.name }}</p>
-            <p>用户邮箱：{{ user.email }}</p>
-            <p>用户手机号：{{ user.phone }}</p>
+            <p><strong>用户活跃度：</strong>{{ user.activityLevel }}</p>
+            <p><strong>用户id：</strong>{{ user.userId }}</p>
+            <p><strong>用户账号：</strong>{{ user.account }}</p>
+            <p><strong>用户名：</strong>{{ user.name }}</p>
+            <p><strong>用户邮箱：</strong>{{ user.email }}</p>
+            <p><strong>用户手机号：</strong>{{ user.phone }}</p>
+
+            <el-button type="text" @click="logout">退出登录</el-button>
 
             <template #reference>
               <el-avatar :src="user.avatar" size="large"></el-avatar>
             </template>
           </el-popover>
+
         </el-col>
       </el-row>
     </el-header>
@@ -63,6 +66,12 @@ export default {
     this.fetchUserData();
   },
   methods: {
+    logout() {
+      // 清除用户数据
+      localStorage.removeItem('user');
+      // 重定向到登录页面或主页
+      this.$router.push('/login'); // 根据您的路由配置适当修改
+    },
     fetchUserData() {
       // 假设用户信息存储在localStorage的"user"项中
       const userData = JSON.parse(localStorage.getItem('user'));
@@ -104,6 +113,13 @@ export default {
 </script>
 
 <style scoped>
+.avatar-hover {
+  transition: transform 0.3s ease;
+}
+
+.avatar-hover:hover {
+  transform: scale(1.1) translateX(-10px); /* 头像放大并向左移动 */
+}
 
 .header {
   /* 设定头部的样式和对齐 */
