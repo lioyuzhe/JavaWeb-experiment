@@ -362,6 +362,7 @@ public class AdminController {
         }
     }
 
+
 //    @ApiOperation(value = "获取食堂的管理员")
 //    @GetMapping("/getCafeteriaAdmins")
 //    public BaseResponse getCafeteriaAdmins(@RequestParam Integer id){
@@ -372,6 +373,7 @@ public class AdminController {
 //        }
 //        return cafeteriaManageService.getCafeteriaAdmins(id);
 //    }
+
 
 
 

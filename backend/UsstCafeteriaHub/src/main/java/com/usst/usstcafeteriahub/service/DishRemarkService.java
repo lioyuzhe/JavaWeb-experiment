@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.service;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.DishRemark;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -26,4 +27,11 @@ public interface DishRemarkService extends IService<DishRemark> {
      * @return
      */
     DishRemark getDishRemarkByUserIdAndDishId(Long userId, Long dishId);
+
+    /**
+     * 用户添加&修改菜品评价，如果已经评价过则更新评价
+     * @param dishRemark
+     * @return
+     */
+    BaseResponse addDishRemark(DishRemark dishRemark);
 }

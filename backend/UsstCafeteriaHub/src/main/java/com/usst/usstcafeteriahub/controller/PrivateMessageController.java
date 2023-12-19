@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * PrivateMessage 接口
+ * 会话的聊天记录 接口
  * @author 黄泽旭
  */
 @Slf4j

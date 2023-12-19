@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Complaint接口
+ * 投诉 接口
  * @author 黄泽旭
  */
 @RestController

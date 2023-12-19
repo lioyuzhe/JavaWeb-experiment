@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * User接口
+ * 师生用户 接口
  * @author 黄泽旭
  */
 @Slf4j
@@ -97,9 +97,9 @@ public class UserController {
             return Result.error("邮箱或手机号格式错误");
         }
         if(updateResult == 2) {
-            return Result.error("添加失败");
+            return Result.error("修改失败");
         }
-        return Result.success("添加成功");
+        return Result.success("修改成功");
     }
 
 
