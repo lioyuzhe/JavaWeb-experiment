@@ -144,7 +144,7 @@ export default {
                 localStorage.setItem("cafeteria_admin", JSON.stringify(res.data));  // 存储食堂管理员数据
               localStorage.setItem("role", JSON.stringify(this.user.role));   // 存储角色数据
             }else if (res.code === 200 && (this.user.role === 2 || this.user.role === 3) ) {
-              this.$router.push('/ts')
+              this.$router.push('/ts/ts_home')
               this.$message.success('登录成功')
               localStorage.setItem("user", JSON.stringify(res.data));   // 存储学生数据
               localStorage.setItem("role", JSON.stringify(this.user.role));   // 存储角色数据

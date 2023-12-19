@@ -1,7 +1,7 @@
 <template>
   <div class="cafeteria-intro" v-if="cafeteria">
     <h2 class="cafeteria-title">{{ cafeteria.name }}</h2>
-    <p v-for="paragraph in cafeteria.description" :key="paragraph">{{ paragraph }}</p>
+    <p v-for="paragraph in formattedDescription" :key="paragraph">{{ paragraph }}</p>
   </div>
 </template>
 
@@ -12,6 +12,15 @@ export default {
     return {
       cafeteria: null,
     };
+  },
+  computed: {
+    formattedDescription() {
+      if (this.cafeteria && this.cafeteria.description) {
+        // 按换行符分割字符串
+        return this.cafeteria.description.split('\n');
+      }
+      return [];
+    }
   },
   created() {
     this.fetchCafeteriaData();
