@@ -54,6 +54,7 @@ const routes = [
     path: '/cafeteria_manager',
     name: 'cafeteria_manager',
     component: () => import('../views/CafeteriaManager.vue'),
+    redirect: 'cafeteria_manager/home',  // 重定向到主页
     children: [
       { path: '403', name: 'Auth', meta: { name: '无权限' }, component: () => import('../views/cafeteria_manager/Auth') },
       { path: 'home', name: 'c_home', meta: { name: '食堂管理员首页' }, component: () => import('../views/cafeteria_manager/c_home.vue') },
@@ -71,6 +72,8 @@ const routes = [
 //   xuyang 的测试
   { path: '/test', name: 'test', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
 // 师生 teacher and student  有冲突我把你们的都保留了，加了注释 ，你们自己选择要不要修改  -- 李英杰  
+  {path : '/',redirect: '/login'},
+
   {
     path: '/ts',
     name: 'ts',
