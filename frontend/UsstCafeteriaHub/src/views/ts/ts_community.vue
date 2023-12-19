@@ -24,6 +24,7 @@
               <span>|</span>
               <span @click="toggleSort('hot')" :class="{'active': sortType === 'hot'}">热度</span>
             </div>
+
             <!-- 发表 -->
             <el-button icon="el-icon-plus" @click="showEditor">发布动态</el-button>
           </div>
@@ -172,6 +173,7 @@
 <script>
 import '@wangeditor/editor/dist/css/style.css'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import request from '@/utils/request'
 export default {
   components: {
     Editor,
@@ -179,35 +181,25 @@ export default {
   },
   data() {
     return {
-      newTitle: '', // 新动态的标题
-      newContent: '', // 新动态的内容
-      sortType: 'time',
       searchText: '',
       editor: null,
-      html: '',
-      toolbarConfig: { },
-      editorConfig: { placeholder: '请输入内容...' },
-      mode: 'default', // or 'simple'
+      postDynamicData: {
+        newTitle: '',
+        html: '',
+        communityId: 1,
+        communityName: '食堂',
+        userId: '',
+        userName: '',
+        likeCount: 0,
+        deleted: 0,
+        toolbarConfig: { },
+        editorConfig: { placeholder: '请输入内容...' },
+        mode: 'default', // or 'simple'
+      },
       showDialog: false, // 控制对话框的显示
-      dynamicList: [
-        {
-          //动态列表
-          //假数据
-          message_id: 1,
-          user_name: '用户A',
-          title: '今日天气',
-          content: '这是第一条动态内容，今天的天气真不错。',
-          like_count: 5,
-          liked: false, // 新增字段，表示当前用户是否点赞
-          showComments: false, // 控制评论显示
-          comments: [
-            // ...评论数据...
-          ],
-          time: '今天 08:00'
-        },
-        // 可以继续添加更多假数据...
-      ],
-      newComment: '',
+
+      sortType: 'time',//默认时间排序
+      dynamicList: [],//存储动态列表
 
       currentMessageType: 'likes',
       currentUser: {
@@ -262,7 +254,7 @@ export default {
   methods: {
     toggleSort(type) {
       this.sortType = type;
-      // 这里可以添加切换排序后的逻辑处理
+      this.fetchDynamicList();
     },
     onCreated(editor) {
       this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
@@ -271,54 +263,101 @@ export default {
       this.showDialog = true; // 点击按钮时显示对话框
     },
     postDynamic() {
-      if (this.newTitle.trim() && this.newContent.trim()) {
-        // 创建新动态对象
-        const newPost = {
-          message_id: this.dynamicList.length + 1, // 生成一个新的ID
-          user_name: '当前用户', // 假设的用户名
-          title: this.newTitle,
-          content: this.newContent,
-          // ...其他必要字段...
-        };
-        this.dynamicList.push(newPost); // 将新动态添加到列表
-        this.newTitle = ''; // 清空标题输入
-        this.newContent = ''; // 清空内容输入
+      const postData = {
+        communityId: this.postDynamicData.communityId,
+        communityName: this.postDynamicData.communityName,
+        userId: this.postDynamicData.userId,
+        userName: this.postDynamicData.userName,
+        title: this.postDynamicData.newTitle,
+        content: this.postDynamicData.html,
+        likeCount: this.postDynamicData.likeCount,
+        deleted: this.postDynamicData.deleted
+      };
+      // 发送请求
+      request.post('/communityMessages/actions/addCommunityMessage', postData)
+          .then(response => {
+            // 处理响应
+            console.log('发布成功', response);
+            this.resetPostDynamicData();
+          })
+          .catch(error => {
+            // 处理错误
+            console.error('发布失败', error);
+          });
+    },
+    resetPostDynamicData() {
+      // 清空发布动态表单
+      this.postDynamicData.newTitle = '';
+      this.postDynamicData.html = '';
+      // 可以根据需要重置其他字段
+      this.showDialog = false;
+    },
+    async fetchDynamicList() {
+      let url = '';
+      if (this.sortType === 'time') {
+        url = '/communityMessages/actions/getCommunityMessageByTime';
+      } else {
+        url = '/communityMessages/actions/getCommunityMessageByLike';
       }
-      this.showDialog = false; // 关闭对话框
+      try {
+        const response = await this.$request.get(url);
+        this.dynamicList = response.data;
+        this.dynamicList.forEach(dynamic => {
+          dynamic.showComments = false; // 初始不显示评论
+          dynamic.comments = []; // 初始化评论数组
+        });
+      } catch (error) {
+        console.error('Error fetching dynamics:', error);
+      }
+    },
+    async fetchComments(dynamic) {
+      try {
+        const response = await this.$request.get(`/communityMessages/actions/getComments?messageId=${dynamic.message_id}`);
+        dynamic.comments = response.data;
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    },
+    toggleComments(dynamic) {
+      dynamic.showComments = !dynamic.showComments;
+      if (dynamic.showComments && dynamic.comments.length === 0) {
+        this.fetchComments(dynamic);
+      }
     },
     toggleLike(dynamic) {
       dynamic.liked = !dynamic.liked; // 切换点赞状态
       dynamic.like_count += dynamic.liked ? 1 : -1; // 点赞数加1或减1
     },
-    toggleComments(dynamic) {
-      dynamic.showComments = !dynamic.showComments; // 显示或隐藏评论区
-    },
-    addComment(post) {
-      if (post.newComment.trim() !== '') {
-        const newComment = {
-          user_name: '当前用户', // 从用户状态管理中获取
-          content: post.newComment
+    async addComment(dynamic) {
+      if (!dynamic.newComment || dynamic.newComment.trim() === '') {
+        alert('评论内容不能为空');
+        return;
+      }
+      try {
+        const newCommentData = {
+          messageId: dynamic.message_id, // 当前动态的 ID
+          userId: this.userId,
+          userName: this.userName,
+          content: dynamic.newComment,
+          likeCount: 0, // 新评论的点赞数初始为 0
+          //创建时间
+          // ...其他需要的字段
         };
-        post.comments.push(newComment); // 将新评论添加到当前动态的评论列表
-        post.newComment = ''; // 清空当前动态的评论输入
+
+        const response = await this.$request.post('/community/comments', newCommentData);
+        if (response.code === 0) {
+          // 假设添加成功后，后端返回新评论的完整数据
+          dynamic.comments.push(response.data);
+          dynamic.newComment = ''; // 清空输入框
+        } else {
+          alert('添加评论失败: ' + response.message);
+        }
+      } catch (error) {
+        console.error('Error adding comment:', error);
+        alert('添加评论时发生错误');
       }
     },
 
-    // async fetchData() {
-    //   try {
-    //     const likesResponse = await axios.get('/api/likes');// 获取点赞数据,替换url
-    //     this.likes = likesResponse.data;
-    //
-    //     const commentsResponse = await axios.get('/api/comments');// 获取评论数据,替换url
-    //     this.comments = commentsResponse.data;
-    //
-    //     const messagesResponse = await axios.get('/api/private-messages');// 获取私信数据,替换url
-    //     this.messages = messagesResponse.data;
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error);
-    //     // 处理错误情况
-    //   }
-    // },
     switchMessageType(type) {
       // 切换消息类型
       this.currentMessageType = type;
@@ -346,13 +385,18 @@ export default {
       this.selectedMessage = null;
     }
   },
-  // mounted() {
-  //   // // 模拟 ajax 请求，异步渲染编辑器
-  //   // setTimeout(() => {
-  //   //   this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
-  //   // }, 1500)
-  //   this.fetchData();
-  // },
+  mounted() {
+    //从父组件中获取数据
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.userId = user.user_id;
+      this.userName = user.name;
+    }
+  },
+  created() {
+    this.fetchDynamicList();
+    this.fetchComments();
+  },
   beforeDestroy() {
     const editor = this.editor
     if (editor == null) return
