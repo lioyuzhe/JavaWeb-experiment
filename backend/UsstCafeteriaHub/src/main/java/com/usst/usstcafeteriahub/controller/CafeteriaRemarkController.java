@@ -63,6 +63,8 @@ public class CafeteriaRemarkController {
             return Result.error("参数为空");
         }
         log.info("添加食堂评价: {}", cafeteriaRemark);
+        // 如果传入食堂评价id在数据库中对应的数据的score已经存在了就变为修改
+
         boolean save = cafeteriaRemarkService.save(cafeteriaRemark);
         if(!save){
             return Result.error("添加失败");

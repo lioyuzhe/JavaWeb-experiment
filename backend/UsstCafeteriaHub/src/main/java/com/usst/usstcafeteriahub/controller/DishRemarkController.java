@@ -51,16 +51,7 @@ public class DishRemarkController {
             return Result.error("参数缺少");
         }
         log.info("添加菜品评价: {}", dishRemark);
-        DishRemark dishRemark1 = dishRemarkService.getDishRemarkByUserIdAndDishId(dishRemark.getUserId(), dishRemark.getDishId());
-        if(dishRemark1 != null) {
-            dishRemarkService.updateById(dishRemark);
-            return Result.success("更新成功");
-        }
-        boolean save = dishRemarkService.save(dishRemark);
-        if(!save){
-            return Result.error("添加失败");
-        }
-        return Result.success("添加成功");
+        return dishRemarkService.addDishRemark(dishRemark);
     }
 
     @ApiOperation("删除菜品评价")
@@ -70,7 +61,7 @@ public class DishRemarkController {
             return Result.error("参数为空");
         }
         log.info("要删除菜品评价: {}", dishRemark);
-        boolean remove = dishRemarkService.removeById(dishRemark.getDishId());
+        boolean remove = dishRemarkService.removeById(dishRemark.getRemarkId());
         if (!remove) {
             return Result.error("删除失败");
         }

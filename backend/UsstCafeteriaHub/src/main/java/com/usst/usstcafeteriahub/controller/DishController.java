@@ -76,11 +76,8 @@ public class DishController {
             return Result.error("参数为空");
         }
         log.info("添加菜品: {}", dish);
-        boolean save = dishService.save(dish);
-        if(!save){
-            return Result.error("添加失败");
-        }
-        return Result.success("添加成功");
+        return dishService.add(dish);
+
     }
 
     @ApiOperation("修改菜品")
@@ -97,5 +94,12 @@ public class DishController {
         return Result.success("修改成功");
     }
 
+    @ApiOperation("获取所有推荐菜品列表（status=1）")
+    @GetMapping("/getRecommendDish")
+    public BaseResponse getRecommendDish() {
+        List<Dish> list = dishService.getRecommendDish();
+        log.info("获取所有推荐菜品: {}", list);
+        return Result.success(list);
+    }
 
 }
