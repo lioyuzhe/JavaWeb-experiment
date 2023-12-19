@@ -2,6 +2,7 @@ package com.usst.usstcafeteriahub.mapper;
 
 import com.usst.usstcafeteriahub.model.entity.Community;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.usst.usstcafeteriahub.model.entity.CommunityComment;
 
 /**
 * @author Klein

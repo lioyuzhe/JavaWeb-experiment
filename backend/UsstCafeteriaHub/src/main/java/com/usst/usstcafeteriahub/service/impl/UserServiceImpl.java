@@ -142,7 +142,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = new User();
         user.setAccount(registerDTO.getAccount());
         user.setPassword(registerDTO.getPassword());
-        user.setRole( registerDTO.getRole());
+        if (registerDTO.getRole() == 2) {
+            user.setRole(0);
+        } else if (registerDTO.getRole() == 3) {
+            user.setRole(1);
+        } else {
+            return null;
+        }
         // 为用户设置一个随机的名字。
         user.setName(USER_NAME_PREFIX + RandomUtil.randomString(10));
         // 为用户设置默认的头像
