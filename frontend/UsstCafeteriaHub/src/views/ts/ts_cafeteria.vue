@@ -58,7 +58,14 @@ export default {
     // this.offsetTop = this.$el.querySelector('.parent-component').offsetHeight;
     // window.addEventListener('scroll', this.handleScroll);
   },
+
   methods: {
+    handleScrollToSection() {
+      const hash = window.location.hash;
+      if (hash) {
+        this.scrollToSection(hash.substring(1)); // 去掉 # 符号
+      }
+    },
     handleScroll() {
       if (window.scrollY > this.offsetTop) {
         this.isFixed = true;
