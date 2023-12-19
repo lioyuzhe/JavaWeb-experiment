@@ -15,6 +15,7 @@ import lombok.Data;
 @TableName(value ="community_message")
 @Data
 public class CommunityMessage implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long messageId;
 
     private Long communityId;
