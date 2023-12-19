@@ -10,14 +10,15 @@ te<template>
     <div class="content" style="width: 100%;">
       <!-- 顶部栏 -->
       <div class="top-container" style="position: fixed; top: 70px; margin-left: 120px;">
-        <!-- 选择食堂菜单 -->
+        <!-- 食堂选择顶部栏 -->
         <el-menu class="cafeteria-select" mode="horizontal" style="left: 10px">
 
           <!-- 使用 v-for 遍历食堂数据 -->
           <el-menu-item
               v-for="cafeteria in cafeterias"
-              :key="cafeteria.cafeteria_id"
-              :index="cafeteria.cafeteria_id"
+              :key="cafeteria.cafeteriaId"
+              :index="cafeteria.cafeteriaId"
+              @click="selectCafeteria(cafeteria)"
               style="width: 100px;"
           >
             {{ cafeteria.name }} <!-- 显示食堂名称 -->
@@ -27,12 +28,12 @@ te<template>
         <div class="right-container">
           <!-- 食堂搜索框 -->
           <el-input class="cafeteria-search" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
-          <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索食堂</el-button>
+          <el-button type="primary" icon="el-icon-search">搜索食堂</el-button>
         </div>
       </div>
       <!-- 内容区域 -->
       <div class="content-area" style="margin-top: 50px; margin-left: 150px;">
-        <ts-cafeteria-content ref="cafeteriaContent" :cafeteria="cafeterias[0]"></ts-cafeteria-content>
+        <ts-cafeteria-content ref="cafeteriaContent" :cafeteria="selectedCafeteria"></ts-cafeteria-content>
       </div>
     </div>
   </div>
@@ -47,6 +48,7 @@ export default {
       isFixed: false,
       offsetTop: 0, // 父组件底部到页面顶部的距离
       cafeterias: [], // 存储从后端接收的食堂数据
+      selectedCafeteria: null, // 添加选中的食堂信息
     };
   },
   components: {
@@ -60,6 +62,11 @@ export default {
   },
 
   methods: {
+    selectCafeteria(cafeteria) {
+      this.selectedCafeteria = cafeteria;
+      console.log('Selected Cafeteria:', this.selectedCafeteria);
+      this.$forceUpdate();
+    },
     handleScrollToSection() {
       const hash = window.location.hash;
       if (hash) {
@@ -87,6 +94,7 @@ export default {
           .then((response) => {
             // 将从后端接收的数据存储到 cafeterias 中
             this.cafeterias = response.data;
+            // console.log('Cafeteria Data:', this.cafeterias);
           })
           .catch((error) => {
             console.error('Failed to fetch cafeterias', error);

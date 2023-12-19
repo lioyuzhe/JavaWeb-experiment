@@ -1,7 +1,13 @@
 <template>
   <div class="cafeteria-intro" v-if="cafeteria">
     <h2 class="cafeteria-title">{{ cafeteria.name }}</h2>
-    <p v-for="paragraph in formattedDescription" :key="paragraph">{{ paragraph }}</p>
+    <div class="cafeteria-description">
+      <p><strong>食堂位置：</strong>{{ cafeteria.location }}</p>
+      <p><strong>食堂管理员：</strong>{{ cafeteria.adminName }}</p>
+      <p><strong>食堂开放时间：</strong>{{ cafeteria.openTime }}~{{ cafeteria.closeTime }}</p>
+      <p><strong>食堂简介：</strong></p>
+      <p v-for="paragraph in formattedDescription" :key="paragraph">{{ paragraph }}</p>
+    </div>
   </div>
 </template>
 
