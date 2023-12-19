@@ -67,12 +67,13 @@ const routes = [
   { path: '/test', name: 'test', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
 // 师生 teacher and student  有冲突我把你们的都保留了，加了注释 ，你们自己选择要不要修改  -- 李英杰  
   {
-    path: '/',
+    path: '/ts',
     name: 'ts',
     component: () => import('../views/Ts.vue'),
     children: [
       { path: 'ts_home', name: 'ts_home', meta: { name: '师生首页' }, component: () => import('../views/ts/ts_home') },
       { path: 'ts_community', name: 'ts_community', meta: { name: '师生社区' }, component: () => import('../views/ts/ts_community') },
+      { path: 'ts_community_dynamic', name: 'ts_community_dynamic', meta: { name: '师生社区动态' }, component: () => import('../views/ts/ts_community_dynamic') },
       {
         path: '/',
         name: 'ts_cafeteria',
