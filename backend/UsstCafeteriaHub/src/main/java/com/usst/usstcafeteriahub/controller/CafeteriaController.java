@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Cafeteria 接口
+ * 食堂 接口
  * @author 黄泽旭
  */
 @Slf4j

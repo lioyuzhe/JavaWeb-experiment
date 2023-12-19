@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * CafeteriaManages 接口
+ * 食堂管理员食堂分配 接口
  * @author 黄泽旭
  */
 @Slf4j

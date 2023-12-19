@@ -1,7 +1,9 @@
 package com.usst.usstcafeteriahub.service;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -32,4 +34,17 @@ public interface DishService extends IService<Dish> {
      * @return
      */
     List<Dish> getDishByCafeteriaID(Long cafeteriaId);
+
+    /**
+     * 获取推荐菜品
+     * @return
+     */
+    List<Dish> getRecommendDish();
+
+    /**
+     * 添加菜品，但如果数据库中已经有相同的cafeteriaName和name，则不添加
+     * @param dish
+     * @return
+     */
+    BaseResponse add(@Param("dish") Dish dish);
 }

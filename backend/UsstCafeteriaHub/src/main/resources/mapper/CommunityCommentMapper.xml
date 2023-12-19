@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usst.usstcafeteriahub.mapper.CommunityCommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.usst.usstcafeteriahub.model.entity.CommunityComment">
+            <id property="commentId" column="comment_id" jdbcType="BIGINT"/>
+            <result property="messageId" column="message_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="likeCount" column="like_count" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        comment_id,message_id,user_id,
+        user_name,content,like_count,
+        create_time,deleted
+    </sql>
+    <select id="getByMessageId" resultType="com.usst.usstcafeteriahub.model.entity.CommunityComment">
+        select *
+        from community_comment
+        where message_id = #{messageId}
+    </select>
+</mapper>
