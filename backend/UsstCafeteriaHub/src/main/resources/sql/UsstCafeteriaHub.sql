@@ -262,7 +262,8 @@ CREATE TABLE `cafeteria_rank` (
                                   `rank_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'Ranking ID',
                                   `cafeteria_id` bigint NOT NULL COMMENT 'Cafeteria ID',
                                   `cafeteria_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the cafeteria',
-                                  `total_score` float NOT NULL COMMENT 'Total score',
+                                  `total_score` float COMMENT 'Total score' default 0.0,
+                                  `average_score` float COMMENT 'Average score' default 0.0,
                                   `rank` int DEFAULT NULL COMMENT 'Ranking',
                                   `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0 ，表示不删除，1 表示删除',
                                   PRIMARY KEY (`rank_id`)
@@ -355,7 +356,8 @@ CREATE TABLE `dish_rank` (
                              `cafeteria_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '食堂名',
                              `dish_id` bigint NOT NULL COMMENT '菜品ID',
                              `dish_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜品名',
-                             `total_score` float DEFAULT NULL COMMENT '总评分',
+                             `total_score` float DEFAULT 0.0 COMMENT '总评分',
+                             `average_score` float DEFAULT 0.0 COMMENT '平均评分',
                              `rank` int  COMMENT '排名',
                              PRIMARY KEY (`rank_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜品排名表' ROW_FORMAT = Dynamic;
