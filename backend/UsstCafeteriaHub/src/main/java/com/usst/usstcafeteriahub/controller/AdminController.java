@@ -24,7 +24,6 @@ import static com.usst.usstcafeteriahub.constant.WebConstants.ADMIN_LOGIN_STATE;
 @RestController
 @RequestMapping("/admins/actions")
 public class AdminController {
-
     @Resource
     private AdminService adminService;
     @Resource
