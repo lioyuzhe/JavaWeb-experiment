@@ -40,6 +40,12 @@ public interface DishMapper extends BaseMapper<Dish> {
      * @return
      */
     List<Dish> getDishByCafeteriaID(Long cafeteriaId);
+
+    /**
+     * 获取推荐菜品
+     * @return
+     */
+    List<Dish> getRecommendDish();
 }
 
 

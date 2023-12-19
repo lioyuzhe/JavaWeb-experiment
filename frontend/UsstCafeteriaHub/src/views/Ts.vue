@@ -1,8 +1,9 @@
 <template>
   <el-container>
     <!-- 头部导航栏 -->
-    <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
-      <el-row type="flex" justify="space-between" align="middle">
+  <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
+    <el-row type="flex" justify="space-between" align="middle">
+
         <el-col :span="18">
           <el-menu mode="horizontal" class="menu">
             <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
@@ -22,6 +23,7 @@
         </el-col>
       </el-row>
     </el-header>
+
     <el-main style="margin-top: 60px;">
       <router-view></router-view>
     </el-main>
@@ -80,12 +82,6 @@ export default {
 </script>
 
 <style scoped>
-.el-container {
-  /* 确保容器填满整个视口的宽度 */
-  width: 100%;
-  margin: 0;
-}
-
 .header {
   /* 设定头部的样式和对齐 */
   background-color: #fff; /* 根据需要设置背景颜色 */

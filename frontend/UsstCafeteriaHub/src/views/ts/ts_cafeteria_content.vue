@@ -48,7 +48,7 @@ export default {
     TsCafeteriaIntroduction,
     TsCafeteriaDish,
     TsCafeteriaVote,
-    TsCafeteriaComplaint
+    TsCafeteriaComplaint,
   }
 };
 </script>
