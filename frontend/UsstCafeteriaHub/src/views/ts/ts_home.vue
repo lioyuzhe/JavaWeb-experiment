@@ -70,6 +70,16 @@ export default {
   name: 'ts_home',
   data() {
     return {
+      comment: {
+        comment_id: null, // 通常由后端生成
+        message_id: '',
+        user_id: '',
+        user_name: '',
+        content: '',
+        like_count: 0,
+        create_time: new Date(), // 设置为当前时间或由用户选择
+        deleted: 0 // 默认为0
+      },
       activeTab: 'comments', // 默认显示评论
       dialogVisible: false,
       selectedItem: {},
@@ -186,6 +196,16 @@ export default {
 
   },
   methods: {
+    async submitComment() {
+      try {
+        await this.$axios.post('/community/comments/test', this.comment);
+        // 处理提交后的操作，例如清空表单、显示消息等
+      } catch (error) {
+        console.error(error);
+        // 错误处理
+      }
+    },
+
     // 点击事件处理器，用于切换活动标签
     handleIconClick(tab) {
       console.log('Tab clicked:', tab); // 添加调试信息
@@ -274,7 +294,7 @@ export default {
 }
 
 .message-list {
-  height: calc(100vh - 220px); /* 减去头部和间距的高度 */
+  height: calc(100vh - 220px);
   overflow-y: auto;
 }
 
@@ -302,12 +322,12 @@ export default {
   }
 
   .icon-tray .icon {
-    width: 33%; /* 每个图标占1/3宽度 */
+    width: 33%;
     margin-bottom: 10px;
   }
 
   .message-list {
-    height: auto; /* 移动视图高度自适应 */
+    height: auto;
   }
 }
 
