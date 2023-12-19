@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * communityUser接口
+ * 社区用户 接口
  * @author 黄泽旭
  */
 @RestController

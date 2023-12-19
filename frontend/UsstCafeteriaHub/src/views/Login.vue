@@ -7,8 +7,8 @@
       <div style="flex: 1; display: flex; align-items: center; justify-content: center">
         <el-form :model="user" style="width: 80%" :rules="rules" ref="loginRef">
           <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">欢迎登录 上海理工大学食堂点评交流社区</div>
-          <el-form-item prop="username">
-            <el-input prefix-icon="el-icon-user" size="medium" placeholder="请输入账号" v-model="user.username"></el-input>
+          <el-form-item prop="account">
+            <el-input prefix-icon="el-icon-user" size="medium" placeholder="请输入账号" v-model="user.account"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input prefix-icon="el-icon-lock" size="medium" show-password placeholder="请输入密码" v-model="user.password"></el-input>
@@ -21,11 +21,11 @@
               </div>
             </div>
           </el-form-item>
-          <el-radio-group v-model="radio">
-            <el-radio :label=0>系统管理员</el-radio>
-            <el-radio :label=1>食堂管理员</el-radio>
-            <el-radio :label=2>学生</el-radio>
-            <el-radio :label=3>老师</el-radio>
+          <el-radio-group v-model="user.role">
+            <el-radio :label="0">系统管理员</el-radio>
+            <el-radio :label="1">食堂管理员</el-radio>
+            <el-radio :label="2">学生</el-radio>
+            <el-radio :label="3">老师</el-radio>
           </el-radio-group>
           <el-form-item>
             <el-button type="primary" style="width: 100%" @click="login">登 录</el-button>
@@ -80,7 +80,6 @@ export default {
     }
 
     return {
-      radio:'0',
       // forgetUserForm: {},   // 忘记密码的表单数据
       // forgetPassDialogVis: false,
       code: '',  // 验证码组件传递过来的code
@@ -88,10 +87,10 @@ export default {
         code: '',   // 表单里用户输入的code 验证码
         account: '',
         password: '',
-        role:this.radio,
+        role: 0  // 默认是系统管理员
       },
       rules: {
-        username: [
+        account: [
           { required: true, message: '请输入账号', trigger: 'blur' },
         ],
         password: [
@@ -133,6 +132,7 @@ export default {
         if (valid) {
           // 验证通过
           this.$request.post('/login', this.user).then(res => {
+            console.log(this.user);
             if (res.code === 200 && this.user.role === 0) {
               this.$router.push('/manager')
               this.$message.success('登录成功')

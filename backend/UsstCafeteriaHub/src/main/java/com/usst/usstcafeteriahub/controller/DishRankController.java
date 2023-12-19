@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * DishRank 接口
+ * 菜品排名 接口
  * @author 黄泽旭
  */
 @Slf4j
