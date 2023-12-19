@@ -24,8 +24,7 @@
         select
         <include refid="Base_Column_List"/>
         from dish_rank
-        where cafeteria_id = #{cafeteriaId}
-        order by total_score desc
+        order by average_score desc
     </select>
     <!--根据菜品ID获取菜品排名-->
     <select id="getDishRankByDishId" resultType="com.usst.usstcafeteriahub.model.entity.DishRank">
@@ -33,5 +32,13 @@
         <include refid="Base_Column_List"/>
         from dish_rank
         where dish_id = #{dishId}
+    </select>
+    <!--根据食堂ID获取菜品排名-->
+    <select id="getDishRanksBycafeteriaId" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaRank">
+        select
+        <include refid="Base_Column_List"/>
+        from dish_rank
+        where cafeteria_id = #{cafeteriaId}
+        order by average_score desc
     </select>
 </mapper>

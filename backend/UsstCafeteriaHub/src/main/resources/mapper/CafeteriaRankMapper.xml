@@ -11,11 +11,13 @@
             <result property="totalScore" column="total_score" jdbcType="FLOAT"/>
             <result property="rank" column="rank" jdbcType="INTEGER"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+            <result property="averageScore" column="average_score" jdbcType="FLOAT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         rank_id,cafeteria_id,cafeteria_name,
-        total_score,rank,deleted
+        total_score,rank,deleted,
+        average_score
     </sql>
     <!--获取食堂排行榜,totalScore,由高到低排列-->
     <select id="getCafeteriaRank" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaRank">

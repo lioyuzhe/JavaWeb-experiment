@@ -13,7 +13,6 @@ import lombok.Data;
 @TableName(value ="cafeteria_rank")
 @Data
 public class CafeteriaRank implements Serializable {
-    @TableId(type = IdType.AUTO)
     private Long rankId;
 
     private Long cafeteriaId;
@@ -25,6 +24,8 @@ public class CafeteriaRank implements Serializable {
     private Integer rank;
 
     private Integer deleted;
+
+    private Double averageScore;
 
     private static final long serialVersionUID = 1L;
 }
