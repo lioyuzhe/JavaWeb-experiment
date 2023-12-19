@@ -32,7 +32,7 @@ te<template>
       </div>
       <!-- 内容区域 -->
       <div class="content-area" style="margin-top: 50px; margin-left: 150px;">
-        <ts-cafeteria-content ref="cafeteriaContent"></ts-cafeteria-content>
+        <ts-cafeteria-content ref="cafeteriaContent" :cafeteria="cafeterias[0]"></ts-cafeteria-content>
       </div>
     </div>
   </div>

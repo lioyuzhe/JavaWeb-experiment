@@ -22,7 +22,7 @@
       <h2>投诉食堂</h2>
       <el-divider></el-divider>
     </div>
-    <ts-cafeteria-complaint></ts-cafeteria-complaint>
+    <ts-cafeteria-complaint :cafeteria="cafeteria"></ts-cafeteria-complaint>
   </div>
 </template>
 
@@ -33,6 +33,9 @@ import TsCafeteriaVote from './ts_cafeteria/ts_cafeteria_vote.vue';
 import TsCafeteriaComplaint from './ts_cafeteria/ts_cafeteria_complaint.vue';
 
 export default {
+  props: {
+    cafeteria: Object,
+  },
   mounted() {
     // 检查是否有锚点
     const hash = window.location.hash;

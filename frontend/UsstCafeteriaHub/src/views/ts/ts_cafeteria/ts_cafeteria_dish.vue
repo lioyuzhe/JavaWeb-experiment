@@ -52,11 +52,9 @@
 <script>
 export default {
   name: 'TsCafeteriaDish',
-  props: {
-    userId: Number,
-    userName: String,
-    // 其他属性...
-  },
+  // props: {
+  //   user: JSON.parse(localStorage.getItem('user'))
+  // },
   data() {
     return {
       dialogVisible: false, // 控制弹窗显示
@@ -65,6 +63,7 @@ export default {
       rating: 0, // 评分
       review: '', // 评价内容
       imagePreviewUrl: '', // 用于存储图片预览的 URL
+      user: JSON.parse(localStorage.getItem('user')),
     };
   },
   created() {
@@ -92,29 +91,28 @@ export default {
       if (file) {
         // 创建一个 FileReader 对象用于读取文件
         const reader = new FileReader();
-
         // 当文件被读取时，设置 imagePreviewUrl 为读取的内容
         reader.onload = (e) => {
           this.imagePreviewUrl = e.target.result;
         };
-
         // 读取文件
         reader.readAsDataURL(file);
-
         // 这里还可以添加将文件上传到服务器的逻辑
       }
     },
     submitReview() {
+      console.log("this.user",this.user)
       const payload = {
-        userId: this.userId, // 确保这些值已经通过 props 或 data 获取
-        userName: this.userName,
-        dishId: this.selectedDish.id,
+        userId: this.user.userId, // 从props中获取用户ID
+        userName: this.user.name, // 从props中获取用户名
+        dishId: this.selectedDish.dishId,
         dishName: this.selectedDish.name,
-        rating: this.rating,
-        review: this.review,
+        content: this.review,
+        score: this.rating,
         // 如果有图片，也应该包含在 payload 中
-        deleted: 0
+        // deleted: 0
       };
+      console.log("payload",payload);
 
       // 发送数据
       this.$request.post('/dishRemarks/actions/addDishRemark', payload)
@@ -129,6 +127,7 @@ export default {
           })
           .catch(error => {
             // 处理错误
+
             let message = '提交失败，请稍后重试。';
             // 如果错误中有更具体的信息，可以使用它
             if (error.response && error.response.data) {
@@ -141,13 +140,19 @@ export default {
             // 可以在这里添加任何其他错误处理逻辑
           });
     },
+
     cancelReview() {
-      // 实现取消操作的逻辑
+      this.clearForm();
+      this.dialogVisible = false;
+    },
+
+    clearForm() {
       this.rating = 0;
       this.review = '';
-      this.dialogVisible = false; // 如果使用弹窗
-      // 清除其他相关数据
+      // 清除图片预览URL或其他相关数据
+      this.imagePreviewUrl = '';
     },
+
   }
 };
 </script>
