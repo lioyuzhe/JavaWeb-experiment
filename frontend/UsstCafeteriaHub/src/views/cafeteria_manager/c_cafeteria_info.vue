@@ -61,17 +61,27 @@
         <!--        主体区域-->
         <el-main>
           <router-view @update:user="updateUser" />
-          <el-table :data="canteenInfo" style="width: 100%">
-            <el-table-column prop="property" label="属性"></el-table-column>
-            <el-table-column prop="value" label="信息">
-              <template slot-scope="scope">
-                <div v-if="scope.$index === editableRowIndex">
-                  <el-input v-model="scope.row.value" @blur="saveRow(scope.$index)"></el-input>
-                </div>
-                <div v-else @click="editableRowIndex = scope.$index">{{ scope.row.value }}</div>
-              </template>
-            </el-table-column>
-          </el-table>
+          <div v-for="canteen in canteens" :key="canteen.cafeteriaId">
+            <p>{{ canteen.name }}
+              <el-button @click="showCanteenInfo(canteen.cafeteriaId)">查看</el-button></p>
+          </div>
+
+          <!-- el-dialog 用于展示食堂信息和编辑 -->
+          <el-dialog :visible.sync="dialogVisible" title="食堂信息编辑" @close="dialogVisible = false">
+            <el-table :data="currentCanteenInfo" style="width: 100%">
+              <el-table-column prop="property" label="属性"></el-table-column>
+              <el-table-column prop="value" label="信息">
+                <template v-slot="scope">
+                  <div v-if="scope.$index === editableRowIndex">
+                    <el-input v-model="scope.row.value" @blur="saveRow(scope.$index)"></el-input>
+                  </div>
+                  <div v-else @click="editableRowIndex = scope.$index">{{ scope.row.value }}</div>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button type="primary" @click="saveToBackend">确定</el-button>
+            <el-button @click="dialogVisible = false">取消</el-button>
+          </el-dialog>
         </el-main>
 
       </el-container>
@@ -84,22 +94,15 @@
 <script>
 
 import user from "@/views/manager/User";
-
+import axios from 'axios';
 export default {
   name: 'HomeView',
   data() {
     return {
+      canteens: [], // 存放从后端获取的多个食堂信息
+      dialogVisible: false,
       editableRowIndex: -1,
-      canteenInfo: [
-        { property: '食堂名称', value: '上海理工大学食堂' },
-        { property: '食堂位置', value: '上海理工大学军工路' },
-        { property: '食堂简介', value: '这是一个食堂' },
-        { property: '主管工号', value: '9001' },
-        { property: '食堂主管', value: '小叮咚' },
-        { property: '特色菜品', value: 'XXX菜、YYY菜' },
-        { property: '营业时间', value: '早餐：7:00 - 9:00, 午餐：11:30 - 14:00, 晚餐：17:30 - 20:00' },
-
-      ],
+      currentCanteenInfo: [], // 存放当前选中食堂的信息
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
       collapseIcon: 'el-icon-s-fold',
@@ -111,9 +114,68 @@ export default {
   //     this.$router.push('/login')
   //   }
   // },
+  created() {
+    this.fetchCanteens(); // 获取多个食堂信息
+  },
   methods: {
     saveRow(index) {
       this.editableRowIndex = -1; // 退出编辑状态
+    },
+    fetchCanteens() {
+      axios.get('http://localhost:9090/cafeterias/actions/getCafeteria')
+          .then(response => {
+            this.canteens = response.data.data;
+          })
+          .catch(error => {
+            console.error('Error fetching canteens:', error);
+          });
+    },
+    showCanteenInfo(canteenId) {
+      // 根据食堂 ID 获取食堂详细信息
+      axios.get('http://localhost:9090/admins/actions/getCafeteriaById',{
+        params: {
+          id: canteenId
+        }
+      })
+          .then(response => {
+            const myObject = response.data.data; // 将后端返回的食堂信息赋值给 currentCanteenInfo
+            this.currentCanteenInfo =[]
+            this.currentCanteenInfo.push({ property: 'cafeteriaId', value: myObject.cafeteriaId });
+            this.currentCanteenInfo.push({ property: 'name', value: myObject.name });
+            this.currentCanteenInfo.push({ property: 'location', value: myObject.location });
+            this.currentCanteenInfo.push({ property: 'description', value: myObject.description });
+            this.currentCanteenInfo.push({ property: 'adminId', value: myObject.adminId });
+            this.currentCanteenInfo.push({ property: 'adminName', value: myObject.adminName });
+            this.currentCanteenInfo.push({ property: 'openTime', value: myObject.openTime });
+            this.currentCanteenInfo.push({ property: 'closeTime', value: myObject.closeTime });
+            this.currentCanteenInfo.push({ property: 'deleted', value: myObject.deleted });
+            console.log(this.currentCanteenInfo)
+            this.dialogVisible = true; // 显示 el-dialog
+          })
+          .catch(error => {
+            console.error('Error fetching canteen info:', error);
+          });
+    },
+    saveToBackend() {
+      //发送编辑后的食堂信息到后端
+      axios.post('http://localhost:9090/cafeterias/actions/updateCafeteria',{
+          cafeteriaId:this.currentCanteenInfo[0].value,
+          name:this.currentCanteenInfo[1].value,
+          location:this.currentCanteenInfo[2].value,
+          description:this.currentCanteenInfo[3].value,
+          adminId: this.currentCanteenInfo[4].value,
+          adminName:this.currentCanteenInfo[5].value,
+          openTime:this.currentCanteenInfo[6].value,
+          closeTime:this.currentCanteenInfo[7].value,
+          deleted: this.currentCanteenInfo[8].value
+      })
+          .then(response => {
+            console.log('Successfully saved to backend:');
+            this.dialogVisible = false; // 关闭 el-dialog
+          })
+          .catch(error => {
+            console.error('Error saving to backend:', error);
+          });
     },
     updateUser(user) {   // 获取子组件传过来的数据  更新当前页面的数据
       this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
@@ -133,63 +195,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.el-menu--inline {
-  background-color: #000c17 !important;
-}
-.el-menu--inline .el-menu-item {
-  background-color: #000c17 !important;
-  padding-left: 49px !important;
-}
-.el-menu-item:hover, .el-submenu__title:hover {
-  color: #fff !important;
-}
-.el-submenu__title:hover i {
-  color: #fff !important;
-}
-.el-menu-item:hover i {
-  color: #fff !important;
-}
-.el-menu-item.is-active {
-  background-color: #1890ff !important;
-  border-radius: 5px !important;
-  width: calc(100% - 8px);
-  margin-left: 4px;
-}
-.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
-  margin-left: -4px;
-}
-.el-menu-item {
-  height: 40px !important;
-  line-height: 40px !important;
-}
-.el-submenu__title {
-  height: 40px !important;
-  line-height: 40px !important;
-}
-.el-submenu .el-menu-item {
-  min-width: 0 !important;
-}
-.el-menu--inline .el-menu-item.is-active {
-  padding-left: 45px !important;
-}
-/*.el-submenu__icon-arrow {*/
-/*  margin-top: -5px;*/
-/*}*/
-
-.el-aside {
-  transition: width .3s;
-  box-shadow: 2px 0 6px rgba(0,21,41,.35);
-}
-.logo-title {
-  margin-left: 5px;
-  font-size: 20px;
-  transition: all .3s;   /* 0.3s */
-}
-.el-header {
-  box-shadow: 2px 0 6px rgba(0,21,41,.35);
-  display: flex;
-  align-items: center;
-}
-</style>
