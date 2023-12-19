@@ -86,7 +86,7 @@
       }
     },
     mounted() {   // 页面加载完成之后触发
-      if (!this.user.id) {   // 当前的浏览器没有用户信息
+      if (!this.user.adminId) {   // 当前的浏览器没有用户信息
         this.$router.push('/login')
       }
     },
