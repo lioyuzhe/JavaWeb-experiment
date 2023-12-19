@@ -14,14 +14,15 @@ request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
     let user = JSON.parse(localStorage.getItem("user") || '{}')
     let admin = JSON.parse(localStorage.getItem("admin") || '{}')
-    let cafeteria_manager = JSON.parse(localStorage.getItem("cafeteria_manager") || '{}')
+    let cafeteria_admin = JSON.parse(localStorage.getItem("cafeteria_admin") || '{}')
     if (user.token == null && admin.token == null && cafeteria_manager.token == null) {
         $message.error('请先登录');
         router.push('/login')
     }
-    if (user.token != null) config.headers['token'] = user.token  // 设置请求头
-    if (admin.token != null) config.headers['token'] = user.token  // 设置请求头
-    if (cafeteria_manager.token != null) config.headers['token'] = user.token  // 设置请求头
+    let role = JSON.parse(localStorage.getItem("role") || '{}')
+    if (role===2 || role ===3 ) config.headers['token'] = user.token  // 设置请求头
+    if (role === 0) config.headers['token'] = admin.token  // 设置请求头
+    if (role === 1 ) config.headers['token'] = cafeteria_admin.token  // 设置请求头
     return config
 }, error => {
     console.error('request error: ' + error) // for debug
