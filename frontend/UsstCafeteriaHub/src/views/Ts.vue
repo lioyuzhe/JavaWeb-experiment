@@ -1,37 +1,37 @@
 <template>
   <el-container>
     <!-- 头部导航栏 -->
-  <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
-    <el-row type="flex" justify="space-between" align="middle">
-      <el-col :span="18">
-        <el-menu mode="horizontal" class="menu">
-          <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
-          <el-menu-item index="2" @click="goto('community')">社区</el-menu-item>
-          <el-menu-item index="3" @click="goto('canteen')">食堂</el-menu-item>
-        </el-menu>
-      </el-col>
-      <!-- 填充剩余空间，将头像推到右侧 -->
-      <el-col :span="18"></el-col> <!-- 根据实际情况调整span大小，以填充头像左侧的空间 -->
-      <el-col :span="6">
-        <el-popover
-            placement="bottom"
-            width="200"
-            trigger="hover"
-            v-model="userProfileVisible"
-        >
-          <p>用户活跃度：{{ user.activityLevel }}</p>
-          <p>用户id：{{ user.userId }}</p>
-          <p>用户账号：{{ user.account }}</p>
-          <p>用户名：{{ user.name }}</p>
-          <p>用户邮箱：{{ user.email }}</p>
-          <p>用户手机号：{{ user.phone }}</p>
+    <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
+      <el-row type="flex" justify="space-between" align="middle">
+        <el-col :span="18">
+          <el-menu mode="horizontal" class="menu">
+            <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
+            <el-menu-item index="2" @click="goto('community')">社区</el-menu-item>
+            <el-menu-item index="3" @click="goto('canteen')">食堂</el-menu-item>
+          </el-menu>
+        </el-col>
+        <!-- 填充剩余空间，将头像推到右侧 -->
+        <el-col :span="18"></el-col> <!-- 根据实际情况调整span大小，以填充头像左侧的空间 -->
+        <el-col :span="6">
+          <el-popover
+              placement="bottom"
+              width="200"
+              trigger="hover"
+              v-model="userProfileVisible"
+          >
+            <p>用户活跃度：{{ user.activityLevel }}</p>
+            <p>用户id：{{ user.userId }}</p>
+            <p>用户账号：{{ user.account }}</p>
+            <p>用户名：{{ user.name }}</p>
+            <p>用户邮箱：{{ user.email }}</p>
+            <p>用户手机号：{{ user.phone }}</p>
 
-          <template #reference>
-            <el-avatar :src="user.avatar" size="large"></el-avatar>
-          </template>
-        </el-popover>
-      </el-col>
-    </el-row>
+            <template #reference>
+              <el-avatar :src="user.avatar" size="large"></el-avatar>
+            </template>
+          </el-popover>
+        </el-col>
+      </el-row>
     </el-header>
 
     <el-main style="margin-top: 60px;">
