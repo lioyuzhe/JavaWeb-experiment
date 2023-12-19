@@ -34,6 +34,13 @@ public interface CafeteriaRemarkMapper extends BaseMapper<CafeteriaRemark> {
      * @return
      */
     CafeteriaRemark getCafeteriaRemarkByUserIdAndCafeteriaId(Long userId, Long cafeteriaId);
+
+    /**
+     * 根据食堂ID获取食堂评价数量
+     * @param cafeteriaId
+     * @return
+     */
+    int getCountByCafeteriaId(Long cafeteriaId);
 }
 
 

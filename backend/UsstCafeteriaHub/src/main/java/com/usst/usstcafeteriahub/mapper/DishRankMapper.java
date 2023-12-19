@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.mapper;
 
+import com.usst.usstcafeteriahub.model.entity.CafeteriaRank;
 import com.usst.usstcafeteriahub.model.entity.DishRank;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -26,7 +27,12 @@ public interface DishRankMapper extends BaseMapper<DishRank> {
      */
     DishRank getDishRankByDishId(Long dishId);
 
-
+    /**
+     * 根据食堂ID获取菜品排名
+     * @param cafeteriaId
+     * @return
+     */
+    List<CafeteriaRank> getDishRanksBycafeteriaId(Long cafeteriaId);
 }
 
 

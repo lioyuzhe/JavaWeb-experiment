@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.util.List;
 
 /**
-* @author Klein
+* @author HrizonX
 * @description 针对表【cafeteria_rank(食堂排名表)】的数据库操作Mapper
-* @createDate 2023-12-10 15:33:38
+* @createDate 2023-12-20 06:55:19
 * @Entity com.usst.usstcafeteriahub.model.entity.CafeteriaRank
 */
 public interface CafeteriaRankMapper extends BaseMapper<CafeteriaRank> {

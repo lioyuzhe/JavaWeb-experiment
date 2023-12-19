@@ -1,5 +1,3 @@
-
-
 create schema if not exists UsstCafeteriaHub;
 
 SET NAMES utf8mb4;

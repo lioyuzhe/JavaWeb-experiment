@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
-* @author Klein
+* @author HrizonX
 * @description 针对表【cafeteria_rank(食堂排名表)】的数据库操作Service
-* @createDate 2023-12-10 15:33:38
+* @createDate 2023-12-20 06:55:19
 */
 public interface CafeteriaRankService extends IService<CafeteriaRank> {
 
