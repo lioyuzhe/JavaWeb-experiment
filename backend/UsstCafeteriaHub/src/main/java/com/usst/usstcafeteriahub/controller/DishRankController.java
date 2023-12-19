@@ -24,7 +24,7 @@ public class DishRankController {
     @Resource
     private DishRankService dishRankService;
 
-    @ApiOperation("获取菜品排行榜,Score由高到低排列")
+    @ApiOperation("获取菜品排行榜,根据 平均score：total_score/数据数 由高到低排列")
     @GetMapping("/getDishRank")
     public BaseResponse getDishRank() {
         List<DishRank> list = dishRankService.getDishRank();
@@ -32,6 +32,5 @@ public class DishRankController {
         return Result.success(list);
     }
 
-
-
+    // 不开设菜品排名的添加，这个行为在添加菜品时自动完成
 }
