@@ -9,7 +9,7 @@
             <result property="cafeteriaId" column="cafeteria_id" jdbcType="BIGINT"/>
             <result property="cafeteriaName" column="cafeteria_name" jdbcType="VARCHAR"/>
             <result property="totalScore" column="total_score" jdbcType="FLOAT"/>
-            <result property="rank" column="rank" jdbcType="INTEGER"/>
+            <result property="ranking" column="ranking" jdbcType="INTEGER"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
             <result property="averageScore" column="average_score" jdbcType="FLOAT"/>
     </resultMap>

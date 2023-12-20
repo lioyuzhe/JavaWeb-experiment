@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
-* @author Klein
+* @author HrizonX
 * @description 针对表【cafeteria_rank(食堂排名表)】的数据库操作Service实现
-* @createDate 2023-12-10 15:33:38
+* @createDate 2023-12-20 11:08:22
 */
 @Service
 public class CafeteriaRankServiceImpl extends ServiceImpl<CafeteriaRankMapper, CafeteriaRank>
