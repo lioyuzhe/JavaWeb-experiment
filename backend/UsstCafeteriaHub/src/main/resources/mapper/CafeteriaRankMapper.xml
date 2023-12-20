@@ -16,7 +16,7 @@
 
     <sql id="Base_Column_List">
         rank_id,cafeteria_id,cafeteria_name,
-        total_score,rank,deleted,
+        total_score,ranking,deleted,
         average_score
     </sql>
     <!--获取食堂排行榜,totalScore,由高到低排列-->
