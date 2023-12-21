@@ -99,7 +99,7 @@
 import user from "@/views/manager/User";
 import axios from 'axios';
 export default {
-  name: 'HomeView',
+  name: 'c_cafeteria_info',
   data() {
     return {
       tempcanteen:[],//删除时临时存放选中餐厅信息
