@@ -27,8 +27,9 @@ te<template>
         <!-- 食堂搜索框 -->
         <div class="right-container">
           <!-- 食堂搜索框 -->
-          <el-input class="cafeteria-search" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
-          <el-button type="primary" icon="el-icon-search">搜索食堂</el-button>
+          <!-- 绑定 v-model 到 cafeteriaSearch -->
+          <el-input class="cafeteria-search" v-model="cafeteriaSearch" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
+          <el-button type="primary" icon="el-icon-search" @click="searchCafeteria">搜索食堂</el-button>
         </div>
       </div>
       <!-- 内容区域 -->
@@ -49,6 +50,7 @@ export default {
       offsetTop: 0, // 父组件底部到页面顶部的距离
       cafeterias: [], // 存储从后端接收的食堂数据
       selectedCafeteria: null, // 添加选中的食堂信息
+      cafeteriaSearch: '', // 用于绑定搜索框的输入值
     };
   },
   components: {
@@ -62,6 +64,28 @@ export default {
   },
 
   methods: {
+    searchCafeteria() {
+      // 将搜索关键词转换为小写以实现大小写不敏感的搜索
+      const searchKeyword = this.cafeteriaSearch.toLowerCase();
+
+      // 查找第一个名称包含搜索关键词的食堂
+      const foundCafeteria = this.cafeterias.find(cafeteria =>
+          cafeteria.name.toLowerCase().includes(searchKeyword)
+      );
+
+      if (foundCafeteria) {
+        this.selectCafeteria(foundCafeteria);
+        this.$message({
+          message: `已切换到${foundCafeteria.name}食堂`,
+          type: 'success'
+        });
+      } else {
+        this.$message({
+          message: '未找到该食堂',
+          type: 'warning'
+        });
+      }
+    },
     selectCafeteria(cafeteria) {
       this.selectedCafeteria = cafeteria;
       console.log('Selected Cafeteria:', this.selectedCafeteria);
