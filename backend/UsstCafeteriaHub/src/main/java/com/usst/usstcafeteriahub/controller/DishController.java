@@ -3,6 +3,7 @@ package com.usst.usstcafeteriahub.controller;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Dish;
+import com.usst.usstcafeteriahub.service.DishRankService;
 import com.usst.usstcafeteriahub.service.DishService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
@@ -77,7 +78,6 @@ public class DishController {
         }
         log.info("添加菜品: {}", dish);
         return dishService.add(dish);
-
     }
 
     @ApiOperation("修改菜品")
