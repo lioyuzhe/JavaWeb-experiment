@@ -73,7 +73,24 @@ export default {
     };
   },
   created() {
+    console.log('Component created！');
     this.fetchDishes();
+    console.log('TsCafeteriaDish created with cafeteria:', this.cafeteria);
+  },
+  mounted() {
+    console.log('Component mounted！');
+    console.log('TsCafeteriaDish mounted with cafeteria:', this.cafeteria);
+    if (this.cafeteria && this.cafeteria.cafeteriaId) {
+      this.fetchDishes();
+    }
+  },
+  watch: {
+    cafeteria(newVal, oldVal) {
+      if (newVal && newVal.cafeteriaId) {
+        console.log('Cafeteria updated, fetching dishes for:', newVal);
+        this.fetchDishes();
+      }
+    }
   },
   methods: {
     viewDetails(dish) {
@@ -81,8 +98,18 @@ export default {
       this.dialogVisible = true; // 显示弹窗
     },
     async fetchDishes() {
+      console.log('Fetching dishes for cafeteria:', this.cafeteria);
+      // 确保有有效的食堂 ID
+      if (!this.cafeteria || !this.cafeteria.cafeteriaId) {
+        console.error('No cafeteria ID available for fetching dishes.');
+        return;
+      }
+
+      const cafeteriaId = this.cafeteria.cafeteriaId; // 从 cafeteria prop 获取食堂 ID
+      const url = `/dishes/actions/getDishByCafeteriaID?cafeteriaId=${cafeteriaId}`; // 构建请求 URL
+
       try {
-        const response = await this.$request.get('/dishes/actions/getDishByCafeteriaID?cafeteriaId=1');
+        const response = await this.$request.get(url);
         this.dishes = response.data;
       } catch (error) {
         console.error('Error fetching dishes:', error);
