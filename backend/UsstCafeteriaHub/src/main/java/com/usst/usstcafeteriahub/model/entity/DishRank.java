@@ -13,6 +13,7 @@ import lombok.Data;
 @TableName(value ="dish_rank")
 @Data
 public class DishRank implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Long rankId;
 
     private Long cafeteriaId;
@@ -25,7 +26,7 @@ public class DishRank implements Serializable {
 
     private Double totalScore;
 
-    private Integer rank;
+    private Integer ranking;
 
     private Double averageScore;
 

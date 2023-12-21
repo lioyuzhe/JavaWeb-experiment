@@ -16,7 +16,7 @@ import java.util.Map;
 /**
 * @author HrizonX
 * @description 针对表【dish_rank(菜品排名表)】的数据库操作Service实现
-* @createDate 2023-12-20 05:44:28
+* @createDate 2023-12-20 11:11:55
 */
 @Service
 @Slf4j
@@ -26,7 +26,6 @@ public class DishRankServiceImpl extends ServiceImpl<DishRankMapper, DishRank>
     private DishRankMapper dishRankMapper;
     @Resource
     private DishRemarkMapper dishRemarkMapper;
-
 
     /**
      * 返回菜品排名。
