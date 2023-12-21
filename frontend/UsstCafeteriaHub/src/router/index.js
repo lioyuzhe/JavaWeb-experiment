@@ -92,22 +92,22 @@ const routes = [
           {path: 'ts_cafeteria_vote', name: 'ts_cafeteria_vote', meta: { name: '师生食堂投票' }, component: () => import('../views/ts/ts_cafeteria/ts_cafeteria_vote.vue'), props: (route) => ({ userInfo: route.params.user })}
         ]
       },
-      // {
-      //   path: '/',
-      //   name: 'ts_cafeteria',
-      //   meta: { name: '师生食堂' },
-      //   component: () => import('../views/ts/ts_cafeteria.vue'),
-      //   children: [
-      //     // ...已有的子路由...
-      //     {
-      //       path: 'ts_cafeteria_content', // 修改这里
-      //       name: 'ts_cafeteria_content',
-      //       meta: { name: '师生食堂内容' },
-      //       component: () => import('../views/ts/ts_cafeteria_content.vue')
-      //     }
-      //   ],
-      //   props: (route) => ({ userInfo: route.params.user })
-      // }
+      {
+        path: '/',
+        name: 'ts_cafeteria',
+        meta: { name: '师生食堂' },
+        component: () => import('../views/ts/ts_cafeteria.vue'),
+        children: [
+          // ...已有的子路由...
+          {
+            path: 'ts_cafeteria_content', // 修改这里
+            name: 'ts_cafeteria_content',
+            meta: { name: '师生食堂内容' },
+            component: () => import('../views/ts/ts_cafeteria_content.vue')
+          }
+        ],
+        props: (route) => ({ userInfo: route.params.user })
+      }
     ]
   },
 ]

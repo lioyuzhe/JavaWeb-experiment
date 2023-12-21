@@ -27,9 +27,12 @@ te<template>
         <!-- 食堂搜索框 -->
         <div class="right-container">
           <!-- 食堂搜索框 -->
-          <!-- 绑定 v-model 到 cafeteriaSearch -->
-          <el-input class="cafeteria-search" v-model="cafeteriaSearch" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
-          <el-button type="primary" icon="el-icon-search" @click="searchCafeteria">搜索食堂</el-button>
+          <!-- 使用表单来包裹输入框和按钮 -->
+          <form @submit.prevent="searchCafeteria" class="searchCa">
+            <!-- 绑定 v-model 到 cafeteriaSearch -->
+            <el-input class="cafeteria-search" v-model="cafeteriaSearch" placeholder="请输入食堂" prefix-icon="el-icon-search"></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="searchCafeteria">搜索食堂</el-button>
+          </form>
         </div>
       </div>
       <!-- 内容区域 -->
@@ -76,12 +79,12 @@ export default {
       if (foundCafeteria) {
         this.selectCafeteria(foundCafeteria);
         this.$message({
-          message: `已切换到${foundCafeteria.name}食堂`,
+          message: `已切换到${foundCafeteria.name}！`,
           type: 'success'
         });
       } else {
         this.$message({
-          message: '未找到该食堂',
+          message: '未找到该食堂！',
           type: 'warning'
         });
       }
@@ -90,6 +93,10 @@ export default {
       this.selectedCafeteria = cafeteria;
       console.log('Selected Cafeteria:', this.selectedCafeteria);
       this.$forceUpdate();
+      this.$message({
+        message: `已切换到${cafeteria.name}`,
+        type: 'success'
+      });
     },
     handleScrollToSection() {
       const hash = window.location.hash;
@@ -132,6 +139,13 @@ export default {
 </script>
 
 <style scoped>
+.searchCa {
+  display: flex;
+  justify-content: flex-end; /* 将内容推向右边 */
+  align-items: center; /* 垂直居中对齐 */
+  /* 您可以根据需要添加更多样式，比如外边距、内边距等 */
+}
+
 .main-container {
   display: flex;
 }

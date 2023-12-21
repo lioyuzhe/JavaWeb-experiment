@@ -2,8 +2,12 @@
   <div class="dish-container">
     <!-- 搜索框容器 -->
     <div class="dish-top-container">
-      <el-input class="dish-search" placeholder="请输入菜品" prefix-icon="el-icon-search"></el-input>
-      <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>
+      <!-- 绑定 v-model 到 dishSearch -->
+      <!-- 使用表单来包裹输入框和按钮 -->
+      <form @submit.prevent="searchDish">
+        <el-input class="dish-search" v-model="dishSearch" placeholder="请输入菜品" prefix-icon="el-icon-search"></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>
+      </form>
     </div>
     <!-- 菜品展示 -->
     <div class="dish-display-container">
@@ -70,6 +74,7 @@ export default {
       review: '', // 评价内容
       imagePreviewUrl: '', // 用于存储图片预览的 URL
       user: JSON.parse(localStorage.getItem('user')),
+      dishSearch: '', // 用于绑定搜索框的输入值
     };
   },
   created() {
@@ -93,6 +98,27 @@ export default {
     }
   },
   methods: {
+    searchDish() {
+      const searchKeyword = this.dishSearch.toLowerCase();
+
+      const foundDish = this.dishes.find(dish =>
+          dish.name.toLowerCase().includes(searchKeyword)
+      );
+
+      if (foundDish) {
+        this.selectedDish = foundDish;
+        this.dialogVisible = true; // 显示弹窗
+        this.$message({
+          message: `找到${foundDish.name}！`,
+          type: 'success'
+        });
+      } else {
+        this.$message({
+          message: `未找到该菜品！`,
+          type: 'warning'
+        });
+      }
+    },
     viewDetails(dish) {
       this.selectedDish = dish; // 设置被选中的菜品
       this.dialogVisible = true; // 显示弹窗
