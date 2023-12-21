@@ -39,6 +39,7 @@
                   :defaultConfig="toolbarConfig"
                   :mode="mode"
               />
+
               <Editor
                   style="height: 300px; overflow-y: hidden;"
                   v-model="html"

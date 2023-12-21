@@ -241,7 +241,7 @@ CREATE TABLE `complaint` (
                              `cafeteria_id` bigint NOT NULL COMMENT '食堂ID',
                              `cafeteria_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '食堂名',
                              `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '投诉内容',
-                             `status` int NOT NULL COMMENT '投诉处理状态，0表示未处理，1表示已处理',
+                             `status` int default 0 COMMENT '投诉处理状态，0表示未处理，1表示已处理',
                              `reply` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '投诉处理回复内容',
                              `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0表示不删除，1表示删除',
                              PRIMARY KEY (`complaint_id`)
