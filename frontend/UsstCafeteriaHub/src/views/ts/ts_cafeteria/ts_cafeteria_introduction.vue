@@ -14,9 +14,15 @@
 <script>
 export default {
   name: 'TsCafeteriaIntroduction',
+  props: {
+    cafeteria: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
-      cafeteria: null,
+      // cafeteria: null,
     };
   },
   computed: {
@@ -28,8 +34,19 @@ export default {
       return [];
     }
   },
+  // 在每个子组件中
+  mounted() {
+    console.log('Initial cafeteria prop in subcomponent:', this.cafeteria);
+  },
   created() {
     this.fetchCafeteriaData();
+  },
+  // 在每个子组件中
+  watch: {
+    cafeteria(newVal) {
+      console.log('Cafeteria prop in subcomponent updated:', newVal);
+      // 在这里添加处理 prop 变化的逻辑
+    }
   },
   methods: {
     async fetchCafeteriaData() {

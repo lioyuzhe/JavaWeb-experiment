@@ -32,7 +32,11 @@ export default {
     //   type: Object,
     //   required: true
     // },
-    cafeteria: Object,
+    // cafeteria: Object,
+    cafeteria: {
+      type: Object,
+      default: () => ({})
+    }
     // 其他可能的 props...
   },
   data() {

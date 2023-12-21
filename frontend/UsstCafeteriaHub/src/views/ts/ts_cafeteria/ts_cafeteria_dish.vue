@@ -55,6 +55,12 @@ export default {
   // props: {
   //   user: JSON.parse(localStorage.getItem('user'))
   // },
+  props: {
+    cafeteria: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
       dialogVisible: false, // 控制弹窗显示

@@ -14,6 +14,7 @@
         <el-col :span="18"></el-col> <!-- 根据实际情况调整span大小，以填充头像左侧的空间 -->
         <el-col :span="6">
           <el-popover
+              class="user-inf"
               placement="bottom"
               width="200"
               trigger="hover"
@@ -113,6 +114,136 @@ export default {
 </script>
 
 <style scoped>
+/* 修改后的样式 */
+/* 下拉框主体样式 */
+.el-popover {
+  //background-color: #fff; /* 背景色 */
+  border: 1px solid #ebeef5; /* 边框 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影 */
+  border-radius: 4px; /* 圆角 */
+  padding: 15px; /* 内边距 */
+}
+
+/* 下拉框内的文本样式 */
+.el-popover p {
+  color: #666; /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  line-height: 1.5; /* 行高 */
+  margin-bottom: 10px; /* 底部边距 */
+}
+
+/* 加强文本的显示效果 */
+.el-popover p strong {
+  color: #333; /* 强调文本的颜色 */
+  font-weight: 600; /* 字体加粗 */
+}
+
+/* 按钮样式 */
+.el-popover .el-button--text {
+  color: #409eff; /* 按钮颜色 */
+  font-size: 14px; /* 字体大小 */
+  margin-top: 10px; /* 顶部边距 */
+}
+
+/* 按钮悬停效果 */
+.el-popover .el-button--text:hover {
+  color: #67c23a; /* 按钮悬停时的颜色 */
+}
+
+/* 调整箭头样式 */
+.el-popover .popper__arrow {
+  /* 根据需要调整箭头样式 */
+}
+
+.el-popover__reference {
+  /* 边框和圆角 */
+  border: 1px solid #ebeef5;
+  border-radius: 50%; /* 圆形头像 */
+
+  /* 阴影效果 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* 过渡动画 */
+  transition: all 0.3s ease;
+
+  /* 头像背景和大小（根据需要调整） */
+  //background-color: #f9f9f9;
+  width: 40px; /* 或其他尺寸 */
+  height: 40px; /* 或其他尺寸 */
+}
+
+/* 鼠标悬停时的样式 */
+.el-popover__reference:hover {
+  /* 边框颜色变化 */
+  border-color: #409eff;
+
+  /* 轻微放大 */
+  transform: scale(1.05);
+}
+
+.el-popover {
+  //background-color: #fff; /* 设置背景颜色 */
+  border: 1px solid #ebeef5; /* 设置边框颜色和宽度 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* 添加阴影以提升层次感 */
+  border-radius: 4px; /* 圆角边框 */
+}
+
+.el-popover p {
+  color: #666; /* 文本颜色 */
+  font-size: 14px; /* 字体大小 */
+  margin: 10px 0; /* 设置上下边距 */
+}
+
+.el-popover .el-button {
+  color: #409eff; /* 按钮字体颜色 */
+  margin-top: 10px; /* 调整与上方元素的距离 */
+  align-self: center; /* 居中对齐 */
+}
+
+.el-popover .el-avatar {
+  margin: 10px auto; /* 头像居中显示 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+
+.header {
+  //background-color: #f8f8f8; /* 更现代的背景色 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 添加阴影效果 */
+  padding: 0 15px;
+  height: 70px; /* 增加高度以适应更大的头像 */
+}
+
+.menu {
+  line-height: 70px; /* 与头部高度保持一致 */
+}
+
+.menu .el-menu-item {
+  font-size: 16px; /* 调整菜单字体大小 */
+  color: #333; /* 字体颜色 */
+}
+
+.el-avatar {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff; /* 头像边框 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 头像阴影 */
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 10px;
+  }
+
+  .menu .el-menu-item {
+    font-size: 14px;
+  }
+
+  .el-avatar {
+    width: 35px;
+    height: 35px;
+  }
+}
+
 .avatar-hover {
   transition: transform 0.3s ease;
 }
@@ -126,6 +257,7 @@ export default {
   background-color: #fff; /* 根据需要设置背景颜色 */
   padding: 0 70px;
   height: 60px; /* 设定一个固定高度 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 添加阴影效果 */
 }
 
 .menu {
