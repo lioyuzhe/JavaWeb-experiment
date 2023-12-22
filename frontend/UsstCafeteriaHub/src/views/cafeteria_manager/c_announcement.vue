@@ -10,6 +10,7 @@ export default {
       tempNotice:[],//删除时临时存放选中公告信息
       newAnnouncement:[], //存放新公告信息
       notices: [], // 存放从后端获取的多个公告信息
+      chosenNotice:[],
       decideDialogVisible: false,
       addDialogVisible: false,
       dialogVisible: false,
@@ -40,7 +41,15 @@ export default {
         })
             .then(response => {
               this.notices = response.data; // 更新显示特定食堂的公告信息
-              console.log(this.notices)
+              let k=new Set;
+              for(let i=0;i<this.notices.length;i++){
+                k.add(this.notices[i].cafeteriaId)
+              }
+              for( let item of k.keys()){
+                console.log("k=",item);
+              }
+              this.chosenNotice=[...k];
+              console.log(this.chosenNotice[0]);
             })
             .catch(error => {
               console.error('Error fetching notices:', error);
@@ -101,6 +110,12 @@ export default {
       axios.get('http://localhost:9090/cafeteriaNotices/actions/getCafeteriaNotices')
           .then(response => {
             this.notices = response.data.data;
+            let k=new Set;
+            for(let i=0;i<this.notices.length;i++){
+              k.add(this.notices[i].cafeteriaId)
+            }
+            this.chosenNotice=[...k];
+            console.log(this.chosenNotice[0]);
             console.log(this.notices)
           })
           .catch(error => {
@@ -191,14 +206,13 @@ export default {
             <el-select v-model="selectedCafeteria" placeholder="选择食堂">
               <el-option :value="-1">无</el-option>
               <el-option
-                  v-for="notice in notices"
+                  v-for="notice in chosenNotice"
                   :key="notice.noticeId"
                   :label="notice.name"
-                    :value="notice.cafeteriaId"
+                    :value="notice"
               ></el-option>
             </el-select>
             <el-button @click="filterByCafeteria">筛选</el-button>
-
 
           </div>
           <el-dialog :visible.sync="addDialogVisible" title="添加公告" @close="addDialogVisible = false">
