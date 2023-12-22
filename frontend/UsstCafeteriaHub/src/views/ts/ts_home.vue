@@ -7,7 +7,6 @@
         <el-carousel :interval=4000 type="card" height="200px">
           <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">
             <el-card>
-              <img :src="promo.image_url" alt="促销图片">
               <div>
                 <h3>{{ promo.dish_name }}</h3>
                 <p>{{ promo.description }}</p>
@@ -65,11 +64,17 @@
   </div>
 </template>
 <script>
+import request from '@/utils/request';
 
 export default {
   name: 'ts_home',
   data() {
     return {
+      commentsCount: 0,
+      likesCount: 0,
+      complaintsCount: 0,
+      latestComments: [],
+      latestComplaintReplies: [],
       comment: {
         comment_id: null, // 通常由后端生成
         message_id: '',
@@ -124,81 +129,109 @@ export default {
           imageUrl: 'path/to/dish-rank-image.jpg'
         }
       ],
-
-      avatarUrl: '/ts_images/avatar.png',
-      commentsCount: 3,
-      likesCount: 2,
-      complaintsCount: 2,
       promotions: [
         {
           promotion_id: 1,
           dish_name: '促销菜品1',
           description: '促销菜品1描述。',
-          image_url: 'https://example.com/promo1.jpg'
         },
         // 可以添加更多模拟的促销信息
         {
           promotion_id: 2,
           dish_name: '最新投票调查',
           description: '最新投票调查描述。',
-          image_url: 'https://example.com/promo2.jpg'
         },
         {
           promotion_id: 3,
           dish_name: '最新食堂推荐菜品',
           description: '最新食堂推荐菜品描述。',
-          image_url: 'https://example.com/promo3.jpg'
         },
         {
           promotion_id: 4,
           dish_name: '社区热门话题',
           description: '被点赞最多的社区信息。',
-          image_url: 'https://example.com/promo4.jpg'
         },
         {
           promotion_id: 5,
           dish_name: '最新食堂排名',
           description: '最新食堂排名描述。',
-          image_url: 'https://example.com/promo5.jpg'
         },
         {
           promotion_id: 6,
           dish_name: '最新高评价菜品排名',
           description: '最新高评价菜品排名描述。',
-          image_url: 'https://example.com/promo6.jpg'
         },
       ],
       communityMessages: [
-        {message_id: 1, user_name: 'Alice', content: '今天的餐点非常美味！'},
-        {message_id: 2, user_name: 'Bob', content: '期待更多的素食选择。'},
-        {message_id: 3, user_name: 'Carol', content: '服务态度非常好，环境也很舒适。'},
+
       ],
       likes: [
-        {id: 1, user_name: 'Dave', content: 'Dave觉得你的评论很赞'},
-        {id: 2, user_name: 'Eve', content: 'Eve为你的分享点了赞'},
+
       ],
       complaints: [
-        {
-          complaint_id: 1,
-          user_name: 'Frank',
-          content: '午餐时排队等待时间太长了。',
-          reply: '我们会尽快改进排队系统，感谢反馈。'
-        },
-        {
-          complaint_id: 2,
-          user_name: 'Grace',
-          content: '食堂内部分区域卫生条件需要提高。',
-          reply: '已经通知清洁团队进行深度清理，感谢您的建议。'
-        },
+
       ],
 
     };
 
   },
+  created() {
+    this.fetchData();
+    // 定时器，每隔一定时间请求最新数据
+    setInterval(() => {
+      this.fetchLatestComments();
+      this.fetchLatestComplaintReplies();
+    }, 10000); // 比如每10秒更新一次
+  },
   methods: {
+
+    async fetchData() {
+      await this.fetchLatestComments();
+      await this.fetchLatestComplaintReplies();
+      // ...其他可能需要获取的数据
+    },
+
+    async fetchLatestComments() {
+      try {
+        const response = await this.$request.get('/community/comments/test');
+        console.log(response); // 查看完整响应
+        if (response && response.data) {
+          this.latestComments = response.data;
+        } else {
+          // 处理 response.data 为 null 的情况
+          console.error('No data returned from the API');
+        }
+      } catch (error) {
+        console.error('Error fetching latest comments:', error);
+      }
+    },
+
+    // async fetchLatestComments() {
+    //   try {
+    //     const response = await this.$request.get('/community/comments/test');
+    //     this.latestComments = response.data;
+    //     // 根据返回的数据更新评论计数
+    //     this.commentsCount = response.data.length; // 从后端获取的数据更新评论计数
+    //     // this.commentsCount = this.latestComments.length;
+    //   } catch (error) {
+    //     console.error('Error fetching latest comments:', error);
+    //   }
+    // },
+
+    async fetchLatestComplaintReplies() {
+      try {
+        const response = await this.$request.get('/complaints/actions/getComplaintReplyByUserId');
+        this.latestComplaintReplies = response.data;
+        // 根据返回的数据更新投诉回复计数
+        // this.complaintsCount = this.latestComplaintReplies.length;
+        this.complaintsCount = response.data.length; // 从后端获取的数据更新投诉回复计数
+      } catch (error) {
+        console.error('Error fetching latest complaint replies:', error);
+      }
+    },
     async submitComment() {
       try {
-        await this.$axios.post('/community/comments/test', this.comment);
+        await this.$request.post('/community/comments/test', this.comment);
         // 处理提交后的操作，例如清空表单、显示消息等
       } catch (error) {
         console.error(error);
