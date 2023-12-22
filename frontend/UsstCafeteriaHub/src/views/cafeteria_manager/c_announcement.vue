@@ -5,6 +5,8 @@ export default {
   name: "c_announcement",
   data() {
     return {
+      selectedCafeteria: '', // 存储用户选择的食堂
+      cafeterias: [], // 存储所有的食堂信息
       tempNotice:[],//删除时临时存放选中公告信息
       newAnnouncement:[], //存放新公告信息
       notices: [], // 存放从后端获取的多个公告信息
@@ -28,6 +30,25 @@ export default {
     this.fetchnotices(); // 获取多个公告信息
   },
   methods: {
+    filterByCafeteria() {
+      if (this.selectedCafeteria !==-1) {
+        // 发起请求，获取特定食堂的公告信息
+        this.$request.get('http://localhost:9090/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID', {
+          params: {
+            id: this.selectedCafeteria
+          }
+        })
+            .then(response => {
+              this.notices = response.data; // 更新显示特定食堂的公告信息
+              console.log(this.notices)
+            })
+            .catch(error => {
+              console.error('Error fetching notices:', error);
+            });
+      } else{
+        this.fetchnotices(); // 获取所有公告信息
+      }
+    },
     deleteToBackend(){
       this.$request.post('http://localhost:9090/cafeteriaNotices/actions/deleteCafeteriaNotice',{
         noticeId:this.tempNotice.noticeId,
@@ -80,6 +101,7 @@ export default {
       axios.get('http://localhost:9090/cafeteriaNotices/actions/getCafeteriaNotices')
           .then(response => {
             this.notices = response.data.data;
+            console.log(this.notices)
           })
           .catch(error => {
             console.error('Error fetching canteens:', error);
@@ -166,6 +188,18 @@ export default {
           <router-view @update:user="updateUser" />
           <div>
             <el-button @click="addAnnouncement()">添加公告</el-button>
+            <el-select v-model="selectedCafeteria" placeholder="选择食堂">
+              <el-option :value="-1">无</el-option>
+              <el-option
+                  v-for="notice in notices"
+                  :key="notice.noticeId"
+                  :label="notice.name"
+                    :value="notice.cafeteriaId"
+              ></el-option>
+            </el-select>
+            <el-button @click="filterByCafeteria">筛选</el-button>
+
+
           </div>
           <el-dialog :visible.sync="addDialogVisible" title="添加公告" @close="addDialogVisible = false">
             <div class="input-container">
