@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="box-shadow: 0 0 10px rgba(0,0,0,.1); padding: 10px 20px; border-radius: 5px; margin-bottom: 10px">
-      欢迎登录上海理工大学食堂点评交流社区 管理员页面，<strong>{{ cafeteria_admin.name }}</strong>，祝你开心每一天！
+      <h2>欢迎登录上海理工大学食堂点评交流社区 食堂管理员页面，当前管理员：<strong>{{ cafeteria_admin.name }}</strong></h2>
     </div>
 
     <div style="display: flex">
@@ -9,11 +9,11 @@
       <el-card style="width: 100%; margin-right: 10px">
         <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">我管理的食堂</div>
         <el-timeline style="padding: 0">
-          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="renderTime(item.openTime)"
+          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="'营业时间：'+renderTime(item.openTime)"
                             placement="top">
             <el-card>
               <h4>{{ item.name }}</h4>
-              <div v-html="item.description"></div>
+              <div v-html="'简介：'+item.description"></div>
             </el-card>
           </el-timeline-item>
         </el-timeline>
