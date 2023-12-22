@@ -1,20 +1,52 @@
 <template>
   <div class="cafeteria-intro" v-if="cafeteria">
     <h2 class="cafeteria-title">{{ cafeteria.name }}</h2>
-    <p v-for="paragraph in cafeteria.description" :key="paragraph">{{ paragraph }}</p>
+    <div class="cafeteria-description">
+      <p><strong>食堂位置：</strong>{{ cafeteria.location }}</p>
+      <p><strong>食堂管理员：</strong>{{ cafeteria.adminName }}</p>
+      <p><strong>食堂开放时间：</strong>{{ cafeteria.openTime }}~{{ cafeteria.closeTime }}</p>
+      <p><strong>食堂简介：</strong></p>
+      <p v-for="paragraph in formattedDescription" :key="paragraph">{{ paragraph }}</p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'TsCafeteriaIntroduction',
+  props: {
+    cafeteria: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
-      cafeteria: null,
+      // cafeteria: null,
     };
+  },
+  computed: {
+    formattedDescription() {
+      if (this.cafeteria && this.cafeteria.description) {
+        // 按换行符分割字符串
+        return this.cafeteria.description.split('\n');
+      }
+      return [];
+    }
+  },
+  // 在每个子组件中
+  mounted() {
+    console.log('Initial cafeteria prop in subcomponent:', this.cafeteria);
   },
   created() {
     this.fetchCafeteriaData();
+  },
+  // 在每个子组件中
+  watch: {
+    cafeteria(newVal) {
+      console.log('Cafeteria prop in subcomponent updated:', newVal);
+      // 在这里添加处理 prop 变化的逻辑
+    }
   },
   methods: {
     async fetchCafeteriaData() {
