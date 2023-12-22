@@ -224,7 +224,7 @@ export default {
               </div>
               <div>
                 <label>createTime:</label>
-                <el-input v-model="newAnnouncement[5]" style="width:50%"></el-input>
+                <el-input v-model="newAnnouncement[5]" style="width:50%" disabled></el-input>
               </div>
               <div>
                 <label>deleted:</label>
