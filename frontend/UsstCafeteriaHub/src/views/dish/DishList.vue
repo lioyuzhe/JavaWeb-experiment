@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-container">
     <button @click="showAddDishForm">新增菜品</button>
     <button @click="deleteSelectedDishes">批量删除</button>
     <ul>
