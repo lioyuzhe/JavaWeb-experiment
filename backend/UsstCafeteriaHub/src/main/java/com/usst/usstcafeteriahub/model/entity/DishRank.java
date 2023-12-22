@@ -26,7 +26,9 @@ public class DishRank implements Serializable {
 
     private Double totalScore;
 
-    private Integer rank;
+    private Integer ranking;
+
+    private Double averageScore;
 
     private static final long serialVersionUID = 1L;
 }

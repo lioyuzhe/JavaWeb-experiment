@@ -2,8 +2,12 @@
   <div class="dish-container">
     <!-- 搜索框容器 -->
     <div class="dish-top-container">
-      <el-input class="dish-search" placeholder="请输入菜品" prefix-icon="el-icon-search"></el-input>
-      <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>
+      <!-- 绑定 v-model 到 dishSearch -->
+      <!-- 使用表单来包裹输入框和按钮 -->
+      <form @submit.prevent="searchDish">
+        <el-input class="dish-search" v-model="dishSearch" placeholder="请输入菜品" prefix-icon="el-icon-search"></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="searchDish">搜索菜品</el-button>
+      </form>
     </div>
     <!-- 菜品展示 -->
     <div class="dish-display-container">
@@ -52,10 +56,14 @@
 <script>
 export default {
   name: 'TsCafeteriaDish',
+  // props: {
+  //   user: JSON.parse(localStorage.getItem('user'))
+  // },
   props: {
-    userId: Number,
-    userName: String,
-    // 其他属性...
+    cafeteria: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data() {
     return {
@@ -65,19 +73,69 @@ export default {
       rating: 0, // 评分
       review: '', // 评价内容
       imagePreviewUrl: '', // 用于存储图片预览的 URL
+      user: JSON.parse(localStorage.getItem('user')),
+      dishSearch: '', // 用于绑定搜索框的输入值
     };
   },
   created() {
+    console.log('Component created！');
     this.fetchDishes();
+    console.log('TsCafeteriaDish created with cafeteria:', this.cafeteria);
+  },
+  mounted() {
+    console.log('Component mounted！');
+    console.log('TsCafeteriaDish mounted with cafeteria:', this.cafeteria);
+    if (this.cafeteria && this.cafeteria.cafeteriaId) {
+      this.fetchDishes();
+    }
+  },
+  watch: {
+    cafeteria(newVal, oldVal) {
+      if (newVal && newVal.cafeteriaId) {
+        console.log('Cafeteria updated, fetching dishes for:', newVal);
+        this.fetchDishes();
+      }
+    }
   },
   methods: {
+    searchDish() {
+      const searchKeyword = this.dishSearch.toLowerCase();
+
+      const foundDish = this.dishes.find(dish =>
+          dish.name.toLowerCase().includes(searchKeyword)
+      );
+
+      if (foundDish) {
+        this.selectedDish = foundDish;
+        this.dialogVisible = true; // 显示弹窗
+        this.$message({
+          message: `找到${foundDish.name}！`,
+          type: 'success'
+        });
+      } else {
+        this.$message({
+          message: `未找到该菜品！`,
+          type: 'warning'
+        });
+      }
+    },
     viewDetails(dish) {
       this.selectedDish = dish; // 设置被选中的菜品
       this.dialogVisible = true; // 显示弹窗
     },
     async fetchDishes() {
+      console.log('Fetching dishes for cafeteria:', this.cafeteria);
+      // 确保有有效的食堂 ID
+      if (!this.cafeteria || !this.cafeteria.cafeteriaId) {
+        console.error('No cafeteria ID available for fetching dishes.');
+        return;
+      }
+
+      const cafeteriaId = this.cafeteria.cafeteriaId; // 从 cafeteria prop 获取食堂 ID
+      const url = `/dishes/actions/getDishByCafeteriaID?cafeteriaId=${cafeteriaId}`; // 构建请求 URL
+
       try {
-        const response = await this.$request.get('/dishes/actions/getDishByCafeteriaID?cafeteriaId=1');
+        const response = await this.$request.get(url);
         this.dishes = response.data;
       } catch (error) {
         console.error('Error fetching dishes:', error);
@@ -92,29 +150,28 @@ export default {
       if (file) {
         // 创建一个 FileReader 对象用于读取文件
         const reader = new FileReader();
-
         // 当文件被读取时，设置 imagePreviewUrl 为读取的内容
         reader.onload = (e) => {
           this.imagePreviewUrl = e.target.result;
         };
-
         // 读取文件
         reader.readAsDataURL(file);
-
         // 这里还可以添加将文件上传到服务器的逻辑
       }
     },
     submitReview() {
+      console.log("this.user",this.user)
       const payload = {
-        userId: this.userId, // 确保这些值已经通过 props 或 data 获取
-        userName: this.userName,
-        dishId: this.selectedDish.id,
+        userId: this.user.userId, // 从props中获取用户ID
+        userName: this.user.name, // 从props中获取用户名
+        dishId: this.selectedDish.dishId,
         dishName: this.selectedDish.name,
-        rating: this.rating,
-        review: this.review,
+        content: this.review,
+        score: this.rating,
         // 如果有图片，也应该包含在 payload 中
-        deleted: 0
+        // deleted: 0
       };
+      console.log("payload",payload);
 
       // 发送数据
       this.$request.post('/dishRemarks/actions/addDishRemark', payload)
@@ -129,6 +186,7 @@ export default {
           })
           .catch(error => {
             // 处理错误
+
             let message = '提交失败，请稍后重试。';
             // 如果错误中有更具体的信息，可以使用它
             if (error.response && error.response.data) {
@@ -141,13 +199,19 @@ export default {
             // 可以在这里添加任何其他错误处理逻辑
           });
     },
+
     cancelReview() {
-      // 实现取消操作的逻辑
+      this.clearForm();
+      this.dialogVisible = false;
+    },
+
+    clearForm() {
       this.rating = 0;
       this.review = '';
-      this.dialogVisible = false; // 如果使用弹窗
-      // 清除其他相关数据
+      // 清除图片预览URL或其他相关数据
+      this.imagePreviewUrl = '';
     },
+
   }
 };
 </script>
