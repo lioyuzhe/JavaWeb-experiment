@@ -195,9 +195,11 @@ export default {
               <div>
                 <label>deleted:</label>
                 <el-input v-model="newAnnouncement[6]" style="width:50%"></el-input>
-              </div>
+              </div >
+              <div style="display: flex; justify-content: center;">
               <el-button type="primary" @click="addToBackend()">确定</el-button>
               <el-button @click="addDialogVisible = false">取消</el-button>
+              </div>
             </div>
           </el-dialog>
           <div v-for="notice in notices" :key="notice.noticeId">

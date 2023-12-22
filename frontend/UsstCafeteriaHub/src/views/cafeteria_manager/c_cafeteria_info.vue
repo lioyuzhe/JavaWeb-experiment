@@ -49,8 +49,10 @@
               <label>deleted:</label>
               <el-input v-model="newcanteens[8]" style="width:50%"></el-input>
             </div>
+              <div style="display: flex; justify-content: center;">
               <el-button type="primary" @click="addToBackend()">确定</el-button>
               <el-button @click="addDialogVisible = false">取消</el-button>
+              </div>
             </div>
           </el-dialog>
           <div v-for="canteen in canteens" :key="canteen.cafeteriaId">
