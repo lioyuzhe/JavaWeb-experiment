@@ -40,12 +40,26 @@
       <div class="icon-tray">
         <el-badge :value="commentsCount" class="icon">
           <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
+          <!-- 显示未查看的新评论数量 -->
+          <template v-if="hasUnreadComments">
+            <div class="unread-indicator"></div>
+          </template>
         </el-badge>
+
         <el-badge :value="likesCount" class="icon">
           <el-button icon="el-icon-thumb" circle @click="handleIconClick('likes')"></el-button>
+          <!-- 显示未查看的新点赞数量 -->
+          <template v-if="hasUnreadLikes">
+            <div class="unread-indicator"></div>
+          </template>
         </el-badge>
+
         <el-badge :value="complaintsCount" class="icon">
           <el-button icon="el-icon-warning" circle @click="handleIconClick('complaints')"></el-button>
+          <!-- 显示未查看的新投诉回复数量 -->
+          <template v-if="hasUnreadComplaintReplies">
+            <div class="unread-indicator"></div>
+          </template>
         </el-badge>
       </div>
       <!-- 消息栏 -->
@@ -55,14 +69,16 @@
         </div>
         <el-scrollbar class="message-list">
           <div v-for="item in activeMessages" :key="item.id" class="message-item">
-            <span>{{ item.user_name }}：</span>
-            <p>{{ item.content }}</p>
+            <span>{{ generateMessageContent(item) }}</span>
           </div>
         </el-scrollbar>
+
+
       </el-card>
     </div>
   </div>
 </template>
+
 <script>
 import request from '@/utils/request';
 
@@ -70,11 +86,14 @@ export default {
   name: 'ts_home',
   data() {
     return {
-      commentsCount: 0,
-      likesCount: 0,
-      complaintsCount: 0,
-      latestComments: [],
-      latestComplaintReplies: [],
+      hasUnreadComments: false,//用于标识是否有未读的评论消息。
+      hasUnreadLikes: false,// 用于标识是否有未读的点赞消息。
+      hasUnreadComplaintReplies: false,//用于标识是否有未读的投诉回复消息。
+      commentsCount: 0,//用于存储评论消息的总数。
+      likesCount: 0,//用于存储点赞消息的总数。
+      complaintsCount: 0,//用于存储投诉回复消息的总数。
+      latestComments: [],//用于存储最新的评论
+      latestComplaintReplies: [],//用于存储最新的投诉回复
       comment: {
         comment_id: null, // 通常由后端生成
         message_id: '',
@@ -184,6 +203,25 @@ export default {
     }, 10000); // 比如每10秒更新一次
   },
   methods: {
+    getMessageType(item) {
+      // 根据消息的字段判断消息类型
+      if (item.cafeteriaName && item.content && item.reply) {
+        return 'complaint';
+      } else {
+        return 'normal';
+      }
+    },
+
+    generateMessageContent(item) {
+      // 根据消息的类型生成消息内容
+      if (this.getMessageType(item) === 'complaint') {
+        // 修改此处以反映新的格式
+        return `${item.cafeteriaName}食堂回复了你的投诉"${item.content}": (${item.reply})`;
+      } else {
+        return `${item.userName}：${item.content}`;
+      }
+    },
+
 
     async fetchData() {
       await this.fetchLatestComments();
@@ -194,39 +232,25 @@ export default {
     async fetchLatestComments() {
       try {
         const response = await this.$request.get('/community/comments/test');
-        console.log(response); // 查看完整响应
-        if (response && response.data) {
-          this.latestComments = response.data;
-        } else {
-          // 处理 response.data 为 null 的情况
-          console.error('No data returned from the API');
-        }
+        this.latestComments = response.data;
+        // 根据返回的数据更新评论计数
+        this.commentsCount = response.data.length; // 从后端获取的数据更新评论计数
+        // this.commentsCount = this.latestComments.length;
       } catch (error) {
         console.error('Error fetching latest comments:', error);
       }
     },
 
-    // async fetchLatestComments() {
-    //   try {
-    //     const response = await this.$request.get('/community/comments/test');
-    //     this.latestComments = response.data;
-    //     // 根据返回的数据更新评论计数
-    //     this.commentsCount = response.data.length; // 从后端获取的数据更新评论计数
-    //     // this.commentsCount = this.latestComments.length;
-    //   } catch (error) {
-    //     console.error('Error fetching latest comments:', error);
-    //   }
-    // },
-
     async fetchLatestComplaintReplies() {
       try {
-        const response = await this.$request.get('/complaints/actions/getComplaintReplyByUserId');
+        const response = await this.$request.get('/complaints/actions/getComplaintReplyByUserId?userId=1');
         this.latestComplaintReplies = response.data;
         // 根据返回的数据更新投诉回复计数
         // this.complaintsCount = this.latestComplaintReplies.length;
         this.complaintsCount = response.data.length; // 从后端获取的数据更新投诉回复计数
       } catch (error) {
-        console.error('Error fetching latest complaint replies:', error);
+        console.error('Error fetching latest comments:', error.response.status, error.response.statusText);
+
       }
     },
     async submitComment() {
@@ -243,6 +267,7 @@ export default {
     handleIconClick(tab) {
       console.log('Tab clicked:', tab); // 添加调试信息
       this.activeTab = tab;
+
     },
     getLink(entryId) {
       switch (entryId) {
@@ -264,19 +289,21 @@ export default {
   },
   computed: {
     activeMessages() {
-      // 根据活动标签返回相应的消息列表
       switch (this.activeTab) {
         case 'comments':
-          return this.communityMessages;
+          this.fetchLatestComments();
+          return this.latestComments;
         case 'likes':
           return this.likes;
         case 'complaints':
-          return this.complaints;
+          this.fetchLatestComplaintReplies();
+          return this.latestComplaintReplies;
         default:
           return [];
       }
     }
   },
+
 }
 </script>
 
