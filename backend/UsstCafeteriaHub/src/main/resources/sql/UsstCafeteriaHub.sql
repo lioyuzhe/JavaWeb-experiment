@@ -162,8 +162,12 @@ CREATE TABLE `cafeteria` (
 -- ----------------------------
 -- Records of cafeteria
 -- ----------------------------
-INSERT INTO `cafeteria` (`cafeteria_id`, `name`, `location`, `description`, `admin_id`, `admin_name`, `open_time`, `close_time`, `deleted`) VALUES
-                                                                                                                                             (1, '第一食堂', '北校区', '便宜实惠', 1, '张三', NULL, NULL, 0);
+INSERT INTO usstcafeteriahub.cafeteria (cafeteria_id, name, location, description, admin_id, admin_name, open_time, close_time, deleted) VALUES (1, '第一食堂', '北校区', '第一食堂位于上海理工大学北校区，靠近多个学生公寓，如第一公寓、第三公寓、第七宿舍等等。
+第一食堂只有一层，包含普通饭菜、面包房、用餐区，供应早中晚饭，价格便宜实惠。', 1, '张三', '2023-12-19 22:37:17', '2023-12-19 22:42:09', 0);
+INSERT INTO usstcafeteriahub.cafeteria (cafeteria_id, name, location, description, admin_id, admin_name, open_time, close_time, deleted) VALUES (2, '思餐厅', '南校区', '思餐厅位于上海理工大学南校区，共四层，菜品种类丰富。', 2, '李四', '2023-12-19 21:54:54', '2023-12-19 22:42:09', 0);
+INSERT INTO usstcafeteriahub.cafeteria (cafeteria_id, name, location, description, admin_id, admin_name, open_time, close_time, deleted) VALUES (3, '第五食堂', '北校区', '第五食堂位于上海理工大学北校区，共两层，菜品种类丰富。', 3, '王五', '2023-12-19 22:37:12', '2023-12-19 22:42:07', 0);
+INSERT INTO usstcafeteriahub.cafeteria (cafeteria_id, name, location, description, admin_id, admin_name, open_time, close_time, deleted) VALUES (4, '阅餐厅', '北校区', '阅餐厅位于上海理工大学北校区，共两层，一层为学生食堂，二层为教师食堂。', 4, '赵六', '2023-12-19 22:38:55', '2023-12-19 22:42:11', 0);
+INSERT INTO usstcafeteriahub.cafeteria (cafeteria_id, name, location, description, admin_id, admin_name, open_time, close_time, deleted) VALUES (5, '咪呢餐厅', '北校区', '咪呢餐厅位于上海理工大学北校区，共一层，食堂小但特色小吃多。', 5, '小明', '2023-12-19 22:42:02', '2023-12-19 22:42:04', 0);
 
 
 -- ----------------------------
@@ -275,7 +279,7 @@ CREATE TABLE `cafeteria_rank` (
 
 
 -- ----------------------------
--- Table structure for cafeteria_rank
+-- Table structure for dish
 -- ----------------------------
 
 DROP TABLE IF EXISTS `dish`;
@@ -293,8 +297,11 @@ CREATE TABLE `dish` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜品维护表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of cafeteria_rank
+-- Records of dish
 -- ----------------------------
+INSERT INTO usstcafeteriahub.dish (dish_id, cafeteria_id, cafeteria_name, name, price, cuisine, image_url, status, deleted) VALUES (1, 1, '第一食堂', '红烧肉', 6.00, '荤菜', 'http://localhost:9090/files/getDefaultAvatar', 0, 0);
+INSERT INTO usstcafeteriahub.dish (dish_id, cafeteria_id, cafeteria_name, name, price, cuisine, image_url, status, deleted) VALUES (3, 1, '第一食堂', '清蒸鱼', 6.00, '浙菜', 'http://localhost:9090/files/getDefaultAvatar', 0, 0);
+INSERT INTO usstcafeteriahub.dish (dish_id, cafeteria_id, cafeteria_name, name, price, cuisine, image_url, status, deleted) VALUES (20, 2, '思餐厅', '酸辣土豆丝', 3.00, '川菜', 'http://localhost:9090/files/getDefaultAvatar', 0, 0);
 
 
 -- ----------------------------

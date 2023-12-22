@@ -27,6 +27,7 @@
             <p><strong>用户邮箱：</strong>{{ user.email }}</p>
             <p><strong>用户手机号：</strong>{{ user.phone }}</p>
 
+            <el-button type="text" @click="openEditDialog">编辑个人信息</el-button>
             <el-button type="text" @click="logout">退出登录</el-button>
 
             <template #reference>
@@ -42,7 +43,61 @@
       <router-view></router-view>
     </el-main>
 
+    <el-dialog title="个人信息" :visible.sync="infoDialogVisible" width="500px">
+      <div class="dialog-content">
+        <!-- 头像展示与编辑按钮 -->
+        <div class="avatar-container">
+          <el-avatar :src="user.avatar" size="large"></el-avatar>
+          <el-button type="text" icon="el-icon-edit" @click="enterEditMode">编辑</el-button>
+        </div>
+
+        <!-- 用户信息展示 -->
+        <div v-if="!editMode">
+          <p><strong>用户名：</strong>{{ user.name }}</p>
+          <p><strong>邮箱：</strong>{{ user.email }}</p>
+          <p><strong>手机号：</strong>{{ user.phone }}</p>
+          <!-- 其他信息展示 -->
+        </div>
+
+        <!-- 编辑模式表单 -->
+        <el-form v-if="editMode" :model="editForm" ref="editFormRef" label-width="100px">
+          <!-- 用户名 -->
+          <el-form-item label="用户名">
+            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <!-- 邮箱 -->
+          <el-form-item label="邮箱">
+            <el-input v-model="editForm.email"></el-input>
+          </el-form-item>
+          <!-- 手机号 -->
+          <el-form-item label="手机号">
+            <el-input v-model="editForm.phone"></el-input>
+          </el-form-item>
+          <!-- 头像上传 -->
+          <el-form-item label="头像">
+            <el-upload
+                class="avatar-uploader"
+                action="/files/upload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+            >
+              <!-- 如果有头像URL，则显示预览；否则显示加号 -->
+              <img v-if="editForm.avatar" :src="editForm.avatar" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+
+        <!-- 操作按钮 -->
+        <div class="dialog-footer">
+          <el-button @click="cancelEdit">取消</el-button>
+          <el-button v-if="editMode" type="primary" @click="saveEdit">保存</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </el-container>
+
 </template>
 
 <script>
@@ -61,12 +116,39 @@ export default {
         userId: 0,
         // ... 其他属性 ...
       },
+      infoDialogVisible: false,
+      editMode: false, // 初始设置为false，表示查看模式
+      editForm: {
+        username: '',
+        password: '',
+        email: '',
+        phone: '',
+        avatar: ''
+      },
+      avatarUrl: ''
     };
   },
   created() {
     this.fetchUserData();
+    // 从Local Storage获取用户信息
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData) {
+      // 设置用户信息给this.user
+      this.user.account = userData.account;
+      this.user.activityLevel = userData.activityLevel;
+      this.user.avatar = userData.avatar;
+      this.user.email = userData.email;
+      this.user.name = userData.name;
+      this.user.phone = userData.phone;
+      // ... 设置其他属性 ...
+    }
   },
   methods: {
+    openEditDialog() {
+      this.infoDialogVisible = true;
+      this.editMode = false; // 确保初始状态是查看模式
+    },
+
     logout() {
       // 清除用户数据
       localStorage.removeItem('user');
@@ -107,7 +189,80 @@ export default {
           url = 'http://localhost:7000';
       }
       window.location.href = url;
-    }
+    },
+    enterEditMode() {
+      this.editMode = true;
+      this.editForm = {...this.user}; // 复制当前用户信息到表单
+    },
+    handleAvatarSuccess(res, file) {
+      // 处理头像上传成功的逻辑
+      if (res.code === 200) {
+        // 更新编辑表单中的头像URL
+        this.editForm.avatar = res.data.url; // 假设服务器返回头像URL
+      } else {
+        // 处理上传失败的情况
+        this.$message.error('头像上传失败');
+      }
+    },
+    beforeAvatarUpload(file) {
+      // 处理上传头像之前的逻辑，如文件格式验证等
+      // 返回 true 表示允许上传，返回 false 表示取消上传
+      // 这里可以添加文件格式验证逻辑
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJPG) {
+        this.$message.error('头像只支持上传 JPG 或 PNG 格式的图片');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error('头像图片大小不能超过 2MB');
+      }
+      return isJPG && isLt2M;
+    },
+    saveEdit() {
+      // 向服务器发送请求，将修改后的数据传递给后端
+      // 这里假设您使用axios库发送请求
+      this.$request.post('/users/actions/updateUser', this.editForm)
+          .then(response => {
+            // 如果后端成功更新了数据
+            if (response.code === 200) {
+              // 更新localStorage中的用户数据
+              const updatedUserData = {
+                account: this.user.account,
+                activityLevel: this.user.activityLevel,
+                avatar: this.user.avatar,
+                email: this.editForm.email, // 更新邮箱为编辑后的值
+                name: this.editForm.name,   // 更新用户名为编辑后的值
+                phone: this.editForm.phone  // 更新手机号为编辑后的值
+                // ... 其他属性 ...
+              };
+              console.log("test:",updatedUserData)
+              // 更新localStorage中的用户信息
+              // 删除旧的user数据
+              localStorage.removeItem('user');
+              localStorage.setItem('user', JSON.stringify(updatedUserData));
+
+              // 关闭编辑模式
+              this.infoDialogVisible = false;
+              this.editMode = false;
+
+              // 更新user信息
+              this.user.email = this.editForm.email;
+              this.user.name = this.editForm.name;
+              this.user.phone = this.editForm.phone;
+
+              this.$message.success('用户信息更新成功！');
+
+            }
+          })
+          .catch(error => {
+            // 处理错误
+            console.error('Error updating user information:', error);
+          });
+    },
+    cancelEdit() {
+      this.infoDialogVisible = false;
+      this.editMode = false; // 退出编辑模式
+    },
   }
 };
 
@@ -115,9 +270,52 @@ export default {
 
 <style scoped>
 /* 修改后的样式 */
+.dialog-content {
+  text-align: center;
+}
+
+.avatar-container {
+  margin-bottom: 20px;
+}
+
+.avatar-uploader .avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.dialog-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
 /* 下拉框主体样式 */
 .el-popover {
-  //background-color: #fff; /* 背景色 */
+//background-color: #fff; /* 背景色 */
   border: 1px solid #ebeef5; /* 边框 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影 */
   border-radius: 4px; /* 圆角 */
@@ -167,7 +365,7 @@ export default {
   transition: all 0.3s ease;
 
   /* 头像背景和大小（根据需要调整） */
-  //background-color: #f9f9f9;
+//background-color: #f9f9f9;
   width: 40px; /* 或其他尺寸 */
   height: 40px; /* 或其他尺寸 */
 }
@@ -182,7 +380,7 @@ export default {
 }
 
 .el-popover {
-  //background-color: #fff; /* 设置背景颜色 */
+//background-color: #fff; /* 设置背景颜色 */
   border: 1px solid #ebeef5; /* 设置边框颜色和宽度 */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* 添加阴影以提升层次感 */
   border-radius: 4px; /* 圆角边框 */
@@ -206,7 +404,7 @@ export default {
 }
 
 .header {
-  //background-color: #f8f8f8; /* 更现代的背景色 */
+//background-color: #f8f8f8; /* 更现代的背景色 */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 添加阴影效果 */
   padding: 0 15px;
   height: 70px; /* 增加高度以适应更大的头像 */
