@@ -143,8 +143,8 @@
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveDish">确定</el-button>
+        <el-button @click="cancelForm">取消</el-button>
+        <el-button type="primary" @click="confirmForm">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -217,10 +217,6 @@ export default {
         }
         // 您可以根据需要继续添加更多菜品数据
       ],
-      dishes: [
-        { dish_id: 1, name: "麻辣香锅", price: 10 },
-        { dish_id: 2, name: "麻婆豆腐", price: 15 },
-      ], // 存储所有菜品
       showForm: false, // 控制显示DishForm
       editableDish: null, // 存储要编辑的菜品
       dialogVisible: false, // 控制对话框的显示和隐藏
@@ -266,11 +262,10 @@ export default {
   },
   methods: {
     row_editDish(row) {
-      this.editableDish = row;
-      this.showForm = true;
-      console.log('编辑操作', row);
-      // 重定向到编辑页面，并传递当前菜品的信息
-      this.$router.push({ name: 'DishEdit', params: {dishId: row.dish_id} });
+      this.isEdit = true; // 设置为编辑模式
+      this.editableDish = { ...row }; // 深拷贝选中的菜品数据
+      this.dishForm = { ...this.editableDish }; // 将菜品数据加载到表单中
+      this.dialogVisible = true; // 显示表单对话框
     },
     deleteDish(row) {
       // 发送删除单个菜品的请求到后端
@@ -295,11 +290,21 @@ export default {
         return;
       }
       this.selectedDishes.forEach(selectedDish => {
-        const index = this.tableData.findIndex(dish => dish.dish_id === selectedDish.dish_id);
-        if (index !== -1) {
-          this.tableData.splice(index, 1);
-        }
+        // 发送删除请求到后端
+        this.$http.delete(`http://localhost:9090/dishes/actions/deleteDish/${selectedDish.dish_id}`)
+            .then(response => {
+              console.log('菜品删除成功', response);
+              // 从本地数据中移除这个菜品
+              const index = this.tableData.findIndex(dish => dish.dish_id === selectedDish.dish_id);
+              if (index !== -1) {
+                this.tableData.splice(index, 1);
+              }
+            })
+            .catch(error => {
+              console.error('菜品删除失败', error);
+            });
       });
+      // 清空选中的菜品数组
       this.selectedDishes = [];
       console.log("批量删除的菜品：", this.selectedDishes);
     },
@@ -312,6 +317,18 @@ export default {
     showAddDishForm() {
       this.editableDish = null;
       this.dialogVisible = true;
+      this.resetForm('dishForm');
+      this.dishForm = { // 初始化dishForm对象
+        dish_id: '',
+        cafeteria_id: '',
+        cafeteria_name: '',
+        name: '',
+        price: 0,
+        cuisine: '',
+        image_url: '',
+        status: '0'
+      };
+      this.isEdit = false; // 确保 'isEdit' 状态正确设置
     }
   },
   mounted() {
@@ -336,6 +353,8 @@ export default {
   },
   row_editDish(row) {
     this.editableDish = row;
+    this.dishForm = { ...row }; // 复制行数据到表单
+    this.isEdit = true; // 设置编辑模式为真
     this.dialogVisible = true; // 显示对话框并加载数据进行编辑
   },
   saveDish() {
@@ -364,7 +383,11 @@ export default {
         });
   },
   resetForm(formName) {
-    this.$refs[formName].resetFields();
+    // 检查是否存在名为 formName 的表单引用
+    if (this.$refs[formName]) {
+      // 重置表单
+      this.$refs[formName].resetFields();
+    };
     this.validationErrors = {
       name: '',
       price: '',
@@ -456,6 +479,48 @@ export default {
     } else {
       this.promotionValidationErrors.end_time = '';
     }
+  },
+  // 取消按钮的处理方法
+  cancelForm() {
+    this.dialogVisible = false; // 关闭对话框
+  },
+
+  // 确定按钮的处理方法
+  confirmForm() {
+    // 在提交前再次验证所有字段
+    this.validateName();
+    this.validatePrice();
+    this.validateCafeteriaId();
+    this.validateCafeteriaName();
+    this.validateDishId();
+    this.validateCuisine();
+    // 如果有错误，则不提交表单
+    if (Object.values(this.validationErrors).some(error => error)) {
+      return;
+    }
+
+    if (this.isEdit) {
+      // 编辑模式下的处理逻辑
+      this.$http.put(`http://localhost:9090/dishes/actions/updateDish`, this.dishForm)
+          .then(response => {
+            console.log('菜品更新成功', response);
+            // 这里可以根据需要更新表格数据
+          })
+          .catch(error => {
+            console.error('菜品更新失败', error);
+          });
+    } else {
+      // 新增模式下的处理逻辑
+      this.$http.post(`http://localhost:9090/dishes/actions/addDish`, this.dishForm)
+          .then(response => {
+            console.log('菜品添加成功', response);
+            // 这里可以根据需要更新表格数据
+          })
+          .catch(error => {
+            console.error('菜品添加失败', error);
+          });
+    }
+    this.dialogVisible = false; // 关闭对话框
   }
 };
 </script>
