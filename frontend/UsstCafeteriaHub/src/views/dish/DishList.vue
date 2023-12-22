@@ -119,6 +119,39 @@ export default {
     };
   },
   methods: {
+    row_editDish(row) {
+      this.editableDish = row;
+      this.showForm = true;
+      console.log('编辑操作', row);
+      // 重定向到编辑页面，并传递当前菜品的信息
+      this.$router.push({ name: 'DishEdit', params: {dishId: row.dish_id} });
+    },
+    deleteDish(row) {
+      // 删除单个菜品的逻辑
+      const index = this.tableData.findIndex(dish => dish.dish_id === row.dish_id);
+      if (index !== -1) {
+        this.tableData.splice(index, 1);
+      }
+      console.log('删除操作', row);
+    },
+    deleteSelectedDishes() {
+      // 批量删除菜品的逻辑
+      if (this.selectedDishes.length === 0) {
+        alert("请选择要删除的菜品");
+        return;
+      }
+      this.selectedDishes.forEach(selectedDish => {
+        const index = this.tableData.findIndex(dish => dish.dish_id === selectedDish.dish_id);
+        if (index !== -1) {
+          this.tableData.splice(index, 1);
+        }
+      });
+      this.selectedDishes = [];
+      console.log("批量删除的菜品：", this.selectedDishes);
+    },
+    handleSelectionChange(selection) {
+      this.selectedDishes = selection;
+    },
     fetchAllDishes() {
       // 获取所有菜品的逻辑...
     },
