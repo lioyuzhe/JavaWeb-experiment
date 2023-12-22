@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import DishForm from './DishForm.vue';
+import DishForm from './c_dishForm.vue';
 export default {
   components: {
     DishForm
