@@ -27,7 +27,7 @@
             <p><strong>用户邮箱：</strong>{{ user.email }}</p>
             <p><strong>用户手机号：</strong>{{ user.phone }}</p>
 
-            <el-button type="text" @click="openEditDialog">编辑个人信息</el-button>
+            <el-button type="text" @click="openEditDialog">修改个人信息</el-button>
             <el-button type="text" @click="logout">退出登录</el-button>
 
             <template #reference>
@@ -45,39 +45,48 @@
 
     <el-dialog title="个人信息" :visible.sync="infoDialogVisible" width="500px">
       <div class="dialog-content">
-        <!-- 头像展示与编辑按钮 -->
+        <!-- 头像展示与修改按钮 -->
         <div class="avatar-container">
           <el-avatar :src="user.avatar" size="large"></el-avatar>
-          <el-button type="text" icon="el-icon-edit" @click="enterEditMode">编辑</el-button>
+          <el-button type="text" icon="el-icon-edit" @click="enterEditMode">修改</el-button>
         </div>
 
         <!-- 用户信息展示 -->
         <div v-if="!editMode">
+          <p><strong>用户活跃度：</strong>{{ user.activityLevel }}</p>
+          <p><strong>用户id：</strong>{{ user.userId }}</p>
+          <p><strong>用户账号：</strong>{{ user.account }}</p>
           <p><strong>用户名：</strong>{{ user.name }}</p>
-          <p><strong>邮箱：</strong>{{ user.email }}</p>
-          <p><strong>手机号：</strong>{{ user.phone }}</p>
-          <!-- 其他信息展示 -->
+          <p><strong>用户邮箱：</strong>{{ user.email }}</p>
+          <p><strong>用户手机号：</strong>{{ user.phone }}</p>
         </div>
 
         <!-- 编辑模式表单 -->
         <el-form v-if="editMode" :model="editForm" ref="editFormRef" label-width="100px">
+          <el-form-item label="用户账号">
+            <el-input v-model="editForm.account" disabled></el-input>
+          </el-form-item>
           <!-- 用户名 -->
           <el-form-item label="用户名">
-            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+            <el-input v-model="editForm.name"></el-input>
           </el-form-item>
-          <!-- 邮箱 -->
-          <el-form-item label="邮箱">
+          <!-- 用户id -->
+          <el-form-item label="用户id">
+            <el-input v-model="editForm.userId" disabled></el-input>
+          </el-form-item>
+          <!-- 用户邮箱 -->
+          <el-form-item label="用户邮箱">
             <el-input v-model="editForm.email"></el-input>
           </el-form-item>
-          <!-- 手机号 -->
-          <el-form-item label="手机号">
+          <!-- 用户手机号 -->
+          <el-form-item label="用户手机号"  >
             <el-input v-model="editForm.phone"></el-input>
           </el-form-item>
           <!-- 头像上传 -->
-          <el-form-item label="头像">
+          <el-form-item label="头像" >
             <el-upload
                 class="avatar-uploader"
-                action="/files/upload"
+                :action="$baseUrl + '/files/upload'"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -101,21 +110,14 @@
 </template>
 
 <script>
+
 export default {
   name: 'Ts',
   data() {
     return {
+
       userProfileVisible: false, // 控制用户详情信息的显示状态
-      user: {
-        account: '',
-        activityLevel: 0,
-        avatar: '',
-        email: '',
-        name: '',
-        phone: '',
-        userId: 0,
-        // ... 其他属性 ...
-      },
+      user: JSON.parse(localStorage.getItem('user')),
       infoDialogVisible: false,
       editMode: false, // 初始设置为false，表示查看模式
       editForm: {
@@ -123,7 +125,8 @@ export default {
         password: '',
         email: '',
         phone: '',
-        avatar: ''
+        avatar: '',
+        userId: '',
       },
       avatarUrl: ''
     };
@@ -140,7 +143,7 @@ export default {
       this.user.email = userData.email;
       this.user.name = userData.name;
       this.user.phone = userData.phone;
-      // ... 设置其他属性 ...
+      this.user.userId = userData.userId;
     }
   },
   methods: {
@@ -166,7 +169,7 @@ export default {
         this.user.name = userData.name;
         this.user.phone = userData.phone;
         this.user.userId = userData.userId;
-        // ... 设置其他属性 ...
+
       }
     },
     goto(destination) {
@@ -198,7 +201,13 @@ export default {
       // 处理头像上传成功的逻辑
       if (res.code === 200) {
         // 更新编辑表单中的头像URL
-        this.editForm.avatar = res.data.url; // 假设服务器返回头像URL
+        this.editForm.avatar = res.data; // 假设服务器返回头像URL
+// 更新用户信息中的头像URL
+        // 更新用户信息中的头像URL
+        this.user.avatar = res.data;
+
+        localStorage.setItem('user', JSON.stringify(this.user));
+
       } else {
         // 处理上传失败的情况
         this.$message.error('头像上传失败');
@@ -230,10 +239,10 @@ export default {
                 account: this.user.account,
                 activityLevel: this.user.activityLevel,
                 avatar: this.user.avatar,
-                email: this.editForm.email, // 更新邮箱为编辑后的值
-                name: this.editForm.name,   // 更新用户名为编辑后的值
-                phone: this.editForm.phone  // 更新手机号为编辑后的值
-                // ... 其他属性 ...
+                email: this.editForm.email, // 更新邮箱为修改后的值
+                name: this.editForm.name,   // 更新用户名为修改后的值
+                phone: this.editForm.phone  // 更新手机号为修改后的值
+
               };
               console.log("test:",updatedUserData)
               // 更新localStorage中的用户信息
