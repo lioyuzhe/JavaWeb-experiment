@@ -132,7 +132,7 @@ export default {
   data() {
     return {
       //食堂管理员
-      cafeteria_admin: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+      cafeteria_admin: JSON.parse(localStorage.getItem(cafeteria_admin) || '{}'),
       //食堂表
       cafeteria: [],
       //投诉表
