@@ -9,7 +9,7 @@
       <el-card style="width: 100%; margin-right: 10px">
         <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">我管理的食堂</div>
         <el-timeline style="padding: 0">
-          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="item.openTime"
+          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="renderTime(item.openTime)"
                             placement="top">
             <el-card>
               <h4>{{ item.name }}</h4>
@@ -32,7 +32,7 @@
         </div>
 
         <el-collapse v-model="activeName1" accordion>
-          <el-collapse-item v-for="(item, index) in filteredComplaints" :key="item.complaint_id" :name="index + ''">
+          <el-collapse-item v-for="(item, index) in filteredComplaints" :key="item.complaintId" :name="index + ''">
             <template slot="title">
               <div style="display: flex; align-items: center; width: 100%">
                 <h4 style="flex: 1">{{ item.cafeteriaName }}</h4>
@@ -45,25 +45,22 @@
             <el-button type="text" @click="setCurrentComplaint(item)">回复</el-button>
 
             <!--            表单标题-->
-            <el-dialog title="回复" :visible.sync="dialogFormVisible">
+            <el-dialog title="回复投诉" :visible.sync="dialogFormVisibleForComplaint">
               <!--              表单-->
-              <el-form v-model="complaint">
+              <el-form v-model="currentComplaint">
                 <el-form-item label="接收人" :label-width="formLabelWidth">
-                  <el-input v-model="item.userName" :disabled="true" autocomplete="off"></el-input>
+                  <el-input v-model="currentComplaint.userName" :disabled="true" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="食堂" :label-width="formLabelWidth">
-                  <el-input v-model="item.cafeteriaName" :disabled="true" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-input type="hidden" v-model="item.status" value="1"></el-input>
+                  <el-input v-model="currentComplaint.cafeteriaName" :disabled="true" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="回复内容" :label-width="formLabelWidth">
                   <el-input type="textarea" :rows="6" placeholder="请输入内容"
-                            v-model="cafeteria_remark.reply"></el-input>
+                            v-model="currentComplaint.reply"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button @click="dialogFormVisibleForComplaint = false">取 消</el-button>
                 <el-button type="primary" @click="submitComplaint">确 定</el-button>
               </div>
             </el-dialog>
@@ -82,11 +79,11 @@
         </div>
 
         <el-collapse v-model="activeName2" accordion>
-          <el-collapse-item v-for="(item, index) in filteredRemarks" :key="item.remark_id" :name="index + ''">
+          <el-collapse-item v-for="(item, index) in filteredRemarks" :key="item.remarkId" :name="index + ''">
             <template slot="title">
               <div style="display: flex; align-items: center; width: 100%">
                 <h4 style="flex: 1">{{ item.cafeteriaName + "：" + item.userName }}</h4>
-                <div style="width: 150px; color: #888">{{ item.createTime }}</div>
+                <div style="width: 250px; color: #888">{{ renderTime(item.createTime) }}</div>
               </div>
             </template>
             <div v-html="item.content"></div>
@@ -94,25 +91,22 @@
             <!-- Form -->
             <el-button type="text" @click="setCurrentRemark(item)">回复</el-button>
 
-            <el-dialog title="回复" :visible.sync="dialogFormVisible">
+            <el-dialog title="回复评价" :visible.sync="dialogFormVisibleForRemark">
               <!--              <el-form :model="reply_form">-->
-              <el-form>
+              <el-form v-model="currentRemark">
                 <el-form-item label="接收人" :label-width="formLabelWidth">
-                  <el-input v-model="item.userName" :disabled="true" autocomplete="off"></el-input>
+                  <el-input v-model="currentRemark.userName" :disabled="true" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="食堂" :label-width="formLabelWidth">
-                  <el-input v-model="item.cafeteriaName" :disabled="true" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-input type="hidden" v-model="item.status" value="1"></el-input>
+                  <el-input v-model="currentRemark.cafeteriaName" :disabled="true" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="回复内容" :label-width="formLabelWidth">
                   <el-input type="textarea" :rows="6" placeholder="请输入内容"
-                            v-model="cafeteria_remark.reply"></el-input>
+                            v-model="currentRemark.reply"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button @click="dialogFormVisibleForRemark = false">取 消</el-button>
                 <el-button type="primary" @click="submitRemark">确 定</el-button>
               </div>
             </el-dialog>
@@ -132,7 +126,7 @@ export default {
   data() {
     return {
       //食堂管理员
-      cafeteria_admin: JSON.parse(localStorage.getItem(cafeteria_admin) || '{}'),
+      cafeteria_admin: JSON.parse(localStorage.getItem('cafeteria_admin') || '{}'),
       //食堂表
       cafeteria: [],
       //投诉表
@@ -143,9 +137,10 @@ export default {
       remark_number: 0,
       formLabelWidth: '120px',
       dialogTableVisible: false,
-      dialogFormVisible: false,
-      currentComplaint: null, // 当前正在回复的投诉
-      currentRemark: null, // 当前正在回复的评价
+      dialogFormVisibleForComplaint: false,
+      dialogFormVisibleForRemark: false,
+      currentComplaint: {}, // 当前正在回复的投诉
+      currentRemark: {}, // 当前正在回复的评价
       activeName1: '0',
       activeName2: '0'
     }
@@ -190,16 +185,6 @@ export default {
     updateRemarkNumber() {
       this.remark_number = this.filteredRemarks.length;
     },
-    //加载食堂管理员信息
-    // async loadCafeteriaAdmin() {
-    //   try {
-    //     const response = await axios.get('https://yapi.pro/mock/207453/c_admin');
-    //     this.cafeteria_admin = response.data.data;
-    //     console.log(this.cafeteria_admin.name);
-    //   } catch (error) {
-    //     console.error('加载食堂管理员数据出错', error);
-    //   }
-    // },
     //加载食堂信息
     async loadCafeteria() {
       try {
@@ -234,42 +219,61 @@ export default {
     },
     // 点击回复按钮时调用此方法
     setCurrentComplaint(complaint) {
-      this.currentComplaint = complaint;
-      this.dialogFormVisible = true;
+      console.log(complaint); // 检查传入的数据
+      this.currentComplaint = Object.assign({}, complaint);
+      this.$nextTick(() => {
+        this.dialogFormVisibleForComplaint = true;
+      });
     },
 
     setCurrentRemark(remark) {
-      this.currentRemark = remark;
-      this.dialogFormVisible = true;
+      console.log(remark); // 检查传入的数据
+      this.currentRemark = Object.assign({}, remark);
+      this.$nextTick(() => {
+        this.dialogFormVisibleForRemark = true;
+      });
     },
     //提交投诉回复
     async submitComplaint() {
+      this.currentComplaint.status = 1; // 手动设置状态
       const url = 'http://localhost:9090/complaints/actions/updateComplaint'; // 替换为您的API地址
+      const headers = {
+        'Content-Type': 'application/json'
+      };
       try {
-        await axios.post(url, this.currentComplaint);
+        await this.$request.post(url, this.currentComplaint,{headers});
         console.log('投诉回复提交成功');
-        this.dialogFormVisible = false;
+        this.dialogFormVisibleForComplaint = false;
         await this.loadComplaint(); // 重新加载投诉数据
         this.updateComplaintNumber(); // 更新待回复投诉数量
-        this.currentComplaint = null; // 重置当前投诉
+        this.currentComplaint = {}; // 重置当前投诉
       } catch (error) {
         console.error('提交失败', error);
       }
     },
     //提交评价回复
     async submitRemark() {
+      this.currentRemark.status = 1; // 手动设置状态
       const url = 'http://localhost:9090/cafeteriaRemarks/actions/updatecafeteriaRemark'; // 替换为您的API地址
+      // 设置请求头部，指定内容类型为 JSON
+      const headers = {
+        'Content-Type': 'application/json'
+      };
       try {
-        await axios.post(url, this.currentRemark);
+        await this.$request.post(url, this.currentRemark,{headers});
         console.log('评价回复提交成功');
-        this.dialogFormVisible = false;
+        this.dialogFormVisibleForRemark = false;
         await this.loadRemark(); // 重新加载评价数据
         this.updateRemarkNumber(); // 更新待回复评价数量
-        this.currentRemark = null; // 重置当前评价
+        this.currentRemark = {}; // 重置当前评价
       } catch (error) {
         console.error('提交失败', error);
       }
     },
+    renderTime(date) {
+      var date = new Date(date).toJSON();
+      return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+    }
   },
   watch: {
     //监听投诉信息变化
@@ -295,6 +299,6 @@ export default {
 .item {
   margin-top: 10px;
   margin-right: 40px;
-  margin-left: 600px;
+  margin-left: 400px;
 }
 </style>
