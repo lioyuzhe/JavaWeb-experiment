@@ -33,6 +33,13 @@ public interface ComplaintMapper extends BaseMapper<Complaint> {
      * @return
      */
     List<Complaint> getComplaintReplyByUserId(Long userId);
+
+    /**
+     * 根据食堂id获取所有投诉列表的数量
+     * @param cafeteriaId
+     * @return
+     */
+    int getCountByCafeteriaId(Long cafeteriaId);
 }
 
 

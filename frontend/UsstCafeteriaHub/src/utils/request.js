@@ -15,6 +15,7 @@ request.interceptors.request.use(config => {
     let user = JSON.parse(localStorage.getItem("user") || '{}')
     let admin = JSON.parse(localStorage.getItem("admin") || '{}')
     let cafeteria_admin = JSON.parse(localStorage.getItem("cafeteria_admin") || '{}')
+
     // if (user.token == null && admin.token == null && cafeteria_admin.token == null) {
     //     $message.error('请先登录');
     //     router.push('/login')

@@ -22,9 +22,11 @@ public class CafeteriaRank implements Serializable {
 
     private Double totalScore;
 
-    private Integer rank;
+    private Integer ranking;
 
     private Integer deleted;
+
+    private Double averageScore;
 
     private static final long serialVersionUID = 1L;
 }

@@ -5,9 +5,8 @@
         <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #001529">
           <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
             <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
-            <span class="logo-title" v-show="!isCollapse">honey2024</span>
+            <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
           </div>
-  
           <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#001529" text-color="rgba(255, 255, 255, 0.65)"
                    active-text-color="#fff" style="border: none" :default-active="$route.path">
             <el-menu-item index="/home">
@@ -27,21 +26,17 @@
               <el-menu-item index="/cafeteria_manager/cafeteria_vote" >投票信息管理</el-menu-item>
               <el-menu-item index="/cafeteria_manager/cafeteria_complaint" >投诉管理</el-menu-item>
             </el-submenu>
-
           </el-menu>
-  
         </el-aside>
-  
+
         <el-container>
           <!--        头部区域-->
           <el-header>
-  
             <i :class="collapseIcon" style="font-size: 26px" @click="handleCollapse"></i>
             <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left: 20px">
               <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
               <el-breadcrumb-item :to="{ path: $route.path }">{{ $route.meta.name }}</el-breadcrumb-item>
             </el-breadcrumb>
-  
             <div style="flex: 1; width: 0; display: flex; align-items: center; justify-content: flex-end">
               <i class="el-icon-quanping" style="font-size: 26px" @click="handleFull"></i>
               <el-dropdown placement="bottom">
