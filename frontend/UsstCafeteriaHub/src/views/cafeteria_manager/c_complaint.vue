@@ -48,7 +48,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="查看评价" :visible.sync="fromVisible1" width="60%">
+    <el-dialog title="查看投诉" :visible.sync="fromVisible1" width="60%">
       <el-card class="w-e-text">
         <div v-html="content"></div>
       </el-card>
@@ -57,7 +57,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="回复评价" :visible.sync="fromVisible">
+    <el-dialog title="回复投诉" :visible.sync="fromVisible">
       <!--              <el-form :model="reply_form">-->
       <el-form v-model="currentComplaint">
         <el-form-item label="接收人" :label-width="formLabelWidth">
@@ -162,7 +162,7 @@ export default {
       //   this.editor.txt.html(row.data)  // 设置富文本内容
       // }, 0)
     },
-    //负责从服务器获取所有评价
+    //负责从服务器获取所有投诉
     fetchComplaints() {
       return axios.get('http://localhost:9090/cafeteriaAdmins/actions/getComplaint')
           .then(response => response.data.data)
@@ -174,7 +174,7 @@ export default {
     //对过滤后的评价进行分页
     paginateComplaints(complaints) {
       const total = complaints.length;
-      this.total = total; // 更新总评论数
+      this.total = total; // 更新总投诉数
       const startIndex = (this.pageNum - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
       return complaints.slice(startIndex, endIndex);
@@ -195,7 +195,7 @@ export default {
           });
     },
 
-    // 根据食堂 ID 筛选出管理员负责的食堂的评论
+    // 根据食堂 ID 筛选出管理员负责的食堂的投诉
     filterResponsibleComplaints(allComplaints, managedCafeteriaIds) {
       return allComplaints.filter(complaint =>
           managedCafeteriaIds.includes(complaint.cafeteriaId)
@@ -217,7 +217,7 @@ export default {
         this.fetchComplaints().then(allComplaints => {
           let responsibleComplaints = this.filterResponsibleComplaints(allComplaints, managedCafeteriaIds);
 
-          // 对评论进行排序，未回复的评论在前
+          // 对投诉进行排序，未回复的投诉在前
           responsibleComplaints.sort((a, b) => {
             if (a.status === 0 && b.status !== 0) {
               return -1; // 如果 a 未回复而 b 已回复，a 排在前面
@@ -228,7 +228,7 @@ export default {
           });
 
           this.complaint = this.paginateComplaints(responsibleComplaints);
-          this.total = responsibleComplaints.length; // 更新总评论数
+          this.total = responsibleComplaints.length; // 更新总投诉数
           this.extractFilters(responsibleComplaints); // 提取过滤器数据
         });
       });

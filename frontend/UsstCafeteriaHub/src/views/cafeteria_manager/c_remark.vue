@@ -14,13 +14,6 @@
       </el-table-column>
       <el-table-column prop="userName" label="用户名" width="100"></el-table-column>
       <el-table-column prop="score" label="评分" width="100"></el-table-column>
-      <el-table-column prop="status" label="状态" width="180">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status === 0 ? 'primary' : 'success'" disable-transitions>
-            {{ scope.row.status === 0 ? '未回复' : '已回复' }}
-          </el-tag>
-        </template>
-      </el-table-column>
       <el-table-column prop="cafeteriaName" label="食堂" width="100"
                        :filters="filters"
                        :filter-method="filterTag" filter-placement="bottom-end">
@@ -28,6 +21,13 @@
       <el-table-column prop="content" label="内容">
         <template v-slot="scope">
           <el-button @click="showContent(scope.row.content)" size="mini">显示内容</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label="状态" width="180">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status === 0 ? 'primary' : 'success'" disable-transitions>
+            {{ scope.row.status === 0 ? '未回复' : '已回复' }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="180">
