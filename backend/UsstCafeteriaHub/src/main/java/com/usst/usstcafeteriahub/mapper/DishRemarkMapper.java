@@ -30,10 +30,10 @@ public interface DishRemarkMapper extends BaseMapper<DishRemark> {
 
     /**
      * 根据菜品ID获取数据条数
-     * @param dishRemark
+     * @param dishId
      * @return
      */
-    int getCountByDishId(DishRemark dishRemark);
+    int getCountByDishId(Long dishId);
 }
 
 
