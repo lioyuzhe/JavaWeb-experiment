@@ -83,5 +83,7 @@ li button {
 li button:hover {
   background-color: #0056b3;
 }
-
+.dish-form-container input[disabled] {
+  background-color: #e9ecef; /* 灰色背景表示不可编辑 */
+}
 </style>
