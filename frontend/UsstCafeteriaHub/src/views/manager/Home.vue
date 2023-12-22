@@ -60,10 +60,10 @@ export default {
   },
   methods: {
     loadNotice() {
-      this.$request.get('/notice/selectUserData').then(res => {
+
         // this.notices = res.data
         this.notices = []
-      })
+
     }
   }
 }

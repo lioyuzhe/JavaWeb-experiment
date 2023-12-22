@@ -45,8 +45,37 @@ const routes = [
       { path: 'user', name: 'User', meta: { name: '用户管理' }, component: () => import('../views/manager/User') },
       { path: 'cafeteria_manager', name: 'CadfeteriaManager', meta: { name: '食堂管理员管理' }, component: () => import('../views/manager/CafeteriaManager') },
        { path: 'cafeteria', name: 'Cadfeteria', meta: { name: '食堂管理' }, component: () => import('../views/manager/Cafeteria') },
-       { path: 'remark', name: 'Remark', meta: { name: '评价信息管理' }, component: () => import('../views/manager/Remark') },
+      {
+        path: 'remark',
+        name: 'Remark',
+        meta: { name: '评价信息管理' },
+        component: () => import('../views/manager/Remark'),
+      },
+      {
+        path: 'remark/cafeteria',
+        name: 'CafeteriaRemark',
+        meta: { name: '食堂评价信息管理' },
+        component: () => import('../views/manager/CafeteriaRemark.vue')
+      },
+      {
+        path: 'remark/dish',
+        name: 'DishRemark',
+        meta: { name: '菜品评价信息管理' },
+        component: () => import('../views/manager/DishRemark.vue')
+      } ,
        { path: 'community', name: 'Community', meta: { name: '社区信息管理' }, component: () => import('../views/manager/Community') },
+      {
+        path: 'community/community-user',
+        name: 'CommunityUser',
+        meta: { name: '社区用户管理' },
+        component: () => import('../views/manager/CommunityUser')
+      },
+      {
+        path: 'community/community-message',
+        name: 'CommunityMessage',
+        meta: { name: '社区消息管理' },
+        component: () => import('../views/manager/CommunityMessage')
+      },
       { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/manager/Person') },
     ]
   },
