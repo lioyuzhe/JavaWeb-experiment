@@ -90,7 +90,7 @@ const routes = [
       { path: 'cafeteria_info', name: 'c_cafeteria_info', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
       { path: 'cafeteria_dish', name: 'c_cafeteria_dish', meta: { name: '菜品管理' }, component: () => import('../views/cafeteria_manager/c_dish.vue') },
       { path: 'cafeteria_remark', name: ' c_remark',meta: {name: '食堂评价管理' },component: () => import('../views/cafeteria_manager/c_remark.vue') },
-      { path: ' announcement',name : 'announcement',meta: {name: '活动公告'},component: () => import('../views/cafeteria_manager/c_announcement.vue') },
+      { path: 'announcement',name : 'announcement',meta: {name: '活动公告'},component: () => import('../views/cafeteria_manager/c_announcement.vue') },
       { path: 'cafeteria_vote', name: 'c_cafeteria_vote', meta: { name: '投票信息管理' }, component: () => import('../views/cafeteria_manager/c_vote.vue') },
       { path: 'cafeteria_complaint', name: 'c_cafeteria_complaint', meta: { name: '投诉管理' }, component: () => import('../views/cafeteria_manager/c_complaint.vue') },
     ]
