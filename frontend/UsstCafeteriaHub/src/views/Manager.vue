@@ -23,13 +23,21 @@
             <el-menu-item index="/manager/user" >用户管理</el-menu-item>
             <el-menu-item index="/manager/cafeteria_manager" >食堂管理员管理</el-menu-item>
             <el-menu-item index="/manager/cafeteria" >食堂管理</el-menu-item>
-            <el-menu-item index="/manager/remark" >评价信息管理</el-menu-item>
-            <el-menu-item index="/manager/community" >社区信息管理</el-menu-item>
+<!--            <el-menu-item index="/manager/remark" >评价信息管理</el-menu-item>-->
+            <el-submenu index="/manager/remark">
+              <template slot="title">评价信息管理</template>
+              <el-menu-item index="/manager/remark/cafeteria">食堂评价信息管理</el-menu-item>
+              <el-menu-item index="/manager/remark/dish">菜品评价信息管理</el-menu-item>
+            </el-submenu>
+            <el-submenu index="/manager/community">
+              <template slot="title">社区信息管理</template>
+              <el-menu-item index="/manager/community/community-user">社区用户管理</el-menu-item>
+              <el-menu-item index="/manager/community/community-message">社区消息管理</el-menu-item>
+            </el-submenu>
+<!--            <el-menu-item index="/manager/community" >社区信息管理</el-menu-item>-->
             <el-menu-item index="/manager/person" >个人信息</el-menu-item>
           </el-submenu>
-
         </el-menu>
-
       </el-aside>
 
       <el-container>
@@ -77,8 +85,8 @@ import user from "@/views/manager/User";
 
 export default {
   name: 'HomeView',
-  data() {
-    return {
+      data() {
+        return {
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
       collapseIcon: 'el-icon-s-fold',

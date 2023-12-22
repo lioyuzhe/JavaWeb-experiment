@@ -15,7 +15,7 @@
           </el-upload>
         </div>
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="user.username" placeholder="用户名" disabled></el-input>
+          <el-input v-model="user.username" placeholder="用户名" ></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="user.name" placeholder="姓名"></el-input>
@@ -42,7 +42,7 @@ export default {
   name: "Person",
   data() {
     return {
-      user: JSON.parse(localStorage.getItem('honey-user') || '{}')
+      user: JSON.parse(localStorage.getItem('admin') || '{}')
     }
   },
   created() {
