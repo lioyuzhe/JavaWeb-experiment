@@ -2,16 +2,40 @@
   <div class="table-container">
     <button @click="showAddDishForm">新增菜品</button>
     <button @click="deleteSelectedDishes">批量删除</button>
-    <ul>
-      <li v-for="dish in dishes" :key="dish.dish_id">
-        {{ dish.name }} - {{ dish.price }} 元
-        <button @click="editDish(dish)">编辑</button>
-        <button @click="deleteDish(dish.id)">删除</button>
-        <input type="checkbox" :value="dish.id" v-model="selectedDishes">
-      </li>
-    </ul>
-    <!-- DishForm 组件用于新增或编辑菜品 -->
-    <dish-form v-if="showForm" :existing-dish="editableDish" @formSubmitted="fetchAllDishes" @cancelForm="cancelForm"></dish-form>
+    <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        :scroll-x="true"
+        row-class-name="table-row-center"
+        class="centered-table"
+        @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column fixed prop="name" label="菜品" width="150"></el-table-column>
+      <el-table-column prop="cafeteria_name" label="食堂名" width="180"></el-table-column>
+      <el-table-column prop="description" label="菜品描述"></el-table-column>
+      <el-table-column prop="price" label="价格" width="100"></el-table-column>
+      <el-table-column prop="promoPrice" label="促销价格" width="100"></el-table-column>
+      <el-table-column prop="cuisine" label="菜系" width="100"></el-table-column>
+      <el-table-column prop="image_url" label="图片" width="180">
+        <template slot-scope="scope">
+          <img :src="scope.row.image_url" alt="菜品图片" style="width: 50px; height: 50px;"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="start_time" label="促销开始时间" width="180"></el-table-column>
+      <el-table-column prop="end_time" label="促销结束时间" width="180"></el-table-column>
+      <el-table-column prop="status" label="状态" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.status === '0' ? '普通菜品' : '推荐菜品' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="180">
+        <template slot-scope="scope">
+          <el-button @click="row_editDish(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="deleteDish(scope.row)" type="text" size="small">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
