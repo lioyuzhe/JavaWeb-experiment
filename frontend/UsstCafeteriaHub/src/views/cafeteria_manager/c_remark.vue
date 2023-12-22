@@ -1,13 +1,14 @@
 <template>
 
   <div>
-
+    <!-- 显示食堂评价的表格 -->
     <div style="margin: 10px 0"></div>
     <el-table
         ref="filterTable"
         :data="cafeteria_remark"
         style="width: 100%">
       <el-table-column prop="createTime" label="日期" sortable width="180">
+        <!-- 各种属性的列定义 -->
         <template slot-scope="scope">
           {{ renderTime(scope.row.createTime) }}
         </template>
@@ -46,7 +47,7 @@
           :total="total">
       </el-pagination>
     </div>
-
+    <!-- 查看评价内容的对话框 -->
     <el-dialog title="查看评价" :visible.sync="fromVisible1" width="60%">
       <el-card class="w-e-text">
         <div v-html="content"></div>
@@ -59,6 +60,8 @@
     <el-dialog title="回复评价" :visible.sync="fromVisible">
       <!--              <el-form :model="reply_form">-->
       <el-form v-model="currentRemark">
+        <!-- 回复表单，字段自动填充所选评价的数据 -->
+        <!-- ... (为了简洁，表单字段保持不变) ... -->
         <el-form-item label="接收人" :label-width="formLabelWidth">
           <el-input v-model="currentRemark.userName" :disabled="true" autocomplete="off"></el-input>
         </el-form-item>
@@ -86,6 +89,7 @@ import axios from "axios";
 
 export default {
   name: "remark",
+  // 组件的响应式数据属性
   data() {
     return {
       cafeteria_remark: [{
@@ -119,7 +123,35 @@ export default {
     this.load()
   },
   methods: {
+    // 考虑在与服务器交互的方法中添加错误处理。
+    // 这将使应用程序更加健壮和用户友好。
+
+    // 此外，考虑将 API 调用抽象到单独的服务层。
+    // 这将提高代码组织性，并使管理 API 交互变得更容易。
     //显示内容
+    // 获取当前管理员负责的食堂的分页评价
+//     fetchRemarks(pageNum, pageSize, filter) {
+//       const url = `http://localhost:9090/cafeteriaRemarks/actions/getCafeteriaRemarks?pageNum=${pageNum}&pageSize=${pageSize}`;
+//       return axios.post(url, filter) // 使用 POST 传递过滤对象
+//           .then(response => {
+//             this.cafeteria_remark = response.data.data.remarks;
+//             this.total = response.data.data.total;
+//           })
+//           .catch(error => console.error("Error fetching data: ", error));
+//     },
+//
+// // 用于处理分页更改的方法
+//     handleCurrentChange(newPage) {
+//       this.pageNum = newPage;
+//       this.fetchRemarks(this.pageNum, this.pageSize, this.currentFilter);
+//     },
+//
+// // 用于处理过滤更改的方法
+//     applyFilter(filter) {
+//       this.currentFilter = filter;
+//       this.fetchRemarks(this.pageNum, this.pageSize, this.currentFilter);
+//     },
+
     showContent(content) {
       this.content = content
       this.fromVisible1 = true
@@ -244,12 +276,12 @@ export default {
     filterTag(value, row) {
       return row.cafeteriaName === value;
     },
-    //改写时间格式
+    // 格式化日期字符串以供显示的方法
     renderTime(date) {
       var date = new Date(date).toJSON();
       return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
     },
-    //提交表单
+    // 处理评价回复表单提交的方法
     submitRemark() {
       this.currentRemark.status = 1; // 手动设置状态
       const url = 'http://localhost:9090/cafeteriaRemarks/actions/updatecafeteriaRemark';
@@ -270,5 +302,5 @@ export default {
 </script>
 
 <style scoped>
-
+/* 作用域内的 CSS 样式 */
 </style>
