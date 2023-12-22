@@ -2,6 +2,14 @@
   <div class="dish-form-container">
     <h1>上海理工大学菜品管理</h1>
     <div class="form-group">
+      <label for="dishId">菜品ID:</label>
+      <input id="dishId" v-model="dish.dishId" type="text" placeholder="请输入菜品ID" :disabled="editMode" />
+    </div>
+    <div class="form-group">
+      <label for="cafeteriaId">食堂ID:</label>
+      <input id="cafeteriaId" v-model="dish.cafeteriaId" type="text" placeholder="请输入食堂ID" />
+    </div>
+    <div class="form-group">
       <label for="name">菜名:</label>
       <input id="name" v-model="dish.name" @input="validateName" placeholder="请输入菜名" :class="{'is-invalid': !validation.nameValid}" />
       <div v-if="!validation.nameValid" class="invalid-feedback">菜名不能为空</div>
@@ -42,6 +50,8 @@ export default {
   data() {
     return {
       dish: {
+        dishId: '', // 菜品ID
+        cafeteriaId: '', // 食堂ID
         name: '',
         price: 0,
         promoPrice: 0,
@@ -59,6 +69,12 @@ export default {
       },
       editMode: false
     };
+  },
+  created() {
+    if (this.existingDish) {
+      this.dish = { ...this.existingDish };
+      this.editMode = true;
+    }
   },
   methods: {
     validateName() {
@@ -87,11 +103,6 @@ export default {
     cancelForm() {
       // 发出表单取消事件
       this.$emit('formCanceled');
-    }
-  },
-  created() {
-    if (this.existingDish) {
-      this.dish = { ...this.existingDish };
     }
   }
 };
