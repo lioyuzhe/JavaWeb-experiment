@@ -92,7 +92,7 @@ export default {
         title:this.newAnnouncement[3],
         content: this.newAnnouncement[4],
         createTime:this.newAnnouncement[5],
-        deleted:this.newAnnouncement[6],
+        deleted:0,
       })
           .then(response => {
             console.log('Successfully saved to backend');
@@ -135,13 +135,12 @@ export default {
             for(let i=0;i<myObject.length;i++){
               if(myObject[i].noticeId === noticeId){
                 this.currentNoticeInfo =[]
-                this.currentNoticeInfo.push({ property: 'noticeId', value: myObject[i].noticeId });
-                this.currentNoticeInfo.push({ property: 'cafeteriaId', value: myObject[i].cafeteriaId });
-                this.currentNoticeInfo.push({ property: 'cafeteriaName', value: myObject[i].cafeteriaName });
-                this.currentNoticeInfo.push({ property: 'title', value: myObject[i].title });
-                this.currentNoticeInfo.push({ property: 'content', value: myObject[i].content });
-                this.currentNoticeInfo.push({ property: 'createTime', value: myObject[i].createTime });
-                this.currentNoticeInfo.push({ property: 'deleted', value: myObject[i].deleted });
+                this.currentNoticeInfo.push({ property: '公告ID', value: myObject[i].noticeId });
+                this.currentNoticeInfo.push({ property: '食堂ID', value: myObject[i].cafeteriaId });
+                this.currentNoticeInfo.push({ property: '食堂名称', value: myObject[i].cafeteriaName });
+                this.currentNoticeInfo.push({ property: '公告标题', value: myObject[i].title });
+                this.currentNoticeInfo.push({ property: '公告内容', value: myObject[i].content });
+                this.currentNoticeInfo.push({ property: '创建时间（自动生成）', value: myObject[i].createTime });
               }
           }
 
@@ -160,7 +159,7 @@ export default {
         title:this.currentNoticeInfo[3].value,
         content: this.currentNoticeInfo[4].value,
         createTime:this.currentNoticeInfo[5].value,
-        deleted:this.currentNoticeInfo[6].value,
+        deleted:0,
       })
           .then(response => {
             console.log('Successfully saved to backend');
@@ -218,32 +217,28 @@ export default {
           <el-dialog :visible.sync="addDialogVisible" title="添加公告" @close="addDialogVisible = false">
             <div class="input-container">
               <div>
-                <label>noticeId:</label>
+                <label>公告ID:</label>
                 <el-input v-model="newAnnouncement[0]" style="width:50%"></el-input>
               </div>
               <div>
-                <label>cafeteriaId:</label>
+                <label>食堂ID:</label>
                 <el-input v-model="newAnnouncement[1]" style="width:50%"></el-input></div>
               <div>
-                <label>cafeteriaName:</label>
+                <label>食堂名称:</label>
                 <el-input v-model="newAnnouncement[2]" style="width:50%"></el-input>
               </div>
               <div>
-                <label>title:</label>
+                <label>公告标题:</label>
                 <el-input v-model="newAnnouncement[3]" style="width:50%"></el-input>
               </div>
               <div>
-                <label>content:</label>
+                <label>公告内容:</label>
                 <el-input v-model="newAnnouncement[4]" style="width:50%"></el-input>
               </div>
               <div>
-                <label>createTime:</label>
+                <label>创建时间（自动生成）:</label>
                 <el-input v-model="newAnnouncement[5]" style="width:50%" disabled></el-input>
               </div>
-              <div>
-                <label>deleted:</label>
-                <el-input v-model="newAnnouncement[6]" style="width:50%"></el-input>
-              </div >
               <div style="display: flex; justify-content: center;">
               <el-button type="primary" @click="addToBackend()">确定</el-button>
               <el-button @click="addDialogVisible = false">取消</el-button>
@@ -273,13 +268,15 @@ export default {
               <el-table-column prop="value" label="信息">
                 <template v-slot="scope">
                   <div v-if="scope.$index === editableRowIndex">
+                    <div v-if="scope.row.property !== '创建时间（自动生成）'">
                     <el-input v-model="scope.row.value" @blur="saveRow(scope.$index)"></el-input>
+                    </div>
                   </div>
                   <div v-else @click="editableRowIndex = scope.$index">{{ scope.row.value }}</div>
                 </template>
               </el-table-column>
             </el-table>
-            <div style="text-align: center;">
+            <div style="display: flex; justify-content: center;">
             <el-button type="primary" @click="saveToBackend">修改</el-button>
             <el-button @click="dialogVisible = false">取消</el-button>
             </div>
