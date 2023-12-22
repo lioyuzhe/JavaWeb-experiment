@@ -15,39 +15,35 @@
           <el-dialog :visible.sync="addDialogVisible" title="食堂添加" @close="addDialogVisible = false">
             <div class="input-container">
             <div>
-              <label>cafeteriaId:</label>
+              <label>食堂ID:</label>
               <el-input v-model="newcanteens[0]" style="width:50%"></el-input>
             </div>
             <div>
-              <label>name:</label>
+              <label>食堂名称:</label>
               <el-input v-model="newcanteens[1]" style="width:50%"></el-input></div>
             <div>
-              <label>location:</label>
+              <label>食堂地址:</label>
               <el-input v-model="newcanteens[2]" style="width:50%"></el-input>
             </div>
             <div>
-              <label>description:</label>
+              <label>食堂描述:</label>
               <el-input v-model="newcanteens[3]" style="width:50%"></el-input>
             </div>
             <div>
-              <label>adminId:</label>
+              <label>管理员ID:</label>
               <el-input v-model="newcanteens[4]" style="width:50%"></el-input>
             </div>
             <div>
-              <label>adminName:</label>
+              <label>管理员姓名:</label>
               <el-input v-model="newcanteens[5]" style="width:50%"></el-input>
             </div>
             <div>
-              <label>openTime:</label>
+              <label>开业时间:</label>
               <el-input v-model="newcanteens[6]" style="width:50%"></el-input>
             </div>
             <div>
-              <label>closeTime:</label>
+              <label>歇业时间:</label>
               <el-input v-model="newcanteens[7]" style="width:50%"></el-input>
-            </div>
-            <div>
-              <label>deleted:</label>
-              <el-input v-model="newcanteens[8]" style="width:50%"></el-input>
             </div>
               <div style="display: flex; justify-content: center;">
               <el-button type="primary" @click="addToBackend()">确定</el-button>
@@ -84,8 +80,9 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div style="display: flex; justify-content: center;">
             <el-button type="primary" @click="saveToBackend">确定</el-button>
-            <el-button @click="dialogVisible = false">取消</el-button>
+              <el-button @click="dialogVisible = false">取消</el-button></div>
           </el-dialog>
         </el-main>
 
@@ -165,7 +162,7 @@ export default {
         adminName:this.newcanteens[5],
         openTime:this.newcanteens[6],
         closeTime:this.newcanteens[7],
-        deleted: this.newcanteens[8],
+        deleted: 0,
       })
           .then(response => {
             console.log('Successfully saved to backend');
@@ -198,15 +195,14 @@ export default {
           .then(response => {
             const myObject = response.data.data; // 将后端返回的食堂信息赋值给 currentCanteenInfo
             this.currentCanteenInfo =[]
-            this.currentCanteenInfo.push({ property: 'cafeteriaId', value: myObject.cafeteriaId });
-            this.currentCanteenInfo.push({ property: 'name', value: myObject.name });
-            this.currentCanteenInfo.push({ property: 'location', value: myObject.location });
-            this.currentCanteenInfo.push({ property: 'description', value: myObject.description });
-            this.currentCanteenInfo.push({ property: 'adminId', value: myObject.adminId });
-            this.currentCanteenInfo.push({ property: 'adminName', value: myObject.adminName });
-            this.currentCanteenInfo.push({ property: 'openTime', value: myObject.openTime });
-            this.currentCanteenInfo.push({ property: 'closeTime', value: myObject.closeTime });
-            this.currentCanteenInfo.push({ property: 'deleted', value: myObject.deleted });
+            this.currentCanteenInfo.push({ property: '食堂ID', value: myObject.cafeteriaId });
+            this.currentCanteenInfo.push({ property: '食堂名称', value: myObject.name });
+            this.currentCanteenInfo.push({ property: '食堂位置', value: myObject.location });
+            this.currentCanteenInfo.push({ property: '食堂描述', value: myObject.description });
+            this.currentCanteenInfo.push({ property: '管理员ID', value: myObject.adminId });
+            this.currentCanteenInfo.push({ property: '管理员姓名', value: myObject.adminName });
+            this.currentCanteenInfo.push({ property: '开业时间', value: myObject.openTime });
+            this.currentCanteenInfo.push({ property: '歇业时间', value: myObject.closeTime });
             console.log(this.currentCanteenInfo)
             this.dialogVisible = true; // 显示 el-dialog
           })
@@ -225,7 +221,7 @@ export default {
           adminName:this.currentCanteenInfo[5].value,
           openTime:this.currentCanteenInfo[6].value,
           closeTime:this.currentCanteenInfo[7].value,
-          deleted: this.currentCanteenInfo[8].value
+          deleted:0
       })
           .then(response => {
             console.log('Successfully saved to backend');
