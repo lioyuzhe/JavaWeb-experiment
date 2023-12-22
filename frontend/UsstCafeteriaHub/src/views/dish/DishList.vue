@@ -47,7 +47,73 @@ export default {
   },
   data() {
     return {
-      dishes: [], // 存储所有菜品
+      tableData: [
+        {
+          cafeteria_name: '食堂A',
+          name: '红烧肉',
+          description: '经典川菜，鲜香浓郁',
+          price: '35',
+          promoPrice: '30', // 促销价格
+          cuisine: '川菜',
+          image_url: 'link-to-red-braised-pork-image', // 图片链接
+          start_time: '2023-01-01',
+          end_time: '2023-01-10',
+          status: '0' // 状态
+        },
+        {
+          cafeteria_name: '食堂B',
+          name: '宫保鸡丁',
+          description: '酸甜可口，口感丰富',
+          price: '25',
+          promoPrice: '20',
+          cuisine: '川菜',
+          image_url: 'link-to-kung-pao-chicken-image',
+          start_time: '2023-02-01',
+          end_time: '2023-02-15',
+          status: '1'
+        },
+        {
+          cafeteria_name: '食堂C',
+          name: '清蒸鲈鱼',
+          description: '鱼肉细嫩，味道鲜美',
+          price: '45',
+          promoPrice: '',
+          cuisine: '江浙菜',
+          image_url: 'link-to-steamed-bass-image',
+          start_time: '',
+          end_time: '',
+          status: '0'
+        },
+        {
+          cafeteria_name: '食堂D',
+          name: '番茄炒蛋',
+          description: '家常味道，老少皆宜',
+          price: '15',
+          promoPrice: '12',
+          cuisine: '家常菜',
+          image_url: 'link-to-tomato-and-egg-image',
+          start_time: '2023-03-10',
+          end_time: '2023-03-20',
+          status: '1'
+        },
+        {
+          cafeteria_name: '食堂E',
+          name: '酸辣土豆丝',
+          description: '酸辣爽口，开胃佳肴',
+          price: '18',
+          promoPrice: '',
+          cuisine: '湘菜',
+          image_url: 'link-to-spicy-and-sour-potato-image',
+          start_time: '',
+          end_time: '',
+          status: '0'
+        }
+        // 您可以根据需要继续添加更多菜品数据
+      ],
+      dishes: [
+        { dish_id: 1, name: "麻辣香锅", price: 10 },
+        { dish_id: 2, name: "麻婆豆腐", price: 15 },
+      ], // 存储所有菜品
       showForm: false, // 控制显示DishForm
       editableDish: null // 存储要编辑的菜品
     };
