@@ -163,6 +163,18 @@ export default {
   },
   mounted() {
     this.fetchAllDishes();
+  },
+  handleSelectionChange(selection) {
+    this.selectedDishes = selection;
+  },
+  deleteSelectedDishes() {
+    if (this.selectedDishes.length === 0) {
+      alert("请选择要删除的菜品");
+      return;
+    }
+    // 执行批量删除逻辑
+    console.log("批量删除的菜品：", this.selectedDishes);
+    // 根据需要调整删除逻辑
   }
 };
 </script>
