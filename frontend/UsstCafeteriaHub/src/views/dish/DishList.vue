@@ -159,21 +159,6 @@ export default {
       this.editableDish = null;
       this.showForm = true;
       this.$router.push({ name: 'DishForm' });
-    },
-    editDish(dish) {
-      // 编辑菜品的逻辑...
-      this.editableDish = dish;
-      this.showForm = true;
-    },
-    deleteDish(dishId) {
-      // 删除单个菜品的逻辑...
-    },
-    deleteSelectedDishes() {
-      // 批量删除菜品的逻辑...
-    },
-    cancelForm() {
-      this.showForm = false;
-      this.editableDish = null;
     }
   },
   mounted() {
@@ -182,29 +167,31 @@ export default {
 };
 </script>
 <style>
-ul {
-  list-style-type: none;
-  padding: 0;
+.table-container {
+  overflow-x: auto; /* 允许水平滚动 */
+  max-width: 100%; /* 最大宽度为100% */
 }
 
-li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd; /* 分隔线 */
+.el-table {
+  min-width: 1000px; /* 根据需要调整最小宽度 */
 }
-
-li button {
-  float: right;
-  padding: 5px 10px;
-  margin-left: 10px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-}
-
-li button:hover {
-  background-color: #0056b3;
+input[type="checkbox"] {
+  margin-right: 10px; /* 调整勾选框与其他元素之间的间距 */
 }
 .dish-form-container input[disabled] {
   background-color: #e9ecef; /* 灰色背景表示不可编辑 */
+}
+.el-table .table-row-center .cell {
+  text-align: center; /* 水平居中 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center;
+}
+.centered-table .el-table__header-wrapper .cell,
+.centered-table .cell {
+  text-align: center; /* 水平居中 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center;
 }
 </style>
