@@ -67,11 +67,13 @@
         <div class="message-header">
           <!-- 标题部分代码省略 -->
         </div>
+
         <el-scrollbar class="message-list">
-          <div v-for="item in activeMessages" :key="item.id" class="message-item">
-            <span>{{ generateMessageContent(item) }}</span>
+          <div v-for="item in activeMessages" :key="item.id" class="message-item" v-html="generateMessageContent(item)">
+            <!-- HTML 内容（包括加粗的部分）将会被渲染在这里 -->
           </div>
         </el-scrollbar>
+
 
 
       </el-card>
@@ -114,38 +116,32 @@ export default {
           id: 'promo',
           title: '最新促销',
           description: '探索我们的特价菜品',
-          imageUrl: 'path/to/promotion-image.jpg'
         },
         {
           id: 'vote',
           title: '投票调查',
           description: '参与我们的最新调查',
-          imageUrl: 'path/to/vote-image.jpg'
         },
         // 新增加的功能入口数据
         {
           id: 'recommendation',
           title: '食堂推荐',
           description: '最新食堂推荐菜品',
-          imageUrl: 'path/to/recommendation-image.jpg'
         },
         {
           id: 'communityTopic',
           title: '社区话题',
           description: '社区热门话题，参与讨论',
-          imageUrl: 'path/to/community-topic-image.jpg'
         },
         {
           id: 'canteenRank',
           title: '食堂排名',
           description: '查看最新食堂排名',
-          imageUrl: 'path/to/canteen-rank-image.jpg'
         },
         {
           id: 'dishRank',
           title: '菜品排名',
           description: '最新高评价菜品排名',
-          imageUrl: 'path/to/dish-rank-image.jpg'
         }
       ],
       promotions: [
@@ -213,14 +209,13 @@ export default {
     },
 
     generateMessageContent(item) {
-      // 根据消息的类型生成消息内容
       if (this.getMessageType(item) === 'complaint') {
-        // 修改此处以反映新的格式
-        return `${item.cafeteriaName}食堂回复了你的投诉"${item.content}": (${item.reply})`;
+        return `<strong>${item.cafeteriaName}</strong>回复了你的投诉"<strong>${item.content}</strong>": <strong>${item.reply}</strong>`;
       } else {
         return `${item.userName}：${item.content}`;
       }
     },
+
 
 
     async fetchData() {
