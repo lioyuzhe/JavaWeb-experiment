@@ -10,16 +10,18 @@ import com.usst.usstcafeteriahub.service.CafeteriaRankService;
 import com.usst.usstcafeteriahub.mapper.CafeteriaRankMapper;
 import com.usst.usstcafeteriahub.service.DishRankService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
-* @author Klein
+* @author HrizonX
 * @description 针对表【cafeteria_rank(食堂排名表)】的数据库操作Service实现
-* @createDate 2023-12-10 15:33:38
+* @createDate 2023-12-20 11:08:22
 */
 @Service
+@Slf4j
 public class CafeteriaRankServiceImpl extends ServiceImpl<CafeteriaRankMapper, CafeteriaRank>
     implements CafeteriaRankService{
     @Resource
@@ -51,7 +53,7 @@ public class CafeteriaRankServiceImpl extends ServiceImpl<CafeteriaRankMapper, C
             }else{
                 remarkScore = cafeteriaRank.getTotalScore() / num;
             }
-
+            log.info("计算食堂评价 30%: {}", remarkScore);
 
             // 计算食堂管理下的菜品分数 60%
             // 根据cafeteriaRank的cafeteriaId查询dishRank表中所有菜品
@@ -63,6 +65,7 @@ public class CafeteriaRankServiceImpl extends ServiceImpl<CafeteriaRankMapper, C
             }
             // 计算菜品平均分数的平均分数
             double dishRankAverageScoreAverageScore = dishRankAverageScore / dishRankList.size();
+            log.info("计算菜品平均分数的平均分数 60%: {}", dishRankAverageScoreAverageScore);
 
             // 计算投诉数量 10% 满分10分 每次扣1分 扣完为止
             // 查询complaint表中cafeteriaId为cafeteriaRank.cafeteriaId的所有数据的数量 num
@@ -71,10 +74,12 @@ public class CafeteriaRankServiceImpl extends ServiceImpl<CafeteriaRankMapper, C
             if (complaintScore < 0) {
                 complaintScore = 0;
             }
+            log.info("计算投诉数量 10%: {}", complaintScore);
 
 
             // 计算出最终分数
             double finalScore = remarkScore * 0.3 + dishRankAverageScoreAverageScore * 0.6 + complaintScore * 0.1;
+            log.info("计算出最终分数: {}", finalScore);
 
             cafeteriaRank.setAverageScore(finalScore);
         }

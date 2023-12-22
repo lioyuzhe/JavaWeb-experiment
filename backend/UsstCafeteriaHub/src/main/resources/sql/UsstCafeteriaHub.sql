@@ -241,7 +241,7 @@ CREATE TABLE `complaint` (
                              `cafeteria_id` bigint NOT NULL COMMENT '食堂ID',
                              `cafeteria_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '食堂名',
                              `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '投诉内容',
-                             `status` int NOT NULL COMMENT '投诉处理状态，0表示未处理，1表示已处理',
+                             `status` int default 0 COMMENT '投诉处理状态，0表示未处理，1表示已处理',
                              `reply` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '投诉处理回复内容',
                              `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0表示不删除，1表示删除',
                              PRIMARY KEY (`complaint_id`)
@@ -262,7 +262,7 @@ CREATE TABLE `cafeteria_rank` (
                                   `cafeteria_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the cafeteria',
                                   `total_score` float COMMENT 'Total score' default 0.0,
                                   `average_score` float COMMENT 'Average score' default 0.0,
-                                  `rank` int DEFAULT NULL COMMENT 'Ranking',
+                                  `ranking` int DEFAULT NULL COMMENT 'Ranking',
                                   `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0 ，表示不删除，1 表示删除',
                                   PRIMARY KEY (`rank_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '食堂排名表' ROW_FORMAT = Dynamic;
@@ -356,7 +356,7 @@ CREATE TABLE `dish_rank` (
                              `dish_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜品名',
                              `total_score` float DEFAULT 0.0 COMMENT '总评分',
                              `average_score` float DEFAULT 0.0 COMMENT '平均评分',
-                             `rank` int  COMMENT '排名',
+                             `ranking` int  COMMENT '排名',
                              PRIMARY KEY (`rank_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜品排名表' ROW_FORMAT = Dynamic;
 

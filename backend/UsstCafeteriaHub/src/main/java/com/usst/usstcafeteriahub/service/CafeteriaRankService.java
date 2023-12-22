@@ -8,7 +8,7 @@ import java.util.List;
 /**
 * @author HrizonX
 * @description 针对表【cafeteria_rank(食堂排名表)】的数据库操作Service
-* @createDate 2023-12-20 06:55:19
+* @createDate 2023-12-20 11:08:22
 */
 public interface CafeteriaRankService extends IService<CafeteriaRank> {
 

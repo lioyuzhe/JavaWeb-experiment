@@ -69,7 +69,9 @@ public class DishRemarkServiceImpl extends ServiceImpl<DishRemarkMapper, DishRem
             dishRemark.setRemarkId(dishRemarkOld.getRemarkId());
             dishRemarkMapper.updateById(dishRemark);
             DishRank dishRank = dishRankMapper.getDishRankByDishId(dishRemark.getDishId());
+            log.info("查到的菜品排名: {}", dishRank);
             dishRank.setTotalScore(dishRank.getTotalScore() - dishRemarkOld.getScore() + dishRemark.getScore());
+            log.info("修改后的菜品排名: {}", dishRank);
             dishRankMapper.updateById(dishRank);
             return Result.success("更新成功");
         }
@@ -88,11 +90,13 @@ public class DishRemarkServiceImpl extends ServiceImpl<DishRemarkMapper, DishRem
     @Transactional
     public boolean saveAndUpdateRank(DishRemark dishRemark){
         // 如果该用户未评价过该菜品 则添加
+        log.info("未评价过，需要添加: {}", dishRemark);
         dishRemark.setRemarkId(null);
         boolean save = save(dishRemark);
         // 维护该菜品在rank表里的总分
         DishRank dishRank = dishRankMapper.getDishRankByDishId(dishRemark.getDishId());
         dishRank.setTotalScore(dishRank.getTotalScore() + dishRemark.getScore());
+        log.info("修改后的菜品排名: {}", dishRank);
         dishRankMapper.updateById(dishRank);
         return save;
     }

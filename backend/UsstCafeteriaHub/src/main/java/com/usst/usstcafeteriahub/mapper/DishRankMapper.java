@@ -9,7 +9,7 @@ import java.util.List;
 /**
 * @author HrizonX
 * @description 针对表【dish_rank(菜品排名表)】的数据库操作Mapper
-* @createDate 2023-12-20 05:44:28
+* @createDate 2023-12-20 11:11:55
 * @Entity com.usst.usstcafeteriahub.model.entity.DishRank
 */
 public interface DishRankMapper extends BaseMapper<DishRank> {
