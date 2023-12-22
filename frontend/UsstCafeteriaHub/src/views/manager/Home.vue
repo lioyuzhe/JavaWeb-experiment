@@ -1,67 +1,56 @@
 <template>
-  <div>
-    <div style="box-shadow: 0 0 10px rgba(0,0,0,.1); padding: 10px 20px; border-radius: 5px; margin-bottom: 10px">
-      管理员 {{ user.name }} 先生，欢迎您！
-    </div>
+  <el-container direction="vertical">
+    <el-header>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>管理员 {{this.user.account}}，欢迎来到管理员页面</el-breadcrumb-item>
+      </el-breadcrumb>
+    </el-header>
 
-    <div style="display: flex">
-      <el-card style="width: 100%;">
-        <div slot="header" class="clearfix">
-          <span>上海理工大学食堂点评交流社区 管理员页面</span>
-        </div>
-        <div>
-          
-          <div style="margin-top: 20px">
-            <div style="margin: 10px 0"><strong>主题色</strong></div>
-            <el-button type="primary">按钮</el-button>
-            <el-button type="success">按钮</el-button>
-            <el-button type="warning">按钮</el-button>
-            <el-button type="danger">按钮</el-button>
-            <el-button type="info">按钮</el-button>
-          </div>
-        </div>
+    <el-main>
+      <el-card>
+        <h2 slot="header">上海理工大学食堂点评交流社区 管理员页面</h2>
+
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span>主题色</span>
+              </div>
+              <div>
+                <el-button type="primary">处理评价</el-button>
+                <el-button type="success">添加菜品</el-button>
+                <el-button type="warning">发布公告</el-button>
+                <el-button type="danger">删除用户</el-button>
+                <el-button type="info">查看统计</el-button>
+              </div>
+            </el-card>
+          </el-col>
+
+          <el-col :span="16">
+            <el-card class="box-card">
+              <!-- Your custom components or data display here -->
+              <el-table :data="tableData" style="width: 100%">
+                <!-- Your table columns -->
+              </el-table>
+            </el-card>
+          </el-col>
+        </el-row>
       </el-card>
-    </div>
-
-<!--    <div style="display: flex; margin: 15px 0">-->
-<!--      <el-card style="width: 50%; margin-right: 10px">-->
-<!--        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">投诉栏</div>-->
-<!--        <el-timeline style="padding: 0">-->
-<!--          <el-timeline-item v-for="item in notices" :key="item.id" :timestamp="item.time" placement="top">-->
-<!--            <el-card>-->
-<!--              &lt;!&ndash; <h4>{{ item.title }}</h4>-->
-<!--              <div v-html="item.content"></div> &ndash;&gt;-->
-<!--              <div>暂无公告</div>-->
-<!--            </el-card>-->
-<!--          </el-timeline-item>-->
-<!--        </el-timeline>-->
-<!--      </el-card>-->
-
-<!--      <el-card style="width: 50%">-->
-<!--        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">系统公告</div>-->
-<!--        <el-collapse v-model="activeName" accordion>-->
-<!--          <el-collapse-item  v-for="(item, index) in notices" :key="item.id" :name="index + ''">-->
-<!--            <template slot="title">-->
-<!--              &lt;!&ndash; <div style="display: flex; align-items: center; width: 100%">-->
-<!--                <h4 style="flex: 1">{{ item.title }}</h4>-->
-<!--                <div style="width: 150px; color: #888">{{ item.time }}</div>-->
-<!--              </div> &ndash;&gt;-->
-<!--            </template>-->
-<!--            &lt;!&ndash; <div v-html="item.content"></div> &ndash;&gt;-->
-<!--          </el-collapse-item>-->
-<!--        </el-collapse>-->
-<!--      </el-card>-->
-<!--    </div>-->
-
-  </div>
+    </el-main>
+  </el-container>
 </template>
+
+<!-- Add your JavaScript here -->
+
+<!-- Add your CSS here -->
+
 
 <script>
 export default {
   name: "Home",
   data() {
     return {
-      user: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+      user: JSON.parse(localStorage.getItem('admin') || '{}'),
       notices: [],
       activeName: '0'
     }
@@ -79,7 +68,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 
 </style>

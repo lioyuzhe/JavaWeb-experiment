@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.service;
 
+import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaRemark;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -26,4 +27,11 @@ public interface CafeteriaRemarkService extends IService<CafeteriaRemark> {
      * @return
      */
     List<CafeteriaRemark> getCafeteriaRemarksByUserID(Long id);
+
+    /**
+     * 添加食堂评价 如果数据库中
+     * @param cafeteriaRemark
+     * @return
+     */
+    BaseResponse addcafeteriaRemark(CafeteriaRemark cafeteriaRemark);
 }

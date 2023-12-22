@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Dish;
+import com.usst.usstcafeteriahub.model.entity.DishRank;
+import com.usst.usstcafeteriahub.service.DishRankService;
 import com.usst.usstcafeteriahub.service.DishService;
 import com.usst.usstcafeteriahub.mapper.DishMapper;
 import jakarta.annotation.Resource;
@@ -23,6 +25,8 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     implements DishService{
     @Resource
     private DishMapper dishMapper;
+    @Resource
+    private DishRankService dishRankService;
 
     /**
      * 根据菜品的菜系获取菜品列表
@@ -67,7 +71,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     }
 
     /**
-     * 添加菜品，但如果数据库中已经有相同的cafeteriaName和name，则不添加
+     * 添加菜品，但如果数据库中已经有相同的cafeteriaName和name，则不添加。且每次添加时自动在dish_rank表里补充该菜品
      * @param dish
      * @return
      */
@@ -82,8 +86,16 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
                 return Result.error("已经存在相同的菜品");
             }
         }
-        boolean save = this.save(dish);
-        if (!save) {
+        boolean dishsaved = this.save(dish);
+        // 同时添加到菜品排名
+        DishRank dishRank = new DishRank();
+        dishRank.setCafeteriaId(dish.getCafeteriaId());
+        dishRank.setCafeteriaName(dish.getCafeteriaName());
+        dishRank.setDishId(dish.getDishId());
+        dishRank.setDishName(dish.getName());
+        dishRank.setTotalScore(0.0);
+        dishRankService.save(dishRank);
+        if (!dishsaved) {
             return Result.error("添加失败");
         }
         return Result.success("添加成功");

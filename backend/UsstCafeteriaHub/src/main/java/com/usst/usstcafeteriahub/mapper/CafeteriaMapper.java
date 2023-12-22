@@ -11,6 +11,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface CafeteriaMapper extends BaseMapper<Cafeteria> {
 
+    /**
+     * 根据食堂名称获取食堂信息
+     * @param name
+     * @return
+     */
+    Cafeteria getCafeteriaByName(String name);
 }
 
 
