@@ -24,26 +24,28 @@
               <span>|</span>
               <span @click="toggleSort('hot')" :class="{'active': sortType === 'hot'}">热度</span>
             </div>
+
             <!-- 发表 -->
             <el-button icon="el-icon-plus" @click="showEditor">发布动态</el-button>
           </div>
           <!-- 编辑器容器 -->
           <el-dialog :visible.sync="showDialog" title="发布动态" width="60%">
             <div>
-              <input v-model="newTitle" placeholder="标题" class="dynamic-title-input" />
+              <input v-model="postDynamicData.newTitle" placeholder="标题" class="dynamic-title-input" />
             </div>
             <div class="post-editor">
               <Toolbar
                   style="border-bottom: 1px solid #ccc"
                   :editor="editor"
-                  :defaultConfig="toolbarConfig"
-                  :mode="mode"
+                  :defaultConfig="postDynamicData.toolbarConfig"
+                  :mode="postDynamicData.mode"
               />
+
               <Editor
                   style="height: 300px; overflow-y: hidden;"
-                  v-model="html"
-                  :defaultConfig="editorConfig"
-                  :mode="mode"
+                  v-model="postDynamicData.html"
+                  :defaultConfig="postDynamicData.editorConfig"
+                  :mode="postDynamicData.mode"
                   @onCreated="onCreated"
               />
             </div>
@@ -57,19 +59,26 @@
             <div class="dynamic-item" v-for="post in dynamicList" :key="post.message_id">
               <!-- 动态元数据 -->
               <div class="dynamic-meta">
-                <span>{{ post.user_name }}</span> |
-                <span>{{ post.time }}</span>
+<!--                &lt;!&ndash; 头像 &ndash;&gt;-->
+<!--                <img :src="post.avatar" alt="Avatar" class="dynamic-avatar"/>-->
+                <div class="dynamic-user-info">
+                  <!-- 用户名 -->
+                  <span class="dynamic-username">{{ post.userName }}</span>
+                  <!-- 时间 -->
+                  <span class="dynamic-time">{{ post.createTime }}</span>
+                </div>
               </div>
               <!-- 显示标题 -->
               <h3>{{ post.title }}</h3>
               <!-- 动态内容 -->
-              <div class="dynamic-content">{{ post.content }}</div>
+                <div class="dynamic-content" v-html="post.content"></div>
               <!-- 动态操作区域 -->
               <div class="dynamic-actions">
                 <!-- 点赞按钮 -->
                 <button @click="toggleLike(post)" class="action-button">
-                  <i :class="['el-icon-thumb', { liked: post.liked }]"></i>
-                  <span>{{ post.like_count }}</span>
+                  <!-- 使用style绑定动态改变图标颜色 -->
+                  <i class="el-icon-thumb" :style="{ color: post.liked ? '#409EFF' : '#C0C4CC' }"></i>
+                  <span>{{ post.likeCount }}</span>
                 </button>
                 <!-- 评论按钮 -->
                 <button @click="toggleComments(post)" class="action-button">
@@ -77,21 +86,19 @@
                 </button>
               </div>
               <!-- 评论区域 -->
-              <div v-if="post.showComments" class="comments">
-                <!-- 现有评论列表 -->
-                <div v-for="comment in post.comments" :key="comment.content" class="comment">
-                  <strong>{{ comment.user_name }}：</strong>{{ comment.content }}
-                </div>
-                <!-- 添加新评论的输入框 -->
-                <div class="new-comment">
-                  <input
-                      type="text"
-                      v-model="post.newComment"
-                      placeholder="写下你的评论..."
-                      class="comment-input"
-                  />
-                  <button @click="addComment(post)" class="comment-submit">评论</button>
-                </div>
+              <div class="comments-container" v-if="post.showComments">
+                <!-- 显示评论列表 -->
+                <template v-if="post.comments && post.comments.length > 0">
+                  <div class="comment" v-for="comment in post.comments" :key="comment.commentId">
+                    <div>{{ comment.userName }}: {{ comment.content }}</div>
+                  </div>
+                </template>
+                <!-- 如果没有评论，则显示提示信息 -->
+                <div v-else>暂无评论，快来抢沙发吧！</div>
+                <!-- 评论输入框 -->
+                <input type="text" v-model="post.newCommentText" placeholder="写下你的评论...">
+                <!-- 发送按钮 -->
+                <button @click="addComment(post)">发送</button>
               </div>
             </div>
           </div>
@@ -172,6 +179,7 @@
 <script>
 import '@wangeditor/editor/dist/css/style.css'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import request from '@/utils/request'
 export default {
   components: {
     Editor,
@@ -179,35 +187,27 @@ export default {
   },
   data() {
     return {
-      newTitle: '', // 新动态的标题
-      newContent: '', // 新动态的内容
-      sortType: 'time',
+      user: JSON.parse(localStorage.getItem('user')),
       searchText: '',
       editor: null,
-      html: '',
-      toolbarConfig: { },
-      editorConfig: { placeholder: '请输入内容...' },
-      mode: 'default', // or 'simple'
+      postDynamicData: {
+        newTitle: '',
+        html: '',
+        communityId: '',
+        communityName: '',
+        userId: '',
+        userName: '',
+        likeCount: 0,
+        created_time: '',
+        deleted: 0,
+        toolbarConfig: { },
+        editorConfig: { placeholder: '请输入内容...' },
+        mode: 'default', // or 'simple'
+      },
       showDialog: false, // 控制对话框的显示
-      dynamicList: [
-        {
-          //动态列表
-          //假数据
-          message_id: 1,
-          user_name: '用户A',
-          title: '今日天气',
-          content: '这是第一条动态内容，今天的天气真不错。',
-          like_count: 5,
-          liked: false, // 新增字段，表示当前用户是否点赞
-          showComments: false, // 控制评论显示
-          comments: [
-            // ...评论数据...
-          ],
-          time: '今天 08:00'
-        },
-        // 可以继续添加更多假数据...
-      ],
-      newComment: '',
+
+      sortType: 'time',//默认时间排序
+      dynamicList: [],//存储动态列表
 
       currentMessageType: 'likes',
       currentUser: {
@@ -262,7 +262,7 @@ export default {
   methods: {
     toggleSort(type) {
       this.sortType = type;
-      // 这里可以添加切换排序后的逻辑处理
+      this.fetchDynamicList();
     },
     onCreated(editor) {
       this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
@@ -271,54 +271,135 @@ export default {
       this.showDialog = true; // 点击按钮时显示对话框
     },
     postDynamic() {
-      if (this.newTitle.trim() && this.newContent.trim()) {
-        // 创建新动态对象
-        const newPost = {
-          message_id: this.dynamicList.length + 1, // 生成一个新的ID
-          user_name: '当前用户', // 假设的用户名
-          title: this.newTitle,
-          content: this.newContent,
-          // ...其他必要字段...
-        };
-        this.dynamicList.push(newPost); // 将新动态添加到列表
-        this.newTitle = ''; // 清空标题输入
-        this.newContent = ''; // 清空内容输入
+      const postData = {
+        communityId: this.postDynamicData.communityId,
+        communityName: this.postDynamicData.communityName,
+        userId: this.user.userId,
+        userName: this.user.name,
+        title: this.postDynamicData.newTitle,
+        content: this.postDynamicData.html,
+        likeCount: this.postDynamicData.likeCount,
+        created_time: this.postDynamicData.created_time,
+        deleted: this.postDynamicData.deleted
+      };
+      console.log("postData", postData);//测试数据
+      // 发送请求
+      request.post('/communityMessages/actions/addCommunityMessage', postData)
+          .then(response => {
+            // 假设 response.data 包含了新发布的动态数据
+            const newDynamic = response.data;
+            // 将新动态添加到列表的开头
+            this.dynamicList.unshift(newDynamic);
+            // 处理响应
+            console.log('发布成功', response);
+            this.resetPostDynamicData();
+          })
+          .catch(error => {
+            // 处理错误
+            console.error('发布失败', error);
+          });
+    },
+    resetPostDynamicData() {
+      // 清空发布动态表单
+      this.postDynamicData.newTitle = '';
+      this.postDynamicData.html = '';
+      // 可以根据需要重置其他字段
+      this.showDialog = false;
+    },
+
+    async fetchDynamicList() {
+      let url = '';
+      if (this.sortType === 'time') {
+        url = '/communityMessages/actions/getCommunityMessageByTime';
+      } else {
+        url = '/communityMessages/actions/getCommunityMessageByLike';
       }
-      this.showDialog = false; // 关闭对话框
+      try {
+        const response = await this.$request.get(url);
+        if (response && response.data) {
+          this.dynamicList = response.data;
+          // 打印动态列表的数据属性
+          console.log('Dynamic List Data:', this.dynamicList);
+        }
+      } catch (error) {
+        console.error('Error fetching dynamics:', error);
+      }
     },
-    toggleLike(dynamic) {
-      dynamic.liked = !dynamic.liked; // 切换点赞状态
-      dynamic.like_count += dynamic.liked ? 1 : -1; // 点赞数加1或减1
+    async toggleComments(post) {
+      post.showComments = !post.showComments;
+      if (post.showComments && (!Array.isArray(post.comments) || post.comments.length === 0)) {
+        try {
+          const response = await this.$request.get(`/community/comments/${post.messageId}`);
+          // 检查后端返回的数据是否为对象且包含 commentId 属性
+          post.comments = response.data && response.data.commentId ? [response.data] : [];
+        } catch (error) {
+          console.error('获取评论失败:', error);
+        }
+      }
     },
-    toggleComments(dynamic) {
-      dynamic.showComments = !dynamic.showComments; // 显示或隐藏评论区
-    },
-    addComment(post) {
-      if (post.newComment.trim() !== '') {
-        const newComment = {
-          user_name: '当前用户', // 从用户状态管理中获取
-          content: post.newComment
-        };
-        post.comments.push(newComment); // 将新评论添加到当前动态的评论列表
-        post.newComment = ''; // 清空当前动态的评论输入
+    async addComment(post) {
+      if (!post.newCommentText.trim()) {
+        alert('评论内容不能为空');
+        return;
+      }
+      const newComment = {
+        user_name: this.user.user_name, // 这里应替换为实际的用户名
+        content: post.newCommentText,
+        comment_id: '', // 临时使用时间戳作为唯一ID
+      };
+      try {
+        // 这里假设您的后端接受POST请求来添加评论
+        await this.$request.post(`/community/comments`, {
+          message_id: post.messageId,
+          content: post.newCommentText,
+          // 其他可能需要的字段...
+        });
+        post.comments.unshift(newComment); // 将新评论添加到列表的顶部
+        post.newCommentText = ''; // 清空输入框
+      } catch (error) {
+        console.error('添加评论失败:', error);
       }
     },
 
-    // async fetchData() {
-    //   try {
-    //     const likesResponse = await axios.get('/api/likes');// 获取点赞数据,替换url
-    //     this.likes = likesResponse.data;
-    //
-    //     const commentsResponse = await axios.get('/api/comments');// 获取评论数据,替换url
-    //     this.comments = commentsResponse.data;
-    //
-    //     const messagesResponse = await axios.get('/api/private-messages');// 获取私信数据,替换url
-    //     this.messages = messagesResponse.data;
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error);
-    //     // 处理错误情况
-    //   }
-    // },
+    async toggleLike(post) {
+      if (!post) {
+        console.error('动态对象无效');
+        return;
+      }
+
+      // 临时保存原始状态，以便在出错时回滚
+      const originalLiked = post.liked;
+      const originalLikeCount = post.likeCount;
+
+      // 尝试切换点赞状态
+      post.liked = !post.liked;
+      post.likeCount += post.liked ? 1 : -1;
+
+      // 准备发送到后端的更新数据
+      let updateData = {
+        messageId: post.messageId,
+        likeCount: post.likeCount
+      };
+
+      try {
+        // 发送更新请求到后端
+        const response = await this.$request.post('/communityMessages/actions/updateCommunityMessage', updateData);
+
+        if (!response || response.code !== 200) {
+          throw new Error('后端更新失败');
+        }
+
+        console.log('点赞状态更新成功');
+      } catch (error) {
+        console.error('更新点赞状态时出错:', error);
+
+        // 发生错误时回滚点赞状态和点赞数
+        post.liked = originalLiked;
+        post.likeCount = originalLikeCount;
+      }
+    },
+
+
     switchMessageType(type) {
       // 切换消息类型
       this.currentMessageType = type;
@@ -329,30 +410,35 @@ export default {
       message.read_status = 1;
       this.showChatBox = true;
     },
-    sendMessage() {
-      const newMsg = {
-        id: Date.now(),
-        content: this.newMessageText,
-        timestamp: new Date().toLocaleTimeString(),
-        sender_id: this.currentUser.id,
-      };
-      // 假设selectedMessage.conversationContent是一个数组，存储对话内容
-      this.selectedMessage.conversationContent.push(newMsg);
-      this.newMessageText = ''; // 清空输入框
-    },
+    // sendMessage() {
+    //   const newMsg = {
+    //     id: Date.now(),
+    //     content: this.newMessageText,
+    //     timestamp: new Date().toLocaleTimeString(),
+    //     sender_id: this.currentUser.id,
+    //   };
+    //   // 假设selectedMessage.conversationContent是一个数组，存储对话内容
+    //   this.selectedMessage.conversationContent.push(newMsg);
+    //   this.newMessageText = ''; // 清空输入框
+    // },
 
     closeChat() {
       this.showChatBox = false;
       this.selectedMessage = null;
     }
   },
-  // mounted() {
-  //   // // 模拟 ajax 请求，异步渲染编辑器
-  //   // setTimeout(() => {
-  //   //   this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
-  //   // }, 1500)
-  //   this.fetchData();
-  // },
+  mounted() {
+    // //从父组件中获取数据
+    // const user = JSON.parse(localStorage.getItem("user"));
+    // if (user) {
+    //   this.postDynamicData.userId = user.user_id;
+    //   this.postDynamicData.userName = user.name;
+    // }
+  },
+  created() {
+    this.fetchDynamicList();
+    // this.fetchComments();
+  },
   beforeDestroy() {
     const editor = this.editor
     if (editor == null) return
@@ -451,6 +537,31 @@ export default {
   flex-wrap: wrap;
   gap: 10px;
 }
+
+
+.dynamic-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.dynamic-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dynamic-username {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.dynamic-time {
+  color: #888;
+  font-size: 0.9em;
+}
+
 .dynamic-actions {
   display: flex;
   align-items: center;
@@ -474,16 +585,11 @@ export default {
 .action-button span {
   font-size: 14px; /* 点赞数的字体大小 */
 }
+
 /* 默认状态下的图标颜色 */
 .el-icon-thumb {
   color: #C0C4CC;
 }
-
-/* 点赞状态下的图标颜色 */
-.el-icon-thumb.liked {
-  color: #409EFF;
-}
-
 
 .action-button .el-icon-message {
   color: #909399; /* 评论图标颜色 */
@@ -502,12 +608,6 @@ button:hover {
   background-color: #e0e0e0;
 }
 
-.comments {
-  margin-top: 10px;
-  border-top: 1px solid #eee;
-  padding-top: 10px;
-}
-
 .comment {
   background-color: #f9f9f9;
   padding: 5px;
@@ -515,32 +615,6 @@ button:hover {
   margin-bottom: 5px;
 }
 
-.new-comment {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.comment-input {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
-.comment-submit {
-  padding: 5px 15px;
-  background-color: #409EFF;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.comment-submit:hover {
-  background-color: #3079ED;
-}
 /* 适应不同屏幕宽度的响应式设计 */
 @media (max-width: 768px) {
   .post-editor {

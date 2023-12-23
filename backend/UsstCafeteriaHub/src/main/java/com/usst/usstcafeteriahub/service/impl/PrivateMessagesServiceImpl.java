@@ -83,6 +83,17 @@ public class PrivateMessagesServiceImpl extends ServiceImpl<PrivateMessagesMappe
         return privateMessagesMapper.getPrivateMessagesByConversationId(conversationId);
     }
 
+    /**
+     * 根据发送方Id和接受方Id获取私信，时间升序
+     * @param senderId
+     * @param receiverId
+     * @return
+     */
+    @Override
+    public PrivateMessages getPrivateMessagesBySenderIdAndReceiverId(Long senderId, Long receiverId) {
+        return privateMessagesMapper.getPrivateMessagesBySenderIdAndReceiverId(senderId, receiverId);
+    }
+
 }
 
 

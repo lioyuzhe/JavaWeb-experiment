@@ -38,11 +38,7 @@ public class CafeteriaController {
             return Result.error("参数为空");
         }
         log.info("添加食堂: {}", cafeteria);
-        boolean save = cafeteriaService.save(cafeteria);
-        if(!save){
-            return Result.error("添加失败");
-        }
-        return Result.success("添加成功");
+        return cafeteriaService.add(cafeteria);
     }
 
     @ApiOperation("删除食堂")

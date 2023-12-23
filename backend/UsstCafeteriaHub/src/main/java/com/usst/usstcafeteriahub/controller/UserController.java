@@ -106,12 +106,6 @@ public class UserController {
 
 
 
-
-
-
-
-
-
     @ApiOperation("获取当前用户")
     @GetMapping("/getCurrentUser")
     public BaseResponse getCurrentUser(){

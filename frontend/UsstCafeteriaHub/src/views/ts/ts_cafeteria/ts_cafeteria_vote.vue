@@ -28,6 +28,12 @@
 
 <script>
 export default {
+  props: {
+    cafeteria: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
       votes: [
