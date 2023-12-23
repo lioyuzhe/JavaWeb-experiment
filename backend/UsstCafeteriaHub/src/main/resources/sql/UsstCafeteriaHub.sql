@@ -448,7 +448,7 @@ CREATE TABLE `community_comment` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社区评论表' ROW_FORMAT=DYNAMIC;
 
 
-
-
+# complaint表  师生用户/首页 右侧的投诉回复
+INSERT INTO usstcafeteriahub.complaint (complaint_id, user_id, user_name, cafeteria_id, cafeteria_name, content, status, reply, deleted) VALUES (1, 1, 'aaa', 1, 'aaa', '难吃', 1, '收到投诉', 0);
 
 
