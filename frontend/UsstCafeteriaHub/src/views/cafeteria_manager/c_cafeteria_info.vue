@@ -31,11 +31,11 @@
             </div>
             <div>
               <label>管理员ID:</label>
-              <el-input v-model="newcanteens[4]" style="width:50%"></el-input>
+              <el-input style="width:50%" :value="cafeteria_admin.adminId" disabled></el-input>
             </div>
             <div>
               <label>管理员姓名:</label>
-              <el-input v-model="newcanteens[5]" style="width:50%"></el-input>
+              <el-input style="width:50%" :value="cafeteria_admin.name" disabled></el-input>
             </div>
             <div>
               <label>开业时间:</label>
@@ -101,6 +101,7 @@ export default {
   name: 'c_cafeteria_info',
   data() {
     return {
+      cafeteria_admin: JSON.parse(localStorage.getItem('cafeteria_admin') || '{}'),//食堂管理员
       tempcanteen:[],//删除时临时存放选中餐厅信息
       newcanteens:[], //存放新食堂信息
       canteens: [], // 存放从后端获取的多个食堂信息
@@ -158,8 +159,8 @@ export default {
         name:this.newcanteens[1],
         location:this.newcanteens[2],
         description:this.newcanteens[3],
-        adminId: this.newcanteens[4],
-        adminName:this.newcanteens[5],
+        adminId: this.cafeteria_admin.adminId,
+        adminName:this.cafeteria_admin.name,
         openTime:this.newcanteens[6],
         closeTime:this.newcanteens[7],
         deleted: 0,
@@ -171,6 +172,7 @@ export default {
           })
           .catch(error => {
             console.error('Error saving to backend:', error);
+            this.$message.error("添加失败");
           });
     },
     saveRow(index) {
@@ -179,7 +181,10 @@ export default {
     fetchCanteens() {
       axios.get('http://localhost:9090/cafeterias/actions/getCafeteria')
           .then(response => {
-            this.canteens = response.data.data;
+            const allCanteens = response.data.data;
+            this.canteens = allCanteens.filter(canteen => canteen.adminId === this.cafeteria_admin.adminId);
+            console.log(this.cafeteria_admin)
+
           })
           .catch(error => {
             console.error('Error fetching canteens:', error);
@@ -203,7 +208,7 @@ export default {
             this.currentCanteenInfo.push({ property: '管理员姓名', value: myObject.adminName });
             this.currentCanteenInfo.push({ property: '开业时间', value: myObject.openTime });
             this.currentCanteenInfo.push({ property: '歇业时间', value: myObject.closeTime });
-            console.log(this.currentCanteenInfo)
+            console.log(this.cafeteria_admin)
             this.dialogVisible = true; // 显示 el-dialog
           })
           .catch(error => {

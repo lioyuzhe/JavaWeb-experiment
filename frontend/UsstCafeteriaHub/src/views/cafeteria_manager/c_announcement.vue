@@ -75,6 +75,7 @@ export default {
           })
           .catch(error => {
             console.error('Error saving to backend:', error);
+            this.$message.error("删除失败");
           });
     },
     decideToDelete(notice){
@@ -101,6 +102,7 @@ export default {
           })
           .catch(error => {
             console.error('Error saving to backend:', error);
+            this.$message.error("添加失败");
           });
     },
     saveRow(index) {
