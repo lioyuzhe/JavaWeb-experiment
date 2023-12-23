@@ -104,7 +104,7 @@ export default {
     },
     logout() {
       localStorage.removeItem('admin')  // 清除当前的token和用户数据
-      // this.$router.push('/login')
+      this.$router.push('/login')
     },
     handleFull() {
       document.documentElement.requestFullscreen()

@@ -10,25 +10,7 @@ VueRouter.prototype.push = function push (location) {
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Manager',
-  //   component: () => import('../views/Manager.vue'),
-  //   redirect: '/home',  // 重定向到主页
-  //   children: [
-  //     { path: '403', name: 'Auth', meta: { name: '无权限' }, component: () => import('../views/manager/Auth') },
-  //     { path: 'home', name: 'Home', meta: { name: '管理员首页' }, component: () => import('../views/manager/Home') },
-  //     { path: 'user', name: 'User', meta: { name: '用户信息' }, component: () => import('../views/manager/User') },
-  //     { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/manager/Person') },
-  //     { path: 'password', name: 'Password', meta: { name: '修改密码' }, component: () => import('../views/manager/Password') },
-  //     { path: 'news', name: 'News', meta: { name: '新闻信息' }, component: () => import('../views/manager/News') },
-  //     { path: 'newsDetail', name: 'NewsDetail', meta: { name: '新闻详情' }, component: () => import('../views/manager/NewsDetail') },
-  //     { path: 'notice', name: 'Notice', meta: { name: '系统公告' }, component: () => import('../views/manager/Notice') },
-  //     { path: 'logs', name: 'Logs', meta: { name: '系统日志' }, component: () => import('../views/manager/Logs') },
-  //     { path: 'charts', name: 'Charts', meta: { name: '数据统计' }, component: () => import('../views/manager/Charts') },
-  //     { path: 'orders', name: 'Orders', meta: { name: '订单管理' }, component: () => import('../views/manager/Orders') },
-  //   ]
-  // },
+
   {
     path: '/ts_cafeteria_content',
     name: 'ts_cafeteria_content',

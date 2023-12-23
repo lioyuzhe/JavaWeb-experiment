@@ -55,53 +55,60 @@
              </span>
           </el-dialog>
           <!-- 动态列表 -->
-          <div class="dynamic-list">
-            <div class="dynamic-item" v-for="post in dynamicList" :key="post.message_id">
-              <!-- 动态元数据 -->
-              <div class="dynamic-meta">
-<!--                &lt;!&ndash; 头像 &ndash;&gt;-->
-<!--                <img :src="post.avatar" alt="Avatar" class="dynamic-avatar"/>-->
-                <div class="dynamic-user-info">
-                  <!-- 用户名 -->
-                  <span class="dynamic-username">{{ post.userName }}</span>
-                  <!-- 时间 -->
-                  <span class="dynamic-time">{{ post.createTime }}</span>
-                </div>
-              </div>
-              <!-- 显示标题 -->
-              <h3>{{ post.title }}</h3>
-              <!-- 动态内容 -->
-                <div class="dynamic-content" v-html="post.content"></div>
-              <!-- 动态操作区域 -->
-              <div class="dynamic-actions">
-                <!-- 点赞按钮 -->
-                <button @click="toggleLike(post)" class="action-button">
-                  <!-- 使用style绑定动态改变图标颜色 -->
-                  <i class="el-icon-thumb" :style="{ color: post.liked ? '#409EFF' : '#C0C4CC' }"></i>
-                  <span>{{ post.likeCount }}</span>
-                </button>
-                <!-- 评论按钮 -->
-                <button @click="toggleComments(post)" class="action-button">
-                  <i class="el-icon-chat-dot-square"></i>
-                </button>
-              </div>
-              <!-- 评论区域 -->
-              <div class="comments-container" v-if="post.showComments">
-                <!-- 显示评论列表 -->
-                <template v-if="post.comments && post.comments.length > 0">
-                  <div class="comment" v-for="comment in post.comments" :key="comment.commentId">
-                    <div>{{ comment.userName }}: {{ comment.content }}</div>
+          <el-row class="dynamic-list">
+            <el-col :span="24">
+              <el-card class="dynamic-item" v-for="post in dynamicList" :key="post.message_id" shadow="hover">
+                <!-- 动态元数据 -->
+                <div class="dynamic-meta">
+                  <div class="dynamic-user-info">
+                    <!-- 用户名 -->
+                    <span >{{ post.userName }}</span>
+                    <!-- 时间 -->
+                    <span class="dynamic-time">{{ post.createTime }}</span>
                   </div>
-                </template>
-                <!-- 如果没有评论，则显示提示信息 -->
-                <div v-else>暂无评论，快来抢沙发吧！</div>
-                <!-- 评论输入框 -->
-                <input type="text" v-model="post.newCommentText" placeholder="写下你的评论...">
-                <!-- 发送按钮 -->
-                <button @click="addComment(post)">发送</button>
-              </div>
-            </div>
-          </div>
+                </div>
+
+                <!-- 显示标题 -->
+                <h3>{{ post.title }}</h3>
+
+                <!-- 动态内容 -->
+                <div class="dynamic-content" v-html="post.content"></div>
+
+                <!-- 动态操作区域 -->
+                <div class="dynamic-actions">
+                  <!-- 点赞按钮 -->
+                  <el-button icon="el-icon-thumb" @click="toggleLike(post)" :type="post.liked ? 'primary' : 'default'">{{ post.likeCount }}</el-button>
+                  <!-- 评论按钮 -->
+                  <el-button icon="el-icon-chat-dot-square" @click="toggleComments(post)">评论</el-button>
+                </div>
+
+                <!-- 评论区域 -->
+                <el-collapse v-if="post.showComments">
+                  <el-collapse-item>
+                    <template v-slot:title>
+                      评论
+                    </template>
+
+                    <div v-if="post.comments && post.comments.length > 0">
+                      <el-card class="comment" v-for="comment in post.comments" :key="comment.commentId" shadow="never">
+                        <div>{{ comment.userName }}: {{ comment.content }}</div>
+                      </el-card>
+                    </div>
+
+                    <div v-else>暂无评论，快来抢沙发吧！</div>
+
+                    <!-- 评论输入框 -->
+                    <el-input v-model="post.newCommentText" placeholder="写下你的评论..." clearable>
+                      <template v-slot:append>
+                        <el-button icon="el-icon-send" @click="addComment(post)">发送</el-button>
+                      </template>
+                    </el-input>
+                  </el-collapse-item>
+                </el-collapse>
+
+              </el-card>
+            </el-col>
+          </el-row>
         </div>
       </el-col>
       <!-- 右侧 -->
@@ -318,42 +325,64 @@ export default {
         const response = await this.$request.get(url);
         if (response && response.data) {
           this.dynamicList = response.data;
+// 在创建动态数据时，确保每个动态对象都有 showComments 属性
+          this.dynamicList = response.data.map(dynamic => {
+            return {
+              ...dynamic,
+              showComments: false, // 初始值为 false
+              comments: [], // 初始值为空数组
+              newCommentText: '', // 初始值为空字符串
+              // 其他属性...
+            };
+          });
+          this.$message.success("动态获取成功");
           // 打印动态列表的数据属性
           console.log('Dynamic List Data:', this.dynamicList);
         }
       } catch (error) {
+        this.$message.error("动态获取失败");
         console.error('Error fetching dynamics:', error);
       }
     },
     async toggleComments(post) {
       post.showComments = !post.showComments;
-      if (post.showComments && (!Array.isArray(post.comments) || post.comments.length === 0)) {
+      console.log('post.showComments', post.showComments)
+      console.log('post', post)
+      if (post.showComments) {
         try {
           const response = await this.$request.get(`/community/comments/${post.messageId}`);
+          console.log("test");
           // 检查后端返回的数据是否为对象且包含 commentId 属性
-          post.comments = response.data && response.data.commentId ? [response.data] : [];
+          post.comments = response.data ;
+          console.log('Comments:', post.comments);
+          console.log("test");
+          this.$message.success("评论获取成功");
         } catch (error) {
+          this.$message.error("评论获取失败");
           console.error('获取评论失败:', error);
         }
       }
     },
     async addComment(post) {
+      console.log("post", post)
       if (!post.newCommentText.trim()) {
         alert('评论内容不能为空');
         return;
       }
       const newComment = {
-        user_name: this.user.user_name, // 这里应替换为实际的用户名
+        userName: this.user.name, // 这里应替换为实际的用户名
         content: post.newCommentText,
-        comment_id: '', // 临时使用时间戳作为唯一ID
+        commentId: null, //
+        messageId: post.messageId,
+        userId: this.user.userId,
+        deleted: 0,
+        likeCount: post.likeCount,
+        createTime: null,
       };
+      console.log("newComment", newComment)
       try {
         // 这里假设您的后端接受POST请求来添加评论
-        await this.$request.post(`/community/comments`, {
-          message_id: post.messageId,
-          content: post.newCommentText,
-          // 其他可能需要的字段...
-        });
+        await this.$request.post(`/community/comments`, newComment);
         post.comments.unshift(newComment); // 将新评论添加到列表的顶部
         post.newCommentText = ''; // 清空输入框
       } catch (error) {
@@ -388,7 +417,6 @@ export default {
         if (!response || response.code !== 200) {
           throw new Error('后端更新失败');
         }
-
         console.log('点赞状态更新成功');
       } catch (error) {
         console.error('更新点赞状态时出错:', error);

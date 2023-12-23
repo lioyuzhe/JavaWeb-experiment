@@ -105,15 +105,23 @@ public class AdminController {
     @GetMapping("/selectCafeteriaAdminByPage")
     public BaseResponse selectCafeteriaAdminByPage(@RequestParam Integer pageNum,
                                                    @RequestParam Integer pageSize,
-                                                   @RequestParam String username,
+                                                   @RequestParam String username, // 似乎应该是 account
                                                    @RequestParam String name) {
-        QueryWrapper<CafeteriaAdmin> queryWrapper = new QueryWrapper<CafeteriaAdmin>().orderByDesc("admin_id");  // 默认倒序，让最新的数据在最上面
-        queryWrapper.like(StrUtil.isNotBlank(username), "account", username);
-        queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
-        // select * from user where username like '%#{username}%' and name like '%#{name}%'
+        QueryWrapper<CafeteriaAdmin> queryWrapper = new QueryWrapper<CafeteriaAdmin>().orderByDesc("admin_id");
+
+        // 修改条件，使用OR逻辑连接两个模糊匹配条件
+        if (StrUtil.isNotBlank(username) || StrUtil.isNotBlank(name)) {
+            queryWrapper.lambda()
+                    .like(StrUtil.isNotBlank(username), CafeteriaAdmin::getAccount, username)
+                    .or()
+                    .like(StrUtil.isNotBlank(name), CafeteriaAdmin::getName, name);
+        }
+
+        // 执行分页查询
         Page<CafeteriaAdmin> page = cafeteriaAdminService.page(new Page<>(pageNum, pageSize), queryWrapper);
         return Result.success(page);
     }
+
 
     // 食堂管理员管理
     @ApiOperation(value = "增加食堂管理员")
@@ -207,7 +215,7 @@ public class AdminController {
     // 用户（账号管理）管理（老师和学生）
     @ApiOperation(value = "删除用户")
     @PostMapping("/deleteUser")
-    public BaseResponse deleteUser(@RequestParam User user){
+    public BaseResponse deleteUser(@RequestBody User user){
         if (user == null){
             return Result.error("参数不能为空");
         }
@@ -271,16 +279,25 @@ public class AdminController {
     @ApiOperation(value = "多条件模糊查询用户信息")
     @GetMapping("/selectByPage")
     public BaseResponse selectByPage(@RequestParam Integer pageNum,
-                                                 @RequestParam Integer pageSize,
-                                                 @RequestParam String username,
-                                                 @RequestParam String name) {
+                                     @RequestParam Integer pageSize,
+                                     @RequestParam String username,
+                                     @RequestParam String name) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>().orderByDesc("user_id");  // 默认倒序，让最新的数据在最上面
-        queryWrapper.like(StrUtil.isNotBlank(username), "account", username);
-        queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
-        // select * from user where username like '%#{username}%' and name like '%#{name}%'
+
+        // 检查username和name是否为空，然后使用OR逻辑连接两个条件
+        if (StrUtil.isNotBlank(username) || StrUtil.isNotBlank(name)) {
+            queryWrapper.and(wrapper ->
+                    wrapper.like(StrUtil.isNotBlank(username), "account", username)
+                            .or()
+                            .like(StrUtil.isNotBlank(name), "name", name)
+            );
+        }
+
+        // select * from user where (username like '%#{username}%' OR name like '%#{name}%')
         Page<User> page = userService.page(new Page<>(pageNum, pageSize), queryWrapper);
         return Result.success(page);
     }
+
 
 
     @ApiOperation(value = "增加用户")
