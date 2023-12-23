@@ -267,12 +267,13 @@ export default {
               <el-table-column prop="property" label="属性"></el-table-column>
               <el-table-column prop="value" label="信息">
                 <template v-slot="scope">
-                  <div v-if="scope.$index === editableRowIndex">
-                    <div v-if="scope.row.property !== '创建时间（自动生成）'">
-                    <el-input v-model="scope.row.value" @blur="saveRow(scope.$index)"></el-input>
+                  <div v-if="scope.row.property !== '创建时间（自动生成）'">
+                    <div v-if="scope.$index === editableRowIndex">
+                      <el-input v-model="scope.row.value" @blur="saveRow(scope.$index)"></el-input>
                     </div>
+                    <div v-else @click="editableRowIndex = scope.$index">{{ scope.row.value }}</div>
                   </div>
-                  <div v-else @click="editableRowIndex = scope.$index">{{ scope.row.value }}</div>
+                  <div v-else>{{ scope.row.value }}</div>
                 </template>
               </el-table-column>
             </el-table>
