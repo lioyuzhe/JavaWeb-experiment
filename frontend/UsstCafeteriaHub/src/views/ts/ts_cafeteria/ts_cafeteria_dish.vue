@@ -35,13 +35,13 @@
               v-model="review"
           ></el-input>
           <div class="image-upload">
-            <div class="upload-item" @click="addImage">
+            <div class="upload-item" @click="addImage" v-if="!imagePreviewUrl">
               <i class="el-icon-plus"></i>
               <span>添加图片</span>
             </div>
             <!-- 图片预览区域 -->
-            <div v-if="imagePreviewUrl" class="image-preview">
-              <img :src="imagePreviewUrl" alt="Image preview" />
+            <div v-if="imagePreviewUrl" class="image-preview" @click="addImage">
+              <img :src="imagePreviewUrl" alt="Image preview" class="preview-image" />
             </div>
             <input type="file" ref="fileInput" @change="handleFileChange" hidden>
           </div>
@@ -217,6 +217,36 @@ export default {
 </script>
 
 <style scoped>
+.preview-image {
+  max-width: 100px; /* 设置图片预览的最大宽度 */
+  max-height: 100px; /* 设置图片预览的最大高度 */
+  margin-top: 10px; /* 为了与加号按钮对齐，可以调整上边距 */
+}
+
+.image-upload {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.upload-item {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.upload-item i {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.upload-item span {
+  display: block;
+  color: #666;
+}
 
 .dish-top-container {
   display: flex;        /* 使用Flexbox */
