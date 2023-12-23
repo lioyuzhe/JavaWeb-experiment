@@ -62,6 +62,9 @@
         <el-form-item label="电话" prop="phone">
           <el-input v-model="form.phone" placeholder="电话"></el-input>
         </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="form.password" placeholder="密码"></el-input>
+        </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="邮箱"></el-input>
         </el-form-item>
@@ -166,9 +169,10 @@ export default {
       this.ids = rows.map(v => v.id)
     },
     del(user) {
+      console.log("user:",user)
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/admins/actions/deleteUser' + user).then(res => {
-          if (res.code === '200') {   // 表示操作成功
+        this.$request.post('/admins/actions/deleteUser', user).then(res => {
+          if (res.code === 200) {   // 表示操作成功
             this.$message.success('操作成功')
             this.load(1)
           } else {
@@ -193,7 +197,7 @@ export default {
             method: 'POST',
             data: this.form
           }).then(res => {
-            if (res.code === '200') {  // 表示成功保存
+            if (res.code === 200) {  // 表示成功保存
               this.$message.success('保存成功')
               this.load(1)
               this.fromVisible = false

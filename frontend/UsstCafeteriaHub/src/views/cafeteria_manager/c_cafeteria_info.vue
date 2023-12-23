@@ -124,8 +124,11 @@ export default {
     this.fetchCanteens(); // 获取多个食堂信息
   },
   methods: {
+    load(){
+      this.fetchCanteens();
+    },
     deleteToBackend(){
-      this.$request.post('http://localhost:9090/cafeterias/actions/deleteCafeteria',{
+      this.$request.post('/cafeterias/actions/deleteCafeteria',{
         cafeteriaId:this.tempcanteen.cafeteriaId,
         name:this.tempcanteen.name,
         location:this.tempcanteen.location,
@@ -139,7 +142,10 @@ export default {
           .then(response => {
             console.log('Successfully deleted');
             this.$message.success("删除成功");
+
             this.decideDialogVisible = false; // 关闭
+            this.load();
+
           })
           .catch(error => {
             console.error('Error saving to backend:', error);
@@ -153,7 +159,7 @@ export default {
       this.addDialogVisible = true;
     },
     addToBackend(){
-      this.$request.post('http://localhost:9090/cafeterias/actions/addCafeteria',{
+      this.$request.post('/cafeterias/actions/addCafeteria',{
         cafeteriaId:this.newcanteens[0],
         name:this.newcanteens[1],
         location:this.newcanteens[2],
@@ -168,6 +174,7 @@ export default {
             console.log('Successfully saved to backend');
             this.$message.success("添加成功");
             this.addDialogVisible = false; // 关闭
+            this.load();
           })
           .catch(error => {
             console.error('Error saving to backend:', error);
@@ -177,9 +184,9 @@ export default {
       this.editableRowIndex = -1; // 退出编辑状态
     },
     fetchCanteens() {
-      axios.get('http://localhost:9090/cafeterias/actions/getCafeteria')
+      this.$request.get('/cafeterias/actions/getCafeteria')
           .then(response => {
-            this.canteens = response.data.data;
+            this.canteens = response.data;
           })
           .catch(error => {
             console.error('Error fetching canteens:', error);
@@ -187,13 +194,13 @@ export default {
     },
     showCanteenInfo(canteenId) {
       // 根据食堂 ID 获取食堂详细信息
-      axios.get('http://localhost:9090/admins/actions/getCafeteriaById',{
+      this.$request.get('/admins/actions/getCafeteriaById',{
         params: {
           id: canteenId
         }
       })
           .then(response => {
-            const myObject = response.data.data; // 将后端返回的食堂信息赋值给 currentCanteenInfo
+            const myObject = response.data; // 将后端返回的食堂信息赋值给 currentCanteenInfo
             this.currentCanteenInfo =[]
             this.currentCanteenInfo.push({ property: '食堂ID', value: myObject.cafeteriaId });
             this.currentCanteenInfo.push({ property: '食堂名称', value: myObject.name });
@@ -212,7 +219,7 @@ export default {
     },
     saveToBackend() {
       //发送编辑后的食堂信息到后端
-      this.$request.post('http://localhost:9090/cafeterias/actions/updateCafeteria',{
+      this.$request.post('/cafeterias/actions/updateCafeteria',{
           cafeteriaId:this.currentCanteenInfo[0].value,
           name:this.currentCanteenInfo[1].value,
           location:this.currentCanteenInfo[2].value,
@@ -235,7 +242,7 @@ export default {
       this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
     },
     logout() {
-      localStorage.removeItem('honey-user')  // 清除当前的token和用户数据
+      localStorage.removeItem('cafeteria_admin')  // 清除当前的token和用户数据
       this.$router.push('/login')
     },
     handleFull() {
