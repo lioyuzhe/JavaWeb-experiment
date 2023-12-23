@@ -77,7 +77,7 @@ public class FileController {
         }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/admins/actions/download/" + originalFilename;
-        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+        return Result.success(url,"上传成功");  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
 
@@ -131,7 +131,7 @@ public class FileController {
         }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/cafeteriaAdmins/actions/download/" + originalFilename;
-        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+        return Result.success(url,"上传成功");  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
     @ApiOperation(value = "食堂管理员下载文件")
@@ -161,12 +161,12 @@ public class FileController {
     @ApiOperation(value = "用户上传文件")
     @PostMapping("/users/actions/upload")
     public BaseResponse uploadUser(MultipartFile file, HttpServletRequest request) throws IOException {
-        String originalFilename = file.getOriginalFilename();  // 文件的原始名称
-        // aaa.png
-        String mainName = FileUtil.mainName(originalFilename);  // aaa
-        String extName = FileUtil.extName(originalFilename);// png
-//        User user = UserHolder.getUser();
-//        Integer role = user.getRole();
+        // 获取文件的原始文件名 并拆分文件名和文件后缀
+        String originalFilename = file.getOriginalFilename();
+        String mainName = FileUtil.mainName(originalFilename);
+        String extName = FileUtil.extName(originalFilename);
+
+        // 获取用户名和用户角色代码
         Object userObjTmp = request.getSession().getAttribute(USER_LOGIN_STATE);
         if(userObjTmp==null){
             return Result.error("用户未登录");
@@ -178,7 +178,7 @@ public class FileController {
             if (!FileUtil.exist(TEACHER_FILE_PATH)) {
                 FileUtil.mkdir(TEACHER_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
             }
-//            Long id = UserHolder.getUser().getUserId();
+            // Long id = UserHolder.getUser().getUserId();
             Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
             if(userObj==null){
                 return Result.error("用户未登录");
@@ -195,12 +195,12 @@ public class FileController {
             }
             file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
             String url = "http://" + ip + ":" + port + "/users/actions/download/" + originalFilename;
-            return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+            return Result.success(url,"上传成功");  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
         }else if(role==0){
             if (!FileUtil.exist(STUDENT_FILE_PATH)) {
                 FileUtil.mkdir(STUDENT_FILE_PATH);  // 如果当前文件的父级目录不存在，就创建
             }
-//            Long id = UserHolder.getUser().getUserId();
+            //  Long id = UserHolder.getUser().getUserId();
             Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
             if(userObj==null){
                 return Result.error("用户未登录");
@@ -216,7 +216,7 @@ public class FileController {
             }
             file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
             String url = "http://" + ip + ":" + port + "/users/actions/download/" + originalFilename;
-            return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+            return Result.success(url,"上传成功");  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
         }else{
             return Result.error("用户角色错误，请联系管理员");
         }
@@ -315,7 +315,7 @@ public class FileController {
         }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/files/getPublicFile/" + originalFilename;
-        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+        return Result.success(url,"上传成功");  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
 
@@ -357,7 +357,7 @@ public class FileController {
         }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/files/getCafeteriaFile/" + originalFilename;
-        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+        return Result.success(url,"上传成功"); //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
     // 获取食堂文件
@@ -398,7 +398,7 @@ public class FileController {
         }
         file.transferTo(saveFile);  // 存储文件到本地的磁盘里面去
         String url = "http://" + ip + ":" + port + "/files/getCommunityFile/" + originalFilename;
-        return Result.success(url);  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
+        return Result.success(url,"上传成功"); //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
 

@@ -33,6 +33,14 @@ public interface PrivateMessagesMapper extends BaseMapper<PrivateMessages> {
      * @return
      */
     List<PrivateMessages> getPrivateMessagesByConversationId(Long conversationId);
+
+    /**
+     * 根据发送方Id和接受方Id获取私信，时间升序
+     * @param senderId
+     * @param receiverId
+     * @return
+     */
+    PrivateMessages getPrivateMessagesBySenderIdAndReceiverId(Long senderId, Long receiverId);
 }
 
 

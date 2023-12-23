@@ -9,12 +9,30 @@
             <result property="cafeteriaId" column="cafeteria_id" jdbcType="BIGINT"/>
             <result property="cafeteriaName" column="cafeteria_name" jdbcType="VARCHAR"/>
             <result property="totalScore" column="total_score" jdbcType="FLOAT"/>
-            <result property="rank" column="rank" jdbcType="INTEGER"/>
+            <result property="ranking" column="ranking" jdbcType="INTEGER"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+            <result property="averageScore" column="average_score" jdbcType="FLOAT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         rank_id,cafeteria_id,cafeteria_name,
-        total_score,rank,deleted
+        total_score,ranking,deleted,
+        average_score
     </sql>
+    <!--获取食堂排行榜,totalScore,由高到低排列-->
+    <select id="getCafeteriaRank" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaRank">
+        select
+        <include refid="Base_Column_List"/>
+        from cafeteria_rank
+        where deleted = 0
+        order by total_score desc
+    </select>
+    <!--根据食堂ID获取食堂排行-->
+    <select id="getCafeteriaRankByCafeteriaId" resultType="com.usst.usstcafeteriahub.model.entity.CafeteriaRank">
+        select
+        <include refid="Base_Column_List"/>
+        from cafeteria_rank
+        where cafeteria_id = #{cafeteriaId}
+        and deleted = 0
+    </select>
 </mapper>

@@ -1,13 +1,14 @@
 package com.usst.usstcafeteriahub.controller;
 
-import cn.hutool.core.codec.Base32;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
 //import com.usst.usstcafeteriahub.utils.AdminHolder;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +101,20 @@ public class AdminController {
     }
 
 
+    @ApiOperation(value = "多条件模糊查询食堂管理员信息")
+    @GetMapping("/selectCafeteriaAdminByPage")
+    public BaseResponse selectCafeteriaAdminByPage(@RequestParam Integer pageNum,
+                                                   @RequestParam Integer pageSize,
+                                                   @RequestParam String username,
+                                                   @RequestParam String name) {
+        QueryWrapper<CafeteriaAdmin> queryWrapper = new QueryWrapper<CafeteriaAdmin>().orderByDesc("admin_id");  // 默认倒序，让最新的数据在最上面
+        queryWrapper.like(StrUtil.isNotBlank(username), "account", username);
+        queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
+        // select * from user where username like '%#{username}%' and name like '%#{name}%'
+        Page<CafeteriaAdmin> page = cafeteriaAdminService.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return Result.success(page);
+    }
+
     // 食堂管理员管理
     @ApiOperation(value = "增加食堂管理员")
     @PostMapping("/addCafeteriaAdmin")
@@ -157,6 +172,9 @@ public class AdminController {
         }
     }
 
+
+
+
     @ApiOperation(value = "根据id查询食堂管理员信息")
     @GetMapping("/getCafeteriaAdminById")
     public BaseResponse getCafeteriaAdminById(@RequestParam Integer id){
@@ -167,6 +185,8 @@ public class AdminController {
         }
         return Result.success(admin);
     }
+
+
 
     @ApiOperation(value = "获取食堂管理员管理的食堂信息")
     @GetMapping("/getCafeteriasByCafeteriaAdminId")
@@ -241,6 +261,27 @@ public class AdminController {
         // 做一个判断，如果是管理员则返回所有管理员信息，如果是普通用户则返回自己的信息
         return Result.success(userService.list());
     }
+
+
+    /**
+     * 多条件模糊查询用户信息
+     * pageNum 当前的页码
+     * pageSize 每页查询的个数
+     */
+    @ApiOperation(value = "多条件模糊查询用户信息")
+    @GetMapping("/selectByPage")
+    public BaseResponse selectByPage(@RequestParam Integer pageNum,
+                                                 @RequestParam Integer pageSize,
+                                                 @RequestParam String username,
+                                                 @RequestParam String name) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>().orderByDesc("user_id");  // 默认倒序，让最新的数据在最上面
+        queryWrapper.like(StrUtil.isNotBlank(username), "account", username);
+        queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
+        // select * from user where username like '%#{username}%' and name like '%#{name}%'
+        Page<User> page = userService.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return Result.success(page);
+    }
+
 
     @ApiOperation(value = "增加用户")
     @PostMapping("/addUser")
