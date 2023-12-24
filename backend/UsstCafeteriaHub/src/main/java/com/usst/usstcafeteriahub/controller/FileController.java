@@ -227,10 +227,10 @@ public class FileController {
     @AuthAccess // 放行
     @GetMapping("/users/actions/download/{fileName}")
     public void downloadUser(@PathVariable String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        //        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 附件下载
+        //response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 附件下载
         response.addHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));  // 预览
-//        User user = UserHolder.getUser();
-//        Integer role = user.getRole();
+
+        // 根据用户信息判断下载的文件路径
         Object userObjTmp = request.getSession().getAttribute(USER_LOGIN_STATE);
         if(userObjTmp==null){
             return;
@@ -238,7 +238,7 @@ public class FileController {
         User user = (User) userObjTmp;
         Integer role = user.getRole();
         if(role==1){
-//            Long id = UserHolder.getUser().getUserId();
+            // Long id = UserHolder.getUser().getUserId();
             Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
             if(userObj==null){
                 return ;
@@ -255,7 +255,7 @@ public class FileController {
             outputStream.flush();
             outputStream.close();
         }else if(role==0){
-//            Long id = UserHolder.getUser().getUserId();
+            // Long id = UserHolder.getUser().getUserId();
             Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
             if(userObj==null){
                 return;
@@ -275,8 +275,6 @@ public class FileController {
             return;
         }
     }
-
-
 
     // 获取默认头像
     @ApiOperation(value = "获取默认头像")
