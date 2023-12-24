@@ -107,18 +107,18 @@ export default {
     this.load()
   },
   methods: {
-    getCafeteriaAdmins () {
-      this.$request.get('/admins/actions/getAdmins').then(res => {
-        this.tableData = res.data
-      })
-    },
+    // getCafeteriaAdmins () {
+    //   this.$request.get('/admins/actions/getCafeteriaAdmin').then(res => {
+    //     this.tableData = res.data
+    //   })
+    // },
     handleSelectionChange(rows) {   // 当前选中的所有的行数据
       this.ids = rows.map(v => v.id)
     },
     del(admin) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
         this.$request.delete('/admins/actions/deleteAdmin' + admin).then(res => {
-          if (res.code === '200') {   // 表示操作成功
+          if (res.code === 200) {   // 表示操作成功
             this.$message.success('操作成功')
             this.load(1)
           } else {
@@ -143,7 +143,7 @@ export default {
             method: 'POST',
             data: this.form
           }).then(res => {
-            if (res.code === '200') {  // 表示成功保存
+            if (res.code === 200) {  // 表示成功保存
               this.$message.success('保存成功')
               this.load(1)
               this.fromVisible = false
