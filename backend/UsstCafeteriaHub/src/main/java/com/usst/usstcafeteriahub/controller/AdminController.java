@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
@@ -276,6 +277,7 @@ public class AdminController {
      * pageNum 当前的页码
      * pageSize 每页查询的个数
      */
+    @Log
     @ApiOperation(value = "多条件模糊查询用户信息")
     @GetMapping("/selectByPage")
     public BaseResponse selectByPage(@RequestParam Integer pageNum,

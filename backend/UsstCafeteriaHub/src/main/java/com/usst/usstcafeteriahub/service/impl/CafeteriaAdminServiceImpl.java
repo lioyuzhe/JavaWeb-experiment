@@ -80,6 +80,7 @@ public class CafeteriaAdminServiceImpl extends ServiceImpl<CafeteriaAdminMapper,
         }else {
             if(Cafeteriaadmin.getPassword().equals(loginDTO.getPassword())){
                 Map<String,Object> claims = new HashMap<>();
+                claims.put("id",Cafeteriaadmin.getAdminId());
                 claims.put("account",Cafeteriaadmin.getAccount());
                 claims.put("password",Cafeteriaadmin.getPassword());
                 String token = JwtUtils.generateToken(claims);
