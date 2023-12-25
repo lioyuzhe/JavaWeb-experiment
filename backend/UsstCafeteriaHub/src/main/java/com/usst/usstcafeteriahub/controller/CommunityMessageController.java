@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CommunityMessage;
 import com.usst.usstcafeteriahub.service.CommunityMessageService;
@@ -23,6 +24,8 @@ public class CommunityMessageController {
     @Resource
     private CommunityMessageService communityMessageService;
 
+
+    @Log
     @ApiOperation("根据用户id筛选communityMessage")
     @GetMapping("/getCommunityMessageByUserId")
     public BaseResponse getCommunityMessageByUserId(@RequestParam Long userId) {
@@ -38,7 +41,7 @@ public class CommunityMessageController {
     }
 
 
-
+    @Log
     @ApiOperation("根据文章名进行模糊查询")
     @GetMapping("/getCommunityMessageByCommunityMessageName")
     public BaseResponse getCommunityMessageByTitle(@RequestParam String communityMessageName) {
@@ -53,6 +56,8 @@ public class CommunityMessageController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("根据点赞数由高到低获取文章列表")
     @GetMapping("/getCommunityMessageByLike")
     public BaseResponse getCommunityMessageByLike() {
@@ -64,6 +69,8 @@ public class CommunityMessageController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("根据时间由近到远获取文章列表")
     @GetMapping("/getCommunityMessageByTime")
     public BaseResponse getCommunityMessageByTime() {
@@ -75,6 +82,8 @@ public class CommunityMessageController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("添加文章")
     @PostMapping("/addCommunityMessage")
     public BaseResponse addCommunityMessage(@RequestBody CommunityMessage communityMessage) {
@@ -90,6 +99,8 @@ public class CommunityMessageController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("删除文章")
     @PostMapping("/deleteCommunityMessage")
     public BaseResponse deleteCommunityMessage(@RequestBody CommunityMessage communityMessage) {
@@ -104,6 +115,8 @@ public class CommunityMessageController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("修改文章")
     @PostMapping("/updateCommunityMessage")
     public BaseResponse updateCommunityMessage(@RequestBody CommunityMessage communityMessage) {

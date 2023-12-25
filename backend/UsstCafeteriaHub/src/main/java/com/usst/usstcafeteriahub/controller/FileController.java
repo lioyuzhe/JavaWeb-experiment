@@ -3,6 +3,7 @@ package com.usst.usstcafeteriahub.controller;
 
 import cn.hutool.core.io.FileUtil;
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.constant.AuthAccess;
 import com.usst.usstcafeteriahub.model.entity.Admin;
@@ -44,12 +45,16 @@ public class FileController {
     // 每个用户注册成功之后都会在files文件夹下创建一个文件夹，文件夹名字为用户或管理员的id，里面存放用户的头像，上传的文件等等
 
 
+
+    @Log
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
         return Result.error("功能还未开发");
     }
 
+
+    @Log
     @ApiOperation(value = "管理员上传文件")
     @PostMapping("/admins/actions/upload")
     public BaseResponse uploadAdmin(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -81,6 +86,8 @@ public class FileController {
     }
 
 
+
+    @Log
     @ApiOperation(value = "管理员下载文件")
     @AuthAccess // 放行
     @GetMapping("/admins/actions/download/{fileName}")
@@ -105,6 +112,8 @@ public class FileController {
         outputStream.close();
     }
 
+
+    @Log
     @ApiOperation(value = "食堂管理员上传文件")
     @PostMapping("/cafeteriaAdmins/actions/upload")
     public BaseResponse uploadCafeteriaAdmin(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -134,6 +143,8 @@ public class FileController {
         return Result.success(url,"上传成功");  //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
+
+    @Log
     @ApiOperation(value = "食堂管理员下载文件")
     @AuthAccess // 放行
     @GetMapping("/cafeteriaAdmins/actions/download/{fileName}")
@@ -158,6 +169,8 @@ public class FileController {
         outputStream.close();
     }
 
+
+    @Log
     @ApiOperation(value = "用户上传文件")
     @PostMapping("/users/actions/upload")
     public BaseResponse uploadUser(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -223,6 +236,8 @@ public class FileController {
 
     }
 
+
+    @Log
     @ApiOperation(value = "用户下载文件")
     @AuthAccess // 放行
     @GetMapping("/users/actions/download/{fileName}")
@@ -276,7 +291,10 @@ public class FileController {
         }
     }
 
+
+
     // 获取默认头像
+    @Log
     @ApiOperation(value = "获取默认头像")
     @AuthAccess // 放行
     @GetMapping("/getDefaultAvatar")
@@ -293,7 +311,10 @@ public class FileController {
         outputStream.close();
     }
 
+
+
     // 上传公共文件
+    @Log
     @ApiOperation(value = "上传公共文件")
     @PostMapping("/upload")
     public BaseResponse uploadPublicFile(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -317,7 +338,9 @@ public class FileController {
     }
 
 
+
     // 获取公共文件
+    @Log
     @ApiOperation(value = "获取公共文件")
     @AuthAccess // 放行
     @GetMapping("/getPublicFile/{fileName}")
@@ -335,7 +358,9 @@ public class FileController {
     }
 
 
+
     // 上传食堂文件
+    @Log
     @ApiOperation(value = "上传食堂文件 -- 包括菜品等")
     @PostMapping("/cafeteria/upload")
     public BaseResponse uploadCafeteriaFile(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -358,7 +383,9 @@ public class FileController {
         return Result.success(url,"上传成功"); //返回文件的链接，这个链接就是文件的下载地址，这个下载地址就是我的后台提供出来的
     }
 
+
     // 获取食堂文件
+    @Log
     @ApiOperation(value = "获取食堂文件 -- 包括菜品等")
     @AuthAccess // 放行
     @GetMapping("/getCafeteriaFile/{fileName}")
@@ -376,7 +403,9 @@ public class FileController {
         outputStream.close();
     }
 
+
     // 上传社区文件
+    @Log
     @ApiOperation(value = "上传社区文件 ")
     @PostMapping("/community/upload")
     public BaseResponse uploadCommunityFile(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -400,7 +429,9 @@ public class FileController {
     }
 
 
+
     // 获取社区文件
+    @Log
     @ApiOperation(value = "获取社区文件 ")
     @AuthAccess // 放行
     @GetMapping("/getCommunityFile/{fileName}")

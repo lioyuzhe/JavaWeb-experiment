@@ -2,6 +2,7 @@ package com.usst.usstcafeteriahub.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CommunityComment;
 import com.usst.usstcafeteriahub.service.CommunityCommentService;
@@ -25,6 +26,8 @@ public class CommunityCommentController {
     @Resource
     private CommunityCommentService communityCommentService;
 
+
+    @Log
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
@@ -32,6 +35,8 @@ public class CommunityCommentController {
     }
 
 
+
+    @Log
     @ApiOperation("添加评论")
     @PostMapping
     public BaseResponse addComment(@RequestBody CommunityComment comment) {
@@ -49,6 +54,8 @@ public class CommunityCommentController {
         }
     }
 
+
+    @Log
     @ApiOperation("删除评论")
     @DeleteMapping("/{commentId}")
     public BaseResponse deleteComment(@PathVariable Long commentId) {
@@ -61,6 +68,8 @@ public class CommunityCommentController {
 
     }
 
+
+    @Log
     @ApiOperation("更新评论")
     @PutMapping
     public BaseResponse updateComment(@RequestBody CommunityComment comment) {
@@ -76,6 +85,8 @@ public class CommunityCommentController {
         }
     }
 
+
+    @Log
     @ApiOperation("获取特定社区消息id的评论")
     @GetMapping("/{messageId}")
     public BaseResponse getCommentsByMessageId(@PathVariable Long messageId) {

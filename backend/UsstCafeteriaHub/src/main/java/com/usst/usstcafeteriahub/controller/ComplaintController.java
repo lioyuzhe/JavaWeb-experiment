@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Complaint;
 import com.usst.usstcafeteriahub.service.ComplaintService;
@@ -22,6 +23,8 @@ public class ComplaintController {
     @Resource
     private ComplaintService complaintService;
 
+
+    @Log
     @ApiOperation("获取投诉列表")
     @GetMapping("/getComplaint")
     public BaseResponse getComplaint() {
@@ -30,6 +33,8 @@ public class ComplaintController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("添加投诉")
     @PostMapping("/addComplaint")
     public BaseResponse addComplaint(@RequestBody Complaint complaint) {
@@ -45,6 +50,8 @@ public class ComplaintController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("删除投诉")
     @PostMapping("/deleteComplaint")
     public BaseResponse deleteComplaint(@RequestBody Complaint complaint) {
@@ -60,6 +67,7 @@ public class ComplaintController {
     }
 
     // 废置
+    // @Log
     // @ApiOperation("（废置）投诉设置已处理")
     // @PostMapping("/setReply")
     // public BaseResponse setReply(@RequestBody Complaint complaint) {
@@ -74,6 +82,8 @@ public class ComplaintController {
     //     return Result.success("设置成功");
     // }
 
+
+    @Log
     @ApiOperation("修改投诉")
     @PostMapping("/updateComplaint")
     public BaseResponse updateComplaint(@RequestBody Complaint complaint) {
@@ -88,6 +98,8 @@ public class ComplaintController {
         return Result.success("修改成功");
     }
 
+
+    @Log
     @ApiOperation("食堂管理员根据食堂id获取投诉列表,且未处理的投诉优先显示")
     @GetMapping("/getComplaintByCafeteriaId")
     public BaseResponse getComplaintByCafeteriaId(@RequestParam("cafeteriaId") Long cafeteriaId) {
@@ -102,6 +114,9 @@ public class ComplaintController {
         return Result.success(list);
     }
 
+
+
+    @Log
     @ApiOperation("食堂管理员根据食堂id获取投诉列表获取未处理的投诉数量")
     @GetMapping("/getComplaintNumByCafeteriaId")
     public BaseResponse getComplaintNumByCafeteriaId(@RequestParam("cafeteriaId") Long cafeteriaId) {
@@ -119,6 +134,8 @@ public class ComplaintController {
         return Result.success(num);
     }
 
+
+    @Log
     @ApiOperation("用户根据用户id获取已回复的投诉列表")
     @GetMapping("/getComplaintReplyByUserId")
     public BaseResponse getComplaintReplyByUserId(@RequestParam("userId") Long userId) {
