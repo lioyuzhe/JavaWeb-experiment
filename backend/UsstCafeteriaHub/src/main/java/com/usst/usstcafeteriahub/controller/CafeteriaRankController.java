@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaRank;
 import com.usst.usstcafeteriahub.service.CafeteriaRankService;
@@ -25,6 +26,8 @@ public class CafeteriaRankController {
     @Resource
     private CafeteriaRankService cafeteriaRankService;
 
+
+    @Log
     @ApiOperation("获取食堂排行榜,totalScore,由高到低排列")
     @GetMapping("/getCafeteriaRank")
     public BaseResponse getCafeteriaRank() {

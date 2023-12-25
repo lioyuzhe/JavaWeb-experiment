@@ -122,6 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }else {
             if(user.getPassword().equals(loginDTO.getPassword())){
                 Map<String,Object> claims = new HashMap<>();
+                claims.put("id",user.getUserId());
                 claims.put("account",user.getAccount());
                 claims.put("password",user.getPassword());
                 String token = JwtUtils.generateToken(claims);

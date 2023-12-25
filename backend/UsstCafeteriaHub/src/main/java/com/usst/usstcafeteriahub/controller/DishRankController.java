@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.DishRank;
 import com.usst.usstcafeteriahub.service.DishRankService;
@@ -24,6 +25,8 @@ public class DishRankController {
     @Resource
     private DishRankService dishRankService;
 
+
+    @Log
     @ApiOperation("获取菜品排行榜,根据 平均score：total_score/数据数 由高到低排列")
     @GetMapping("/getDishRank")
     public BaseResponse getDishRank() {

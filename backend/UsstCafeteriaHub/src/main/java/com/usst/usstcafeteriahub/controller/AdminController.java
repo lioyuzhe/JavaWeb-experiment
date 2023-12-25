@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
@@ -48,7 +49,7 @@ public class AdminController {
     @Resource
     private CommunityMessageService communityMessageService;
 
-
+    @Log
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
@@ -56,7 +57,7 @@ public class AdminController {
     }
 
     // 管理员管理
-
+    @Log
     @ApiOperation("获取当前管理员的信息") // 这里前端其实有处理，不过还是加上吧
     @GetMapping("/getCurrentAdmin")
     public BaseResponse getCurrentAdmin(HttpServletRequest request){
@@ -64,26 +65,26 @@ public class AdminController {
         Admin admin = (Admin) userObj;
         return Result.success(admin);
     }
-
+    @Log
     @ApiOperation(value = "增加管理员")
     @PostMapping("/addAdmin")
     public BaseResponse addAdmin(@RequestBody Admin admin){
         return adminService.addAdmin(admin);
     }
-
+    @Log
     @ApiOperation(value = "删除管理员")
     @PostMapping("/deleteAdmin")
     public BaseResponse deleteAdmin(@RequestBody Admin admin){
         return adminService.deleteAdmin(admin);
     }
 
-
+    @Log
     @ApiOperation(value = "修改管理员信息")
     @PostMapping("/updateAdmin")
     public BaseResponse updateAdmin(@RequestBody Admin admin){
         return adminService.updateAdmin(admin);
     }
-
+    @Log
     @ApiOperation(value = "根据id查询管理员信息")
     @GetMapping("/getAdminById")
     public BaseResponse getAdminById(@RequestParam Integer id){
@@ -92,7 +93,7 @@ public class AdminController {
         return Result.success(admin);
     }
 
-
+    @Log
     @ApiOperation(value = "获取所有管理员信息")
     @GetMapping("/getAdmins")
     public BaseResponse getAdmins(){
@@ -100,7 +101,7 @@ public class AdminController {
         return Result.success(adminService.list());
     }
 
-
+    @Log
     @ApiOperation(value = "多条件模糊查询食堂管理员信息")
     @GetMapping("/selectCafeteriaAdminByPage")
     public BaseResponse selectCafeteriaAdminByPage(@RequestParam Integer pageNum,
@@ -124,6 +125,7 @@ public class AdminController {
 
 
     // 食堂管理员管理
+    @Log
     @ApiOperation(value = "增加食堂管理员")
     @PostMapping("/addCafeteriaAdmin")
     public BaseResponse addCafeteriaAdmin(@RequestBody CafeteriaAdmin admin){
@@ -141,7 +143,7 @@ public class AdminController {
             return Result.error("添加失败");
         }
     }
-
+    @Log
     @ApiOperation(value = "删除食堂管理员")
     @PostMapping("/deleteCafeteriaAdmin")
     public BaseResponse deleteCafeteriaAdmin(@RequestBody CafeteriaAdmin admin){
@@ -160,7 +162,7 @@ public class AdminController {
             return Result.error("删除失败");
         }
     }
-
+    @Log
     @ApiOperation(value = "修改食堂管理员信息")
     @PostMapping("/updateCafeteriaAdmin")
     public BaseResponse updateCafeteriaAdmin(@RequestBody CafeteriaAdmin admin){
@@ -182,7 +184,7 @@ public class AdminController {
 
 
 
-
+    @Log
     @ApiOperation(value = "根据id查询食堂管理员信息")
     @GetMapping("/getCafeteriaAdminById")
     public BaseResponse getCafeteriaAdminById(@RequestParam Integer id){
@@ -195,7 +197,7 @@ public class AdminController {
     }
 
 
-
+    @Log
     @ApiOperation(value = "获取食堂管理员管理的食堂信息")
     @GetMapping("/getCafeteriasByCafeteriaAdminId")
     public BaseResponse getCafeteriasByCafeteriaAdminId(@RequestParam Integer id){
@@ -213,6 +215,7 @@ public class AdminController {
 
 
     // 用户（账号管理）管理（老师和学生）
+    @Log
     @ApiOperation(value = "删除用户")
     @PostMapping("/deleteUser")
     public BaseResponse deleteUser(@RequestBody User user){
@@ -231,7 +234,7 @@ public class AdminController {
             return Result.error("删除失败");
         }
     }
-
+    @Log
     @ApiOperation(value = "修改用户信息")
     @PostMapping("/updateUser")
     public BaseResponse updateUser(@RequestBody User user){
@@ -251,7 +254,7 @@ public class AdminController {
         }
     }
 
-
+    @Log
     @ApiOperation(value = "根据id查询用户信息")
     @GetMapping("/getUserById")
     public BaseResponse getUserById(@RequestParam Integer id){
@@ -262,7 +265,7 @@ public class AdminController {
         }
         return Result.success(user);
     }
-
+    @Log
     @ApiOperation(value = "获取所有用户信息")
     @GetMapping("/getUsers")
     public BaseResponse getUsers(){
@@ -276,6 +279,7 @@ public class AdminController {
      * pageNum 当前的页码
      * pageSize 每页查询的个数
      */
+    @Log
     @ApiOperation(value = "多条件模糊查询用户信息")
     @GetMapping("/selectByPage")
     public BaseResponse selectByPage(@RequestParam Integer pageNum,
@@ -299,7 +303,7 @@ public class AdminController {
     }
 
 
-
+    @Log
     @ApiOperation(value = "增加用户")
     @PostMapping("/addUser")
     public BaseResponse addUser(@RequestBody User user){
@@ -318,9 +322,8 @@ public class AdminController {
         }
     }
 
-
-
     // 食堂信息管理
+    @Log
     @ApiOperation(value = "增加食堂")
     @PostMapping("/addCafeteria")
     public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria) {
@@ -339,6 +342,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "删除食堂")
     @PostMapping("/deleteCafeteria")
     public BaseResponse deleteCafeteria(@RequestBody Cafeteria cafeteria){
@@ -358,6 +362,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "修改食堂信息")
     @PostMapping("/updateCafeteria")
     public BaseResponse updateCafeteria(@RequestBody Cafeteria cafeteria){
@@ -377,6 +382,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "根据id查询食堂信息")
     @GetMapping("/getCafeteriaById")
     public BaseResponse getCafeteriaById(@RequestParam Integer id){
@@ -388,6 +394,7 @@ public class AdminController {
         return Result.success(cafeteria);
     }
 
+    @Log
     @ApiOperation(value = "获取所有食堂信息")
     @GetMapping("/getCafeterias")
     public BaseResponse getCafeterias(){
@@ -395,6 +402,7 @@ public class AdminController {
         return Result.success(cafeteriaService.list());
     }
 
+    @Log
     @ApiOperation(value = "给食堂添加管理员")
     @PostMapping("/addAdminToCafeteria")
     public BaseResponse addAdminToCafeteria(@RequestBody CafeteriaAdmin admin, @RequestBody Cafeteria cafeteria){
@@ -419,7 +427,7 @@ public class AdminController {
         }
     }
 
-
+//    @Log
 //    @ApiOperation(value = "获取食堂的管理员")
 //    @GetMapping("/getCafeteriaAdmins")
 //    public BaseResponse getCafeteriaAdmins(@RequestParam Integer id){
@@ -435,6 +443,7 @@ public class AdminController {
 
 
     // 社区管理
+    @Log
     @ApiOperation(value = "查看社区信息")
     @GetMapping("/getCommunityById")
     public BaseResponse getCommunityById(){
@@ -447,18 +456,21 @@ public class AdminController {
         return Result.success(community);
     }
 
+    @Log
     @ApiOperation(value = "查看社区用户")
     @GetMapping("/getCommunityUsers")
     public BaseResponse getCommunityUsers(){
         return Result.success(communityUserService.list());
     }
 
+    @Log
     @ApiOperation(value = "查看社区消息")
     @GetMapping("/getCommunityMessages")
     public BaseResponse getCommunityMessages(){
         return Result.success(communityMessageService.list());
     }
 
+    @Log
     @ApiOperation(value = "删除社区消息")
     @PostMapping("/deleteCommunityMessage")
     public BaseResponse deleteCommunityMessage(@RequestBody CommunityMessage communityMessage){
@@ -478,6 +490,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "删除社区用户")
     @PostMapping("/deleteCommunityUser")
     public BaseResponse deleteCommunityUser(@RequestBody CommunityUser communityUser){
@@ -497,6 +510,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "修改社区用户")
     @PostMapping("/updateCommunityUser")
     public BaseResponse updateCommunityUser(@RequestBody CommunityUser communityUser){
@@ -517,6 +531,7 @@ public class AdminController {
     }
 
 
+    @Log
     @ApiOperation(value = "修改社区消息")
     @PostMapping("/updateCommunityMessage")
     public BaseResponse updateCommunityMessage(@RequestBody CommunityMessage communityMessage){
@@ -538,6 +553,7 @@ public class AdminController {
 
 
 
+    @Log
     // 评价信息管理
     @ApiOperation(value = "食堂评价信息删除")
     @PostMapping("/deleteCafeteriaRemark")
@@ -559,6 +575,7 @@ public class AdminController {
     }
 
 
+    @Log
     @ApiOperation(value = "食堂评价信息修改")
     @PostMapping("/updateCafeteriaRemark")
     public BaseResponse updateCafeteriaRemark(@RequestBody CafeteriaRemark cafeteriaRemark){
@@ -578,6 +595,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "食堂评价信息查询")
     @GetMapping("/getCafeteriaRemarkById")
     public BaseResponse getCafeteriaRemarkById(@RequestParam Integer id){
@@ -589,6 +607,7 @@ public class AdminController {
         return Result.success(cafeteriaRemark);
     }
 
+    @Log
     @ApiOperation(value = "查看所有食堂评价信息")
     @GetMapping("/getCafeteriaRemarks")
     public BaseResponse getCafeteriaRemarks(){
@@ -596,6 +615,7 @@ public class AdminController {
     }
 
     // 菜品评价信息管理
+    @Log
     @ApiOperation(value = "菜品评价信息删除")
     @PostMapping("/deleteDishRemark")
     public BaseResponse deleteDishRemark(@RequestBody DishRemark dishRemark){
@@ -615,6 +635,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "菜品评价信息修改")
     @PostMapping("/updateDishRemark")
     public BaseResponse updateDishRemark(@RequestBody DishRemark dishRemark){
@@ -634,6 +655,7 @@ public class AdminController {
         }
     }
 
+    @Log
     @ApiOperation(value = "菜品评价信息查询")
     @GetMapping("/getDishRemarkById")
     public BaseResponse getDishRemarkById(@RequestParam Integer id){
@@ -645,6 +667,7 @@ public class AdminController {
         return Result.success(dishRemark);
     }
 
+    @Log
     @ApiOperation(value = "查看所有菜品评价信息")
     @GetMapping("/getDishRemarks")
     public BaseResponse getDishRemarks(){

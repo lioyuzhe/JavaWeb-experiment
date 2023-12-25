@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.DishRemark;
 import com.usst.usstcafeteriahub.service.DishRemarkService;
@@ -22,6 +23,8 @@ public class DishRemarkController {
     @Resource
     private DishRemarkService dishRemarkService;
 
+
+    @Log
     @ApiOperation("根据菜品ID获取菜品评价列表")
     @GetMapping("/getDishRemark")
     public BaseResponse getDishRemarkByDishId(@RequestParam("dishId") Long dishId) {
@@ -30,6 +33,8 @@ public class DishRemarkController {
         return Result.success(dishRemarks);
     }
 
+
+    @Log
     @ApiOperation("用户查看当前菜品自己的评价")
     @GetMapping("/getDishRemarkByUserIdAndDishId")
     public BaseResponse getDishRemarkByUserIdAndDishId(@RequestParam("userId") Long userId, @RequestParam("dishId") Long dishId) {
@@ -44,6 +49,8 @@ public class DishRemarkController {
         return Result.success(dishRemark);
     }
 
+
+    @Log
     @ApiOperation("用户添加&修改菜品评价，如果已经评价过则更新评价")
     @PostMapping("/addDishRemark")
     public BaseResponse addDishRemark(@RequestBody DishRemark dishRemark) {
@@ -54,6 +61,8 @@ public class DishRemarkController {
         return dishRemarkService.addDishRemark(dishRemark);
     }
 
+
+    @Log
     @ApiOperation("删除菜品评价")
     @PostMapping("/deleteDishRemark")
     public BaseResponse deleteDishRemark(@RequestBody DishRemark dishRemark) {
@@ -69,6 +78,7 @@ public class DishRemarkController {
     }
 
     // 废置 ，和添加菜品合并
+    //@Log
     // @ApiOperation("更新菜品评价")
     // @PostMapping("/updateDishRemark")
     // public BaseResponse updateDishRemark(@RequestBody DishRemark dishRemark) {

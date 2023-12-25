@@ -125,6 +125,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
         }else {
             if (admin.getPassword().equals(loginDTO.getPassword())){
                 Map<String,Object> claims = new HashMap<>();
+                claims.put("id",admin.getAdminId());
                 claims.put("account",admin.getAccount());
                 claims.put("password",admin.getPassword());
                 String token = JwtUtils.generateToken(claims);

@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaNotice;
 import com.usst.usstcafeteriahub.service.CafeteriaNoticeService;
@@ -23,6 +24,8 @@ public class CafeteriaNoticeController {
     @Resource
     private CafeteriaNoticeService cafeteriaNoticeService;
 
+
+    @Log
     @ApiOperation("查询食堂公告列表")
     @GetMapping("/getCafeteriaNotices")
     public BaseResponse getCafeteriaNotices() {
@@ -31,6 +34,8 @@ public class CafeteriaNoticeController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("添加食堂公告")
     @PostMapping("/addCafeteriaNotice")
     public BaseResponse addCafeteriaNotice(@RequestBody CafeteriaNotice cafeteriaNotice) {
@@ -46,6 +51,8 @@ public class CafeteriaNoticeController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("按照食堂ID筛选食堂公告")
     @GetMapping("/getCafeteriaNoticesByCafeteriaID")
     public BaseResponse getCafeteriaNoticesByCafeteriaID(@RequestParam Long id){
@@ -58,6 +65,8 @@ public class CafeteriaNoticeController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("删除食堂公告")
     @PostMapping("/deleteCafeteriaNotice")
     public BaseResponse deleteCafeteriaNotice(@RequestBody CafeteriaNotice cafeteriaNotice) {
@@ -72,6 +81,8 @@ public class CafeteriaNoticeController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("修改食堂公告")
     @PostMapping("/updateCafeteriaNotice")
     public BaseResponse updateCafeteriaNotice(@RequestBody CafeteriaNotice cafeteriaNotice) {

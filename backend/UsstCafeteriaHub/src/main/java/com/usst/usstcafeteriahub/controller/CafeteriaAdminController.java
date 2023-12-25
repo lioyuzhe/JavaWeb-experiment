@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
@@ -54,7 +55,7 @@ public class CafeteriaAdminController {
     @Resource
     private PromotionService promotionService;
 
-
+    @Log
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
@@ -62,6 +63,7 @@ public class CafeteriaAdminController {
     }
 
     // 食堂管理员管理
+    @Log
     @ApiOperation("获取自己信息")   // 这里前端其实有处理，不过还是加上吧
     @GetMapping("/getCurrentCafeteriaAdmin")
     public BaseResponse getCurrentCafeteriaAdmin(HttpServletRequest request){
@@ -70,24 +72,30 @@ public class CafeteriaAdminController {
         return Result.success(cafeteriaAdmin);
     }
 
+    @Log
     @ApiOperation(value = "增加食堂管理员")
     @PostMapping("/addCafeteriaAdmin")
     public BaseResponse addCafeteriaAdmin(@RequestBody CafeteriaAdmin admin){
         return cafeteriaAdminService.addAdmin(admin);
     }
 
+    @Log
     @ApiOperation(value = "删除食堂管理员")
     @PostMapping("/deleteCafeteriaAdmin")
     public BaseResponse deleteCafeteriaAdmin(@RequestBody CafeteriaAdmin admin){
         return cafeteriaAdminService.deleteAdmin(admin);
     }
 
+
+    @Log
     @ApiOperation(value = "修改食堂管理员")
     @PostMapping("/updateCafeteriaAdmin")
     public BaseResponse updateCafeteriaAdmin(@RequestBody CafeteriaAdmin admin){
         return cafeteriaAdminService.updateAdmin(admin);
     }
 
+
+    @Log
     @ApiOperation(value = "根据id查询管理员信息")
     @PostMapping("/getCafeteriaAdminById")
     public BaseResponse getCafeteriaAdminById(@RequestParam Integer id){
@@ -96,13 +104,16 @@ public class CafeteriaAdminController {
         return Result.success(admin);
     }
 
+    @Log
     @ApiOperation(value = "获取所有食堂管理员")
     @GetMapping("/getAllCafeteriaAdmin")
     public BaseResponse getAllCafeteriaAdmin(){
         return Result.success(cafeteriaAdminService.list());
     }
 
+
     // 食堂信息管理
+    @Log
     @ApiOperation(value = "获取自己管理的食堂信息")
     @GetMapping("/getCurrentCafeteria")
     public BaseResponse getCurrentCafeteria(HttpServletRequest request){
@@ -112,6 +123,7 @@ public class CafeteriaAdminController {
     }
 
 
+    @Log
     @ApiOperation(value = "修改食堂信息")
     @PostMapping("/updateCafeteria")
     public BaseResponse updateCafeteria(@RequestBody Cafeteria cafeteria){
@@ -131,6 +143,8 @@ public class CafeteriaAdminController {
         }
     }
 
+
+    @Log
     @ApiOperation(value = "增加食堂")
     @PostMapping("/addCafeteria")
     public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria) {
@@ -150,6 +164,7 @@ public class CafeteriaAdminController {
     }
 
 
+    @Log
     @ApiOperation(value = "删除食堂")
     @PostMapping("/deleteCafeteria")
     public BaseResponse deleteCafeteria(@RequestBody Cafeteria cafeteria){
@@ -169,6 +184,8 @@ public class CafeteriaAdminController {
         }
     }
 
+
+    @Log
     @ApiOperation(value = "根据id查询食堂信息")
     @GetMapping("/getCafeteriaById")
     public BaseResponse getCafeteriaById(@RequestParam Integer id){
@@ -180,7 +197,10 @@ public class CafeteriaAdminController {
         return Result.success(cafeteria);
     }
 
+
+
     // 菜品维护
+    @Log
     @ApiOperation("添加菜品")
     @PostMapping ("/addDish")
     public BaseResponse addDish(@RequestBody Dish dish) {
@@ -194,6 +214,9 @@ public class CafeteriaAdminController {
         }
         return Result.success("添加成功");
     }
+
+
+    @Log
     @ApiOperation("修改菜品")
     @PostMapping("/updateDish")
     public BaseResponse updateDish(@RequestBody Dish dish) {
@@ -207,6 +230,9 @@ public class CafeteriaAdminController {
         }
         return Result.success("修改成功");
     }
+
+
+    @Log
     @ApiOperation("删除菜品")
     @PostMapping("/deleteDish")
     public BaseResponse deleteDish(@RequestBody Dish dish) {
@@ -222,6 +248,7 @@ public class CafeteriaAdminController {
     }
 
     // 食堂评价处理
+    @Log
     @ApiOperation("按照食堂ID筛选食堂评价")
     @GetMapping("/getCafeteriaRemarksByCafeteriaID")
     public BaseResponse getCafeteriaRemarksByCafeteriaID(@RequestParam Long id){
@@ -234,6 +261,8 @@ public class CafeteriaAdminController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("修改食堂评价--包括回复")
     @PostMapping("/updatecafeteriaRemark")
     public BaseResponse updateCafeteria(@RequestBody CafeteriaRemark cafeteriaRemark) {
@@ -249,7 +278,9 @@ public class CafeteriaAdminController {
     }
 
 
+
     // 活动公告
+    @Log
     @ApiOperation("添加食堂公告")
     @PostMapping("/addCafeteriaNotice")
     public BaseResponse addCafeteriaNotice(@RequestBody CafeteriaNotice cafeteriaNotice) {
@@ -264,6 +295,8 @@ public class CafeteriaAdminController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("按照食堂ID筛选食堂公告")
     @GetMapping("/getCafeteriaNoticesByCafeteriaID")
     public BaseResponse getCafeteriaNoticesByCafeteriaID(@RequestParam Long id){
@@ -276,6 +309,8 @@ public class CafeteriaAdminController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("删除食堂公告")
     @PostMapping("/deleteCafeteriaNotice")
     public BaseResponse deleteCafeteriaNotice(@RequestBody CafeteriaNotice cafeteriaNotice) {
@@ -290,6 +325,8 @@ public class CafeteriaAdminController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("修改食堂公告")
     @PostMapping("/updateCafeteriaNotice")
     public BaseResponse updateCafeteriaNotice(@RequestBody CafeteriaNotice cafeteriaNotice) {
@@ -304,7 +341,10 @@ public class CafeteriaAdminController {
         return Result.success("修改成功");
     }
 
+
+
     // 投诉信息管理
+    @Log
     @ApiOperation("获取投诉列表")
     @GetMapping("/getComplaint")
     public BaseResponse getComplaint() {
@@ -313,6 +353,8 @@ public class CafeteriaAdminController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("添加投诉")
     @PostMapping("/addComplaint")
     public BaseResponse addComplaint(@RequestBody Complaint complaint) {
@@ -328,6 +370,8 @@ public class CafeteriaAdminController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("删除投诉")
     @PostMapping("/deleteComplaint")
     public BaseResponse deleteComplaint(@RequestBody Complaint complaint) {
@@ -342,6 +386,8 @@ public class CafeteriaAdminController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("修改投诉")
     @PostMapping("/updateComplaint")
     public BaseResponse updateComplaint(@RequestBody Complaint complaint) {
@@ -356,6 +402,8 @@ public class CafeteriaAdminController {
         return Result.success("修改成功");
     }
 
+
+    @Log
     @ApiOperation("食堂管理员根据食堂id获取投诉列表,且未处理的投诉优先显示")
     @GetMapping("/getComplaintByCafeteriaId")
     public BaseResponse getComplaintByCafeteriaId(@RequestParam("cafeteriaId") Long cafeteriaId) {
@@ -370,6 +418,8 @@ public class CafeteriaAdminController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("食堂管理员根据食堂id获取投诉列表获取未处理的投诉数量")
     @GetMapping("/getComplaintNumByCafeteriaId")
     public BaseResponse getComplaintNumByCafeteriaId(@RequestParam("cafeteriaId") Long cafeteriaId) {
@@ -387,6 +437,8 @@ public class CafeteriaAdminController {
         return Result.success(num);
     }
 
+
+    @Log
     @ApiOperation("用户根据用户id获取已回复的投诉列表")
     @GetMapping("/getComplaintReplyByUserId")
     public BaseResponse getComplaintReplyByUserId(@RequestParam("userId") Long userId) {
@@ -402,6 +454,7 @@ public class CafeteriaAdminController {
     }
 
 
+    @Log
     @ApiOperation("获取促销菜品列表")
     @GetMapping("/getPromotion")
     public BaseResponse getPromotion() {
@@ -410,6 +463,8 @@ public class CafeteriaAdminController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("删除促销菜品")
     @PostMapping("/deletePromotion")
     public BaseResponse deletePromotion(@RequestBody Promotion promotion) {
@@ -424,6 +479,8 @@ public class CafeteriaAdminController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("添加促销菜品")
     @PostMapping("/addPromotion")
     public BaseResponse addPromotion(@RequestBody Promotion promotion) {
@@ -438,6 +495,8 @@ public class CafeteriaAdminController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("修改促销菜品")
     @PostMapping("/updatePromotion")
     public BaseResponse updatePromotion(@RequestBody Promotion promotion) {
