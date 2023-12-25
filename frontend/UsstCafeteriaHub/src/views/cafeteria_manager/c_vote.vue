@@ -19,14 +19,14 @@ export default {
         status: 0,
         createTime: "string",
         deleted: 0
-      }],  // 所有的数据
+      }],  // 所有的数据.
       cafeteriaManage: [],
       filters: [],//过滤器
       content: '',  // 富文本内容
       editor: null,  // 富文本编辑器对象
       formLabelWidth: '120px',
       pageNum: 1,   // 当前的页码
-      pageSize: 8,  // 每页显示的个数
+      pageSize: 8,  // 每页显示的个数.
       total: 0,
       currentRemark: {},
       fromVisible: false,
@@ -34,6 +34,7 @@ export default {
       cafeteria_admin: JSON.parse(localStorage.getItem('cafeteria_admin') || '{}'),
     }
   },
+
 }
 
 </script>
