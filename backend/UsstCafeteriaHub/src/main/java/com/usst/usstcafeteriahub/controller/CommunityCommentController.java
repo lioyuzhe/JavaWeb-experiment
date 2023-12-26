@@ -1,6 +1,8 @@
 package com.usst.usstcafeteriahub.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CommunityComment;
 import com.usst.usstcafeteriahub.service.CommunityCommentService;
@@ -24,6 +26,8 @@ public class CommunityCommentController {
     @Resource
     private CommunityCommentService communityCommentService;
 
+
+    @Log
     @ApiOperation(value = "测试接口")
     @GetMapping("/test")
     public BaseResponse test(){
@@ -31,6 +35,8 @@ public class CommunityCommentController {
     }
 
 
+
+    @Log
     @ApiOperation("添加评论")
     @PostMapping
     public BaseResponse addComment(@RequestBody CommunityComment comment) {
@@ -48,6 +54,8 @@ public class CommunityCommentController {
         }
     }
 
+
+    @Log
     @ApiOperation("删除评论")
     @DeleteMapping("/{commentId}")
     public BaseResponse deleteComment(@PathVariable Long commentId) {
@@ -60,6 +68,8 @@ public class CommunityCommentController {
 
     }
 
+
+    @Log
     @ApiOperation("更新评论")
     @PutMapping
     public BaseResponse updateComment(@RequestBody CommunityComment comment) {
@@ -75,15 +85,22 @@ public class CommunityCommentController {
         }
     }
 
+
+    @Log
     @ApiOperation("获取特定社区消息id的评论")
     @GetMapping("/{messageId}")
-    public BaseResponse getComment(@PathVariable Long messageId) {
-        // 调用服务层的方法获取特定评论
-        CommunityComment comment = communityCommentService.getByMessageId(messageId);
-        if (comment!=null){
-            return  Result.success(comment);
-        }else {
-            return Result.error("获取失败");
+    public BaseResponse getCommentsByMessageId(@PathVariable Long messageId) {
+        // 使用 QueryWrapper 来构建查询条件
+        QueryWrapper<CommunityComment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("message_id", messageId);
+
+        // 调用服务层的方法获取特定评论列表
+        List<CommunityComment> comments = communityCommentService.list(queryWrapper);
+
+        if (comments != null && !comments.isEmpty()) {
+            return Result.success(comments);
+        } else {
+            return Result.error("未找到相关评论");
         }
     }
 

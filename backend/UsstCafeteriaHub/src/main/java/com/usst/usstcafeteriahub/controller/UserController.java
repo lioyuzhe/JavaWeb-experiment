@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.User;
 import com.usst.usstcafeteriahub.service.UserService;
@@ -24,6 +25,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Log
     @ApiOperation("获取所有用户")
     @GetMapping("/getUsers")
     public BaseResponse getUsers() {
@@ -32,6 +34,7 @@ public class UserController {
         return Result.success(list);
     }
 
+    @Log
     @ApiOperation("根据id获取用户")
     @GetMapping("/getUserById")
     public BaseResponse getUserById(@RequestParam Long id) {
@@ -42,7 +45,7 @@ public class UserController {
         log.info("根据id获取用户: {}", user);
         return Result.success(user);
     }
-
+    @Log
     @ApiOperation("根据用户名进行模糊查询")
     @GetMapping("/getUserByName")
     public BaseResponse getUserByName(@RequestParam String name) {
@@ -53,7 +56,7 @@ public class UserController {
         log.info("根据用户名进行模糊查询: {}", list);
         return Result.success(list);
     }
-
+    @Log
     @ApiOperation("添加用户")
     @PostMapping("/addUser")
     public BaseResponse addUser(@RequestBody User user) {
@@ -70,7 +73,7 @@ public class UserController {
         }
         return Result.success("添加成功");
     }
-
+    @Log
     @ApiOperation("删除用户")
     @PostMapping("/deleteUser")
     public BaseResponse deleteUser(@RequestBody User user) {
@@ -84,7 +87,7 @@ public class UserController {
         }
         return Result.success("删除成功");
     }
-
+    @Log
     @ApiOperation("修改用户")
     @PostMapping("/updateUser")
     public BaseResponse updateUser(@RequestBody User user) {
@@ -105,13 +108,7 @@ public class UserController {
 
 
 
-
-
-
-
-
-
-
+    @Log
     @ApiOperation("获取当前用户")
     @GetMapping("/getCurrentUser")
     public BaseResponse getCurrentUser(){

@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Promotion;
 import com.usst.usstcafeteriahub.service.PromotionService;
@@ -23,6 +24,8 @@ public class PromotionController {
     @Resource
     private PromotionService promotionService;
 
+
+    @Log
     @ApiOperation("获取促销菜品列表")
     @GetMapping("/getPromotion")
     public BaseResponse getPromotion() {
@@ -31,6 +34,8 @@ public class PromotionController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("删除促销菜品")
     @PostMapping("/deletePromotion")
     public BaseResponse deletePromotion(@RequestBody Promotion promotion) {
@@ -45,6 +50,8 @@ public class PromotionController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("添加促销菜品")
     @PostMapping("/addPromotion")
     public BaseResponse addPromotion(@RequestBody Promotion promotion) {
@@ -59,6 +66,8 @@ public class PromotionController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("修改促销菜品")
     @PostMapping("/updatePromotion")
     public BaseResponse updatePromotion(@RequestBody Promotion promotion) {

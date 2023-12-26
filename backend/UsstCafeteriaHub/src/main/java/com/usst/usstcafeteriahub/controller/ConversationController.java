@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Conversation;
 import com.usst.usstcafeteriahub.model.entity.User;
@@ -28,6 +29,8 @@ public class ConversationController {
     @Resource
     private UserService userService;
 
+
+    @Log
     @ApiOperation("根据用户id获取会话列表")
     @GetMapping("/getConversationsByUserId")
     public BaseResponse getConversationsByUserId(@RequestParam Long id) {
@@ -39,6 +42,8 @@ public class ConversationController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("查看用户间会话or创建")
     @GetMapping("/createConversation")
     public BaseResponse createConversation(@RequestParam Long userId, @RequestParam Long targetId) {

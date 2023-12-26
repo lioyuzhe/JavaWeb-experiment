@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Cafeteria;
 import com.usst.usstcafeteriahub.model.entity.Promotion;
@@ -23,6 +24,8 @@ public class CafeteriaController {
     @Resource
     private CafeteriaService cafeteriaService;
 
+
+    @Log
     @ApiOperation("查询食堂信息")
     @GetMapping("/getCafeteria")
     public BaseResponse getCafeteria() {
@@ -31,6 +34,8 @@ public class CafeteriaController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("添加食堂")
     @PostMapping("/addCafeteria")
     public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria) {
@@ -41,6 +46,8 @@ public class CafeteriaController {
         return cafeteriaService.add(cafeteria);
     }
 
+
+    @Log
     @ApiOperation("删除食堂")
     @PostMapping("/deleteCafeteria")
     public BaseResponse deleteCafeteria(@RequestBody Cafeteria cafeteria) {
@@ -55,6 +62,8 @@ public class CafeteriaController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("修改食堂信息")
     @PostMapping("/updateCafeteria")
     public BaseResponse updateCafeteria(@RequestBody Cafeteria cafeteria) {

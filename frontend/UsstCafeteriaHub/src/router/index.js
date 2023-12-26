@@ -10,25 +10,6 @@ VueRouter.prototype.push = function push (location) {
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Manager',
-  //   component: () => import('../views/Manager.vue'),
-  //   redirect: '/home',  // 重定向到主页
-  //   children: [
-  //     { path: '403', name: 'Auth', meta: { name: '无权限' }, component: () => import('../views/manager/Auth') },
-  //     { path: 'home', name: 'Home', meta: { name: '管理员首页' }, component: () => import('../views/manager/Home') },
-  //     { path: 'user', name: 'User', meta: { name: '用户信息' }, component: () => import('../views/manager/User') },
-  //     { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/manager/Person') },
-  //     { path: 'password', name: 'Password', meta: { name: '修改密码' }, component: () => import('../views/manager/Password') },
-  //     { path: 'news', name: 'News', meta: { name: '新闻信息' }, component: () => import('../views/manager/News') },
-  //     { path: 'newsDetail', name: 'NewsDetail', meta: { name: '新闻详情' }, component: () => import('../views/manager/NewsDetail') },
-  //     { path: 'notice', name: 'Notice', meta: { name: '系统公告' }, component: () => import('../views/manager/Notice') },
-  //     { path: 'logs', name: 'Logs', meta: { name: '系统日志' }, component: () => import('../views/manager/Logs') },
-  //     { path: 'charts', name: 'Charts', meta: { name: '数据统计' }, component: () => import('../views/manager/Charts') },
-  //     { path: 'orders', name: 'Orders', meta: { name: '订单管理' }, component: () => import('../views/manager/Orders') },
-  //   ]
-  // },
   {
     path: '/ts_cafeteria_content',
     name: 'ts_cafeteria_content',
@@ -45,8 +26,37 @@ const routes = [
       { path: 'user', name: 'User', meta: { name: '用户管理' }, component: () => import('../views/manager/User') },
       { path: 'cafeteria_manager', name: 'CadfeteriaManager', meta: { name: '食堂管理员管理' }, component: () => import('../views/manager/CafeteriaManager') },
        { path: 'cafeteria', name: 'Cadfeteria', meta: { name: '食堂管理' }, component: () => import('../views/manager/Cafeteria') },
-       { path: 'remark', name: 'Remark', meta: { name: '评价信息管理' }, component: () => import('../views/manager/Remark') },
+      {
+        path: 'remark',
+        name: 'Remark',
+        meta: { name: '评价信息管理' },
+        component: () => import('../views/manager/Remark'),
+      },
+      {
+        path: 'remark/cafeteria',
+        name: 'CafeteriaRemark',
+        meta: { name: '食堂评价信息管理' },
+        component: () => import('../views/manager/CafeteriaRemark.vue')
+      },
+      {
+        path: 'remark/dish',
+        name: 'DishRemark',
+        meta: { name: '菜品评价信息管理' },
+        component: () => import('../views/manager/DishRemark.vue')
+      } ,
        { path: 'community', name: 'Community', meta: { name: '社区信息管理' }, component: () => import('../views/manager/Community') },
+      {
+        path: 'community/community-user',
+        name: 'CommunityUser',
+        meta: { name: '社区用户管理' },
+        component: () => import('../views/manager/CommunityUser')
+      },
+      {
+        path: 'community/community-message',
+        name: 'CommunityMessage',
+        meta: { name: '社区消息管理' },
+        component: () => import('../views/manager/CommunityMessage')
+      },
       { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/manager/Person') },
     ]
   },
@@ -61,7 +71,7 @@ const routes = [
       { path: 'cafeteria_info', name: 'c_cafeteria_info', meta: { name: '食堂管理' }, component: () => import('../views/cafeteria_manager/c_cafeteria_info.vue') },
       { path: 'cafeteria_dish', name: 'c_cafeteria_dish', meta: { name: '菜品管理' }, component: () => import('../views/cafeteria_manager/c_dish.vue') },
       { path: 'cafeteria_remark', name: ' c_remark',meta: {name: '食堂评价管理' },component: () => import('../views/cafeteria_manager/c_remark.vue') },
-      { path: ' announcement',name : 'announcement',meta: {name: '活动公告'},component: () => import('../views/cafeteria_manager/c_announcement.vue') },
+      { path: 'announcement',name : 'announcement',meta: {name: '活动公告'},component: () => import('../views/cafeteria_manager/c_announcement.vue') },
       { path: 'cafeteria_vote', name: 'c_cafeteria_vote', meta: { name: '投票信息管理' }, component: () => import('../views/cafeteria_manager/c_vote.vue') },
       { path: 'cafeteria_complaint', name: 'c_cafeteria_complaint', meta: { name: '投诉管理' }, component: () => import('../views/cafeteria_manager/c_complaint.vue') },
     ]

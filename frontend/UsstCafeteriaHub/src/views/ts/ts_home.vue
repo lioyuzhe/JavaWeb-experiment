@@ -7,7 +7,6 @@
         <el-carousel :interval=4000 type="card" height="200px">
           <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">
             <el-card>
-              <img :src="promo.image_url" alt="促销图片">
               <div>
                 <h3>{{ promo.dish_name }}</h3>
                 <p>{{ promo.description }}</p>
@@ -41,12 +40,26 @@
       <div class="icon-tray">
         <el-badge :value="commentsCount" class="icon">
           <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
+          <!-- 显示未查看的新评论数量 -->
+          <template v-if="hasUnreadComments">
+            <div class="unread-indicator"></div>
+          </template>
         </el-badge>
+
         <el-badge :value="likesCount" class="icon">
           <el-button icon="el-icon-thumb" circle @click="handleIconClick('likes')"></el-button>
+          <!-- 显示未查看的新点赞数量 -->
+          <template v-if="hasUnreadLikes">
+            <div class="unread-indicator"></div>
+          </template>
         </el-badge>
+
         <el-badge :value="complaintsCount" class="icon">
           <el-button icon="el-icon-warning" circle @click="handleIconClick('complaints')"></el-button>
+          <!-- 显示未查看的新投诉回复数量 -->
+          <template v-if="hasUnreadComplaintReplies">
+            <div class="unread-indicator"></div>
+          </template>
         </el-badge>
       </div>
       <!-- 消息栏 -->
@@ -54,22 +67,45 @@
         <div class="message-header">
           <!-- 标题部分代码省略 -->
         </div>
+
         <el-scrollbar class="message-list">
-          <div v-for="item in activeMessages" :key="item.id" class="message-item">
-            <span>{{ item.user_name }}：</span>
-            <p>{{ item.content }}</p>
+          <div v-for="item in activeMessages" :key="item.id" class="message-item" v-html="generateMessageContent(item)">
+            <!-- HTML 内容（包括加粗的部分）将会被渲染在这里 -->
           </div>
         </el-scrollbar>
+
+
+
       </el-card>
     </div>
   </div>
 </template>
+
 <script>
+import request from '@/utils/request';
 
 export default {
   name: 'ts_home',
   data() {
     return {
+      hasUnreadComments: false,//用于标识是否有未读的评论消息。
+      hasUnreadLikes: false,// 用于标识是否有未读的点赞消息。
+      hasUnreadComplaintReplies: false,//用于标识是否有未读的投诉回复消息。
+      commentsCount: 0,//用于存储评论消息的总数。
+      likesCount: 0,//用于存储点赞消息的总数。
+      complaintsCount: 0,//用于存储投诉回复消息的总数。
+      latestComments: [],//用于存储最新的评论
+      latestComplaintReplies: [],//用于存储最新的投诉回复
+      comment: {
+        comment_id: null, // 通常由后端生成
+        message_id: '',
+        user_id: '',
+        user_name: '',
+        content: '',
+        like_count: 0,
+        create_time: new Date(), // 设置为当前时间或由用户选择
+        deleted: 0 // 默认为0
+      },
       activeTab: 'comments', // 默认显示评论
       dialogVisible: false,
       selectedItem: {},
@@ -80,116 +116,153 @@ export default {
           id: 'promo',
           title: '最新促销',
           description: '探索我们的特价菜品',
-          imageUrl: 'path/to/promotion-image.jpg'
         },
         {
           id: 'vote',
           title: '投票调查',
           description: '参与我们的最新调查',
-          imageUrl: 'path/to/vote-image.jpg'
         },
         // 新增加的功能入口数据
         {
           id: 'recommendation',
           title: '食堂推荐',
           description: '最新食堂推荐菜品',
-          imageUrl: 'path/to/recommendation-image.jpg'
         },
         {
           id: 'communityTopic',
           title: '社区话题',
           description: '社区热门话题，参与讨论',
-          imageUrl: 'path/to/community-topic-image.jpg'
         },
         {
           id: 'canteenRank',
           title: '食堂排名',
           description: '查看最新食堂排名',
-          imageUrl: 'path/to/canteen-rank-image.jpg'
         },
         {
           id: 'dishRank',
           title: '菜品排名',
           description: '最新高评价菜品排名',
-          imageUrl: 'path/to/dish-rank-image.jpg'
         }
       ],
-
-      avatarUrl: '/ts_images/avatar.png',
-      commentsCount: 3,
-      likesCount: 2,
-      complaintsCount: 2,
       promotions: [
         {
           promotion_id: 1,
           dish_name: '促销菜品1',
           description: '促销菜品1描述。',
-          image_url: 'https://example.com/promo1.jpg'
         },
         // 可以添加更多模拟的促销信息
         {
           promotion_id: 2,
           dish_name: '最新投票调查',
           description: '最新投票调查描述。',
-          image_url: 'https://example.com/promo2.jpg'
         },
         {
           promotion_id: 3,
           dish_name: '最新食堂推荐菜品',
           description: '最新食堂推荐菜品描述。',
-          image_url: 'https://example.com/promo3.jpg'
         },
         {
           promotion_id: 4,
           dish_name: '社区热门话题',
           description: '被点赞最多的社区信息。',
-          image_url: 'https://example.com/promo4.jpg'
         },
         {
           promotion_id: 5,
           dish_name: '最新食堂排名',
           description: '最新食堂排名描述。',
-          image_url: 'https://example.com/promo5.jpg'
         },
         {
           promotion_id: 6,
           dish_name: '最新高评价菜品排名',
           description: '最新高评价菜品排名描述。',
-          image_url: 'https://example.com/promo6.jpg'
         },
       ],
       communityMessages: [
-        {message_id: 1, user_name: 'Alice', content: '今天的餐点非常美味！'},
-        {message_id: 2, user_name: 'Bob', content: '期待更多的素食选择。'},
-        {message_id: 3, user_name: 'Carol', content: '服务态度非常好，环境也很舒适。'},
+
       ],
       likes: [
-        {id: 1, user_name: 'Dave', content: 'Dave觉得你的评论很赞'},
-        {id: 2, user_name: 'Eve', content: 'Eve为你的分享点了赞'},
+
       ],
       complaints: [
-        {
-          complaint_id: 1,
-          user_name: 'Frank',
-          content: '午餐时排队等待时间太长了。',
-          reply: '我们会尽快改进排队系统，感谢反馈。'
-        },
-        {
-          complaint_id: 2,
-          user_name: 'Grace',
-          content: '食堂内部分区域卫生条件需要提高。',
-          reply: '已经通知清洁团队进行深度清理，感谢您的建议。'
-        },
+
       ],
 
     };
 
   },
+  created() {
+    this.fetchData();
+    // 定时器，每隔一定时间请求最新数据
+    setInterval(() => {
+      this.fetchLatestComments();
+      this.fetchLatestComplaintReplies();
+    }, 10000); // 比如每10秒更新一次
+  },
   methods: {
+    getMessageType(item) {
+      // 根据消息的字段判断消息类型
+      if (item.cafeteriaName && item.content && item.reply) {
+        return 'complaint';
+      } else {
+        return 'normal';
+      }
+    },
+
+    generateMessageContent(item) {
+      if (this.getMessageType(item) === 'complaint') {
+        return `<strong>${item.cafeteriaName}</strong>回复了你的投诉"<strong>${item.content}</strong>": <strong>${item.reply}</strong>`;
+      } else {
+        return `${item.userName}：${item.content}`;
+      }
+    },
+
+
+
+    async fetchData() {
+      await this.fetchLatestComments();
+      await this.fetchLatestComplaintReplies();
+      // ...其他可能需要获取的数据
+    },
+
+    async fetchLatestComments() {
+      try {
+        const response = await this.$request.get('/community/comments/test');
+        this.latestComments = response.data;
+        // 根据返回的数据更新评论计数
+        this.commentsCount = response.data.length; // 从后端获取的数据更新评论计数
+        // this.commentsCount = this.latestComments.length;
+      } catch (error) {
+        console.error('Error fetching latest comments:', error);
+      }
+    },
+
+    async fetchLatestComplaintReplies() {
+      try {
+        const response = await this.$request.get('/complaints/actions/getComplaintReplyByUserId?userId=1');
+        this.latestComplaintReplies = response.data;
+        // 根据返回的数据更新投诉回复计数
+        // this.complaintsCount = this.latestComplaintReplies.length;
+        this.complaintsCount = response.data.length; // 从后端获取的数据更新投诉回复计数
+      } catch (error) {
+        console.error('Error fetching latest comments:', error.response.status, error.response.statusText);
+
+      }
+    },
+    async submitComment() {
+      try {
+        await this.$request.post('/community/comments/test', this.comment);
+        // 处理提交后的操作，例如清空表单、显示消息等
+      } catch (error) {
+        console.error(error);
+        // 错误处理
+      }
+    },
+
     // 点击事件处理器，用于切换活动标签
     handleIconClick(tab) {
       console.log('Tab clicked:', tab); // 添加调试信息
       this.activeTab = tab;
+
     },
     getLink(entryId) {
       switch (entryId) {
@@ -211,19 +284,21 @@ export default {
   },
   computed: {
     activeMessages() {
-      // 根据活动标签返回相应的消息列表
       switch (this.activeTab) {
         case 'comments':
-          return this.communityMessages;
+          this.fetchLatestComments();
+          return this.latestComments;
         case 'likes':
           return this.likes;
         case 'complaints':
-          return this.complaints;
+          this.fetchLatestComplaintReplies();
+          return this.latestComplaintReplies;
         default:
           return [];
       }
     }
   },
+
 }
 </script>
 
@@ -274,7 +349,7 @@ export default {
 }
 
 .message-list {
-  height: calc(100vh - 220px); /* 减去头部和间距的高度 */
+  height: calc(100vh - 220px);
   overflow-y: auto;
 }
 
@@ -302,12 +377,12 @@ export default {
   }
 
   .icon-tray .icon {
-    width: 33%; /* 每个图标占1/3宽度 */
+    width: 33%;
     margin-bottom: 10px;
   }
 
   .message-list {
-    height: auto; /* 移动视图高度自适应 */
+    height: auto;
   }
 }
 
