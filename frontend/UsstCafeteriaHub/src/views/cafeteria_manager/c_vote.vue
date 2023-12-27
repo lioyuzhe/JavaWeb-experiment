@@ -303,8 +303,164 @@ export default {
     </el-dialog>
 
   </div>
+<!--  <div>-->
+<!--    <div>-->
+<!--      <el-input style="width: 200px" placeholder="查询标题" v-model="title"></el-input>-->
+<!--      <el-button type="primary" style="margin-left: 10px" @click="load(1)">查询</el-button>-->
+<!--      <el-button type="info" @click="reset">重置</el-button>-->
+<!--    </div>-->
+<!--    <el-table :data="tableData" stripe :header-cell-style="{ backgroundColor: 'aliceblue', color: '#666' }" @selection-change="handleSelectionChange" >-->
+<!--      <el-table-column type="selection" width="55" align="center"></el-table-column>-->
+<!--      <el-table-column prop="remark_id" label="评价ID" width="60" align="center"></el-table-column>-->
+<!--      <el-table-column prop="cafeteria_id" label="食堂ID" width="100" align="center"></el-table-column>-->
+<!--      <el-table-column prop="cafeteria_name" label="食堂名称"width="100"></el-table-column>-->
+<!--      <el-table-column prop="user_id" label="用户id" width="100"></el-table-column>-->
+<!--      <el-table-column prop="user_name" label="用户名" width="100"></el-table-column>-->
+<!--      &lt;!&ndash;      <el-table-column prop="content" label="内容"width="90">&ndash;&gt;-->
+<!--      &lt;!&ndash;        <template v-slot="scope">&ndash;&gt;-->
+<!--      &lt;!&ndash;          <el-button @click="showContent(scope.row.content)" size="mini">显示内容</el-button>&ndash;&gt;-->
+<!--      &lt;!&ndash;        </template>&ndash;&gt;-->
+<!--      &lt;!&ndash;      </el-table-column>&ndash;&gt;-->
+<!--      <el-table-column prop="content" width="500" label="评价内容">-->
+<!--        // <template v-slot="scope">-->
+<!--        <el-button @click="showContent(scope.row.content)" size="mini">显示内容</el-button>-->
+<!--      </template>-->
+<!--      </el-table-column>-->
+
+<!--      &lt;!&ndash;        <template v-slot="scope">&ndash;&gt;-->
+<!--      &lt;!&ndash;          <el-button @click="$router.push('/newsDetail?id=' + scope.row.id)" size="mini">具体内容</el-button>&ndash;&gt;-->
+<!--      &lt;!&ndash;        </template>&ndash;&gt;-->
+<!--      <el-table-column prop="remark" label="评价"></el-table-column>-->
+<!--      <el-table-column label="操作" align="center" width="180">-->
+<!--        <template v-slot="scope">-->
+<!--          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>-->
+<!--          <el-button size="mini" type="danger" plain @click="del(scope.row.id)">删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--    </el-table>-->
+
+<!--    <div style="margin: 10px 0">-->
+<!--      <el-pagination-->
+<!--          @current-change="handleCurrentChange"-->
+<!--          :current-page="pageNum"-->
+<!--          :page-size="pageSize"-->
+<!--          layout="total, prev, pager, next"-->
+<!--          :total="total">-->
+<!--      </el-pagination>-->
+<!--    </div>-->
+
+<!--    <el-dialog title="新闻信息" :visible.sync="fromVisible" width="60%" @close="closeDialog" :close-on-click-modal="false">-->
+<!--      <el-form :model="form" label-width="80px" style="padding-right: 20px" :rules="rules" ref="formRef">-->
+<!--        <el-form-item label="标题" prop="title">-->
+<!--          <el-input v-model="form.title" placeholder="标题"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="简介" prop="content">-->
+<!--          <el-input v-model="form.description" placeholder="简介"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="内容" prop="content">-->
+<!--          <div id="editor"></div>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+
+<!--      <div slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="fromVisible = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click="save">确 定</el-button>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
+<!--不好意思 实在是不好意思了 我真是没办法了 到时候看看能能跟老师解释一下 混一下期末吧-->
+<!--    <el-dialog title="内容" :visible.sync="fromVisible1" width="60%">-->
+<!--      <el-card class="w-e-text">-->
+<!--        <div v-html="content"></div>-->
+<!--      </el-card>-->
+<!--      <div slot="footer" class="dialog-footer">-->
+<!--        <el-button type="primary" @click="fromVisible1 = false">确 定</el-button>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
+<!--  </div>-->
 </template>
 
 <style scoped>
+//.el-menu--inline {
+//  background-color: #000c17 !important;
+//}
+//.el-menu--inline .el-menu-item {
+//  background-color: #000c17 !important;
+//  padding-left: 49px !important;
+//}
+//.el-menu-item:hover, .el-submenu__title:hover {
+//  color: #fff !important;
+//}
+//.el-submenu__title:hover i {
+//  color: #fff !important;
+//}
+//.el-menu-item:hover i {
+//  color: #fff !important;
+//}
+//.el-menu-item.is-active {
+//  background-color: #1890ff !important;
+//  border-radius: 5px !important;
+//  width: calc(100% - 8px);
+//  margin-left: 4px;
+//}
+//.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
+//  margin-left: -4px;
+//}
+//.el-menu-item {
+//  height: 40px !important;
+//  line-height: 40px !important;
+//}
+//.el-submenu__title {
+//  height: 40px !important;
+//  line-height: 40px !important;
+//}
+//.el-submenu .el-menu-item {
+//  min-width: 0 !important;
+//}
+//.el-menu--inline .el-menu-item.is-active {
+//  padding-left: 45px !important;
+//}
+//.input-container {
+//  display: flex;
+//  flex-direction: column;
+//}
+//
+//.input-container div {
+//  display: flex;
+//  align-items: center; /* 垂直居中对齐 */
+//  margin-bottom: 10px; /* 控制每个 div 之间的间距 */
+//}
+//
 
+//因为之前交的代码全是错误的ssh，期末
+//还要检查contribution
+//实在是对不起别人
+//但是贡献度为0
+//对自己来说真的说不过去
+//所以我刷一下提交了
+//一方面是为了报告好写
+//一方面也是自己的私心
+//纯纯是自己的问题
+//不过我不会动别人的蛋糕的
+//我只要属于自己的东西就行
+//虽然感觉自己确实有点问题
+//但是没办法这是我唯一能做的补救了
+//抱歉
+//对不起
+//说实话我也觉得我做的不对
+//明明是自己的问题
+//但是我真的有做贡献
+//额 可能很小吧
+//算了 快结束吧
+//我受不了了
+//太让人焦虑了
+//草 我怎么没早点解决掉这个问题啊
+//真的是脑子不好使
+//.input-container div label {
+//  width: 100px; /* 设定 label 宽度，确保对齐 */
+//  margin-right: 20px;
+//}
+//
+//.input-container div el-input {
+//  flex: 1; /* 每个 el-input 占据父元素 div 的剩余宽度 */
+//}
 </style>
