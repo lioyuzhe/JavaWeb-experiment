@@ -124,11 +124,13 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
             return Result.error("用户不存在");
         }else {
             if (admin.getPassword().equals(loginDTO.getPassword())){
+                log.info("登录用户信息：{}",admin);
                 Map<String,Object> claims = new HashMap<>();
                 claims.put("id",admin.getAdminId());
                 claims.put("account",admin.getAccount());
                 claims.put("password",admin.getPassword());
                 String token = JwtUtils.generateToken(claims);
+                log.info("登录用户信息生成的token:{}",token);
                 admin.setToken(token);
                 // 用session保存用户信息
                 request.getSession().setAttribute(ADMIN_LOGIN_STATE,admin);
