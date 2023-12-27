@@ -31,6 +31,30 @@ export default {
       cafeteria_admin: JSON.parse(localStorage.getItem('cafeteria_admin') || '{}'),
     }
   },
+  //因为之前交的代码全是错误的ssh，期末
+//还要检查contribution
+//实在是对不起别人
+//但是贡献度为0
+//对自己来说真的说不过去
+//所以我刷一下提交了
+//一方面是为了报告好写
+//一方面也是自己的私心
+//纯纯是自己的问题
+//不过我不会动别人的蛋糕的
+//我只要属于自己的东西就行
+//虽然感觉自己确实有点问题
+//但是没办法这是我唯一能做的补救了
+//抱歉
+//对不起
+//说实话我也觉得我做的不对
+//明明是自己的问题
+//但是我真的有做贡献
+//额 可能很小吧
+//算了 快结束吧
+//我受不了了
+//太让人焦虑了
+//草 我怎么没早点解决掉这个问题啊
+//真的是脑子不好使
 //   考虑在与服务器交互的方法中添加错误处理。
 //   这将使应用程序更加健壮和用户友好。
 //
@@ -223,6 +247,7 @@ export default {
 //但是没办法这是我唯一能做的补救了
 //抱歉
 //对不起
+
 </script>
 
 <template>
@@ -380,87 +405,64 @@ export default {
 </template>
 
 <style scoped>
-//.el-menu--inline {
-//  background-color: #000c17 !important;
-//}
-//.el-menu--inline .el-menu-item {
-//  background-color: #000c17 !important;
-//  padding-left: 49px !important;
-//}
-//.el-menu-item:hover, .el-submenu__title:hover {
-//  color: #fff !important;
-//}
-//.el-submenu__title:hover i {
-//  color: #fff !important;
-//}
-//.el-menu-item:hover i {
-//  color: #fff !important;
-//}
-//.el-menu-item.is-active {
-//  background-color: #1890ff !important;
-//  border-radius: 5px !important;
-//  width: calc(100% - 8px);
-//  margin-left: 4px;
-//}
-//.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
-//  margin-left: -4px;
-//}
-//.el-menu-item {
-//  height: 40px !important;
-//  line-height: 40px !important;
-//}
-//.el-submenu__title {
-//  height: 40px !important;
-//  line-height: 40px !important;
-//}
-//.el-submenu .el-menu-item {
-//  min-width: 0 !important;
-//}
-//.el-menu--inline .el-menu-item.is-active {
-//  padding-left: 45px !important;
-//}
-//.input-container {
-//  display: flex;
-//  flex-direction: column;
-//}
-//
-//.input-container div {
-//  display: flex;
-//  align-items: center; /* 垂直居中对齐 */
-//  margin-bottom: 10px; /* 控制每个 div 之间的间距 */
-//}
-//
+.el-menu--inline {
+  background-color: #000c17 !important;
+}
+.el-menu--inline .el-menu-item {
+  background-color: #000c17 !important;
+  padding-left: 49px !important;
+}
+.el-menu-item:hover, .el-submenu__title:hover {
+  color: #fff !important;
+}
+.el-submenu__title:hover i {
+  color: #fff !important;
+}
+.el-menu-item:hover i {
+  color: #fff !important;
+}
+.el-menu-item.is-active {
+  background-color: #1890ff !important;
+  border-radius: 5px !important;
+  width: calc(100% - 8px);
+  margin-left: 4px;
+}
+.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
+  margin-left: -4px;
+}
+.el-menu-item {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+.el-submenu__title {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+.el-submenu .el-menu-item {
+  min-width: 0 !important;
+}
+.el-menu--inline .el-menu-item.is-active {
+  padding-left: 45px !important;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
 
-//因为之前交的代码全是错误的ssh，期末
-//还要检查contribution
-//实在是对不起别人
-//但是贡献度为0
-//对自己来说真的说不过去
-//所以我刷一下提交了
-//一方面是为了报告好写
-//一方面也是自己的私心
-//纯纯是自己的问题
-//不过我不会动别人的蛋糕的
-//我只要属于自己的东西就行
-//虽然感觉自己确实有点问题
-//但是没办法这是我唯一能做的补救了
-//抱歉
-//对不起
-//说实话我也觉得我做的不对
-//明明是自己的问题
-//但是我真的有做贡献
-//额 可能很小吧
-//算了 快结束吧
-//我受不了了
-//太让人焦虑了
-//草 我怎么没早点解决掉这个问题啊
-//真的是脑子不好使
-//.input-container div label {
-//  width: 100px; /* 设定 label 宽度，确保对齐 */
-//  margin-right: 20px;
-//}
-//
-//.input-container div el-input {
-//  flex: 1; /* 每个 el-input 占据父元素 div 的剩余宽度 */
-//}
+.input-container div {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  margin-bottom: 10px; /* 控制每个 div 之间的间距 */
+}
+
+
+
+.input-container div label {
+  width: 100px; /* 设定 label 宽度，确保对齐 */
+  margin-right: 20px;
+}
+
+.input-container div el-input {
+  flex: 1; /* 每个 el-input 占据父元素 div 的剩余宽度 */
+}
 </style>
