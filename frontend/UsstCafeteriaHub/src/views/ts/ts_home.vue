@@ -1,27 +1,23 @@
 <template>
   <div class="home-container">
-    <!-- 左侧内容 -->
-    <div class="left-content">
-      <!-- 动态轮播部分 -->
-      <div class="dynamic-carousel">
-        <el-carousel :interval=4000 type="card" height="200px">
-          <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">
-            <el-card>
-              <div>
-                <h3>{{ promo.dish_name }}</h3>
-                <p>{{ promo.description }}</p>
-              </div>
-            </el-card>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
-      <!-- 功能入口部分 -->
-      <div class="feature-entrances">
+    <el-row :gutter="20" justify="center">
+      <!-- 左侧内容 -->
+      <el-col :span="16" :offset="2">
+        <!-- 动态轮播部分 -->
+        <el-card class="box-card">
+          <el-carousel :interval="4000" type="card" height="200px">
+            <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">
+              <h3>{{ promo.dish_name }}</h3>
+              <p>{{ promo.description }}</p>
+            </el-carousel-item>
+          </el-carousel>
+        </el-card>
+
+        <!-- 功能入口部分 -->
         <el-row :gutter="20">
           <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id">
-            <!-- 使用 router-link 来实现路由跳转 -->
             <router-link :to="getLink(entry.id)">
-              <el-card>
+              <el-card class="box-card">
                 <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
                 <div>
                   <h3>{{ entry.title }}</h3>
@@ -31,53 +27,34 @@
             </router-link>
           </el-col>
         </el-row>
-      </div>
-    </div>
+      </el-col>
 
-    <!-- 右侧内容 -->
-    <div class="right-content">
-      <!-- 功能图标部分 -->
-      <div class="icon-tray">
-        <el-badge :value="commentsCount" class="icon">
-          <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
-          <!-- 显示未查看的新评论数量 -->
-          <template v-if="hasUnreadComments">
-            <div class="unread-indicator"></div>
-          </template>
-        </el-badge>
-
-        <el-badge :value="likesCount" class="icon">
-          <el-button icon="el-icon-thumb" circle @click="handleIconClick('likes')"></el-button>
-          <!-- 显示未查看的新点赞数量 -->
-          <template v-if="hasUnreadLikes">
-            <div class="unread-indicator"></div>
-          </template>
-        </el-badge>
-
-        <el-badge :value="complaintsCount" class="icon">
-          <el-button icon="el-icon-warning" circle @click="handleIconClick('complaints')"></el-button>
-          <!-- 显示未查看的新投诉回复数量 -->
-          <template v-if="hasUnreadComplaintReplies">
-            <div class="unread-indicator"></div>
-          </template>
-        </el-badge>
-      </div>
-      <!-- 消息栏 -->
-      <el-card class="message-card">
-        <div class="message-header">
-          <!-- 标题部分代码省略 -->
-        </div>
-
-        <el-scrollbar class="message-list">
-          <div v-for="item in activeMessages" :key="item.id" class="message-item" v-html="generateMessageContent(item)">
-            <!-- HTML 内容（包括加粗的部分）将会被渲染在这里 -->
+      <!-- 右侧内容 -->
+      <el-col :span="5" >
+        <!-- 功能图标部分 -->
+        <el-card class="box-card">
+          <div class="icon-tray">
+            <el-badge :value="commentsCount" class="icon">
+              <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
+            </el-badge>
+            <el-badge :value="likesCount" class="icon">
+              <el-button icon="el-icon-star-off" circle @click="handleIconClick('likes')"></el-button>
+            </el-badge>
+            <el-badge :value="complaintsCount" class="icon">
+              <el-button icon="el-icon-warning" circle @click="handleIconClick('complaints')"></el-button>
+            </el-badge>
           </div>
-        </el-scrollbar>
+        </el-card>
 
-
-
-      </el-card>
-    </div>
+        <!-- 消息栏 -->
+        <el-card class="box-card">
+          <el-scrollbar class="message-list">
+            <div v-for="item in activeMessages" :key="item.id" class="message-item" v-html="generateMessageContent(item)">
+            </div>
+          </el-scrollbar>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -302,50 +279,19 @@ export default {
 }
 </script>
 
-
 <style scoped>
-/* 全局布局 */
-.home-container {
-  display: flex;
-  justify-content: space-between; /* 确保左右内容分布在两侧 */
-}
-
-/* 导航栏下方左侧内容样式 */
-.left-content {
-  width: calc(100% - 320px); /* 计算右侧内容宽度后剩余的宽度 */
-  margin-right: 20px; /* 右侧内容与左侧内容之间的间隔 */
-}
-
-/* 功能图标和消息栏样式 */
-.right-content {
-  width: 300px; /* 功能图标和消息栏宽度 */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* 右对齐 */
-}
-
-/* 功能图标样式 */
-.icon-tray {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 20px; /* 与消息栏之间的间距 */
+.box-card {
+  margin-bottom: 20px;
 }
 
 .icon-tray .icon {
-  flex: 1; /* 平均分布图标 */
-  text-align: center; /* 图标居中 */
+  text-align: center;
 }
 
-/* 消息栏样式 */
-.message-card {
+.entrance-image {
   width: 100%;
-  margin-top: 20px; /* 消息栏与图标的间距 */
-}
-
-.message-header h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
+  height: auto;
+  object-fit: cover;
 }
 
 .message-list {
@@ -353,38 +299,10 @@ export default {
   overflow-y: auto;
 }
 
-.message-item {
-  margin-bottom: 10px;
-}
-
-/* 适应移动视图 */
 @media (max-width: 768px) {
-  .home-container {
-    flex-direction: column;
-  }
-
-  .left-content,
-  .right-content {
-    width: 100%;
-    margin-right: 0;
-  }
-
-  .icon-tray {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
   .icon-tray .icon {
     width: 33%;
     margin-bottom: 10px;
   }
-
-  .message-list {
-    height: auto;
-  }
 }
-
-
 </style>

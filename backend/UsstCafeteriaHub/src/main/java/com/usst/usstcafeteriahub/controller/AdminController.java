@@ -2,6 +2,7 @@ package com.usst.usstcafeteriahub.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Log;
@@ -105,23 +106,15 @@ public class AdminController {
     @GetMapping("/selectCafeteriaAdminByPage")
     public BaseResponse selectCafeteriaAdminByPage(@RequestParam Integer pageNum,
                                                    @RequestParam Integer pageSize,
-                                                   @RequestParam String username, // 似乎应该是 account
+                                                   @RequestParam String username,
                                                    @RequestParam String name) {
-        QueryWrapper<CafeteriaAdmin> queryWrapper = new QueryWrapper<CafeteriaAdmin>().orderByDesc("admin_id");
-
-        // 修改条件，使用OR逻辑连接两个模糊匹配条件
-        if (StrUtil.isNotBlank(username) || StrUtil.isNotBlank(name)) {
-            queryWrapper.lambda()
-                    .like(StrUtil.isNotBlank(username), CafeteriaAdmin::getAccount, username)
-                    .or()
-                    .like(StrUtil.isNotBlank(name), CafeteriaAdmin::getName, name);
-        }
-
-        // 执行分页查询
+        QueryWrapper<CafeteriaAdmin> queryWrapper = new QueryWrapper<CafeteriaAdmin>().orderByDesc("admin_id");  // 默认倒序，让最新的数据在最上面
+        queryWrapper.like(StrUtil.isNotBlank(username), "account", username);
+        queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
+        // select * from user where username like '%#{username}%' and name like '%#{name}%'
         Page<CafeteriaAdmin> page = cafeteriaAdminService.page(new Page<>(pageNum, pageSize), queryWrapper);
         return Result.success(page);
     }
-
 
     // 食堂管理员管理
     @Log
@@ -396,12 +389,31 @@ public class AdminController {
     @Log
     @ApiOperation(value = "获取所有食堂信息")
     @GetMapping("/getCafeterias")
-    public BaseResponse getCafeterias(){
-        // 做一个判断，如果是管理员则返回所有管理员信息，如果是普通用户则返回自己的信息
-        return Result.success(cafeteriaService.list());
+    public BaseResponse getCafeterias(
+            @RequestParam Integer pageNum,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) String cafeteriaName,
+            @RequestParam(required = false) String location) {
+
+        QueryWrapper<Cafeteria> queryWrapper = new QueryWrapper<Cafeteria>().orderByDesc("cafeteria_id");  // 假设按食堂ID倒序排列
+
+        // 检查cafeteriaName和location是否为空，然后使用OR逻辑连接两个条件
+        if (StrUtil.isNotBlank(cafeteriaName) || StrUtil.isNotBlank(location)) {
+            queryWrapper.and(wrapper ->
+                    wrapper.like(StrUtil.isNotBlank(cafeteriaName), "name", cafeteriaName)
+                            .or()
+                            .like(StrUtil.isNotBlank(location), "location", location)
+            );
+        }
+
+        // select * from cafeteria where (cafeteria_name like '%#{cafeteriaName}%' OR location like '%#{location}%')
+        Page<Cafeteria> page = cafeteriaService.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return Result.success(page);
     }
 
+
     @Log
+
     @ApiOperation(value = "给食堂添加管理员")
     @PostMapping("/addAdminToCafeteria")
     public BaseResponse addAdminToCafeteria(@RequestBody CafeteriaAdmin admin, @RequestBody Cafeteria cafeteria){
@@ -489,6 +501,7 @@ public class AdminController {
         }
     }
 
+
     @Log
     @ApiOperation(value = "删除社区用户")
     @PostMapping("/deleteCommunityUser")
@@ -509,6 +522,7 @@ public class AdminController {
         }
     }
 
+
     @Log
     @ApiOperation(value = "修改社区用户")
     @PostMapping("/updateCommunityUser")
@@ -528,6 +542,7 @@ public class AdminController {
             return Result.error("更新失败");
         }
     }
+
 
 
     @Log
@@ -609,8 +624,24 @@ public class AdminController {
     @Log
     @ApiOperation(value = "查看所有食堂评价信息")
     @GetMapping("/getCafeteriaRemarks")
-    public BaseResponse getCafeteriaRemarks(){
-        return Result.success(cafeteriaRemarkService.list());
+    public BaseResponse getCafeteriaRemarks(
+            @RequestParam(required = false) Integer pageNum,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) String cafeteriaName,
+            @RequestParam(required = false) String userName) {
+
+        Page<CafeteriaRemark> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<CafeteriaRemark> queryWrapper = new QueryWrapper<>();
+
+        if (cafeteriaName != null && !cafeteriaName.isEmpty()) {
+            queryWrapper.like("cafeteria_name", cafeteriaName);
+        }
+        if (userName != null && !userName.isEmpty()) {
+            queryWrapper.like("user_name", userName);
+        }
+
+        IPage<CafeteriaRemark> resultPage = cafeteriaRemarkService.page(page, queryWrapper);
+        return Result.success(resultPage);
     }
 
     // 菜品评价信息管理
@@ -669,18 +700,25 @@ public class AdminController {
     @Log
     @ApiOperation(value = "查看所有菜品评价信息")
     @GetMapping("/getDishRemarks")
-    public BaseResponse getDishRemarks(){
-        return Result.success(dishRemarkService.list());
+    public BaseResponse getDishRemarks(
+            @RequestParam(required = false) Integer pageNum,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) String dishName,
+            @RequestParam(required = false) String userName) {
+
+        Page<DishRemark> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<DishRemark> queryWrapper = new QueryWrapper<>();
+
+        if (dishName != null && !dishName.isEmpty()) {
+            queryWrapper.like("dish_name", dishName);
+        }
+        if (userName != null && !userName.isEmpty()) {
+            queryWrapper.like("user_name", userName);
+        }
+
+        IPage<DishRemark> resultPage = dishRemarkService.page(page, queryWrapper);
+        return Result.success(resultPage);
     }
-
-
-
-
-
-
-
-
-
 
 
 

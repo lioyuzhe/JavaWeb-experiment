@@ -88,6 +88,10 @@ public class CafeteriaAdminServiceImpl extends ServiceImpl<CafeteriaAdminMapper,
 
                 // 将用户信息保存到session中
                 request.getSession().setAttribute(CAFETERIA_ADMIN_LOGIN_STATE,Cafeteriaadmin);
+                Object o = request.getSession().getAttribute(CAFETERIA_ADMIN_LOGIN_STATE);
+                CafeteriaAdmin cafeteriaadmin1 = (CafeteriaAdmin) o;
+                System.out.println("session中的用户信息："+cafeteriaadmin1);
+
                 Cafeteriaadmin.setPassword(null); // 密码不返回
                 return Result.success(Cafeteriaadmin,"登录成功");
             }else{

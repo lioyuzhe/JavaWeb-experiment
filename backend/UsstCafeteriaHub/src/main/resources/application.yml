@@ -9,7 +9,12 @@ spring:
     url: jdbc:mysql://${ip}:3306/UsstCafeteriaHub?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 1234
+    password: klein
+  servlet:
+    multipart:
+      max-file-size: 20MB  # 上传文件大小限制
+      max-request-size: 50MB # 上传请求大小限制
+
 
 
 

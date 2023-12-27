@@ -6,7 +6,7 @@
       </div>
       <div style="flex: 1; display: flex; align-items: center; justify-content: center">
         <el-form :model="user" style="width: 80%" :rules="rules" ref="loginRef">
-          <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">欢迎登录 上海理工大学食堂点评交流社区</div>
+          <div style="color:#000000 ;font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px">欢迎登录 上海理工大学食堂点评交流社区</div>
           <el-form-item prop="account">
             <el-input prefix-icon="el-icon-user" size="medium" placeholder="请输入账号" v-model="user.account"></el-input>
           </el-form-item>
@@ -149,7 +149,7 @@ export default {
               localStorage.setItem("user", JSON.stringify(res.data));   // 存储学生数据
               localStorage.setItem("role", JSON.stringify(this.user.role));   // 存储角色数据
             }else {
-              this.$message.error(res.msg)
+              this.$message.error(res.message)
             }
           })
         }
@@ -160,5 +160,67 @@ export default {
 </script>
 
 <style scoped>
+.login-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('https://static.kaoyan.cn/school_campus/139/1552899781_8739_thumb.jpg') no-repeat center center;
+  background-size: cover;
+}
 
+.login-box {
+  display: flex;
+  background-color: white;
+  width: 50%;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  width: 80%;
+}
+
+.login-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.code-section {
+  display: flex;
+}
+
+.role-selection {
+  margin-bottom: 20px;
+}
+
+.login-button {
+  width: 100%;
+}
+
+.extra-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.extra-options span {
+  color: #0f9876;
+  cursor: pointer;
+}
 </style>

@@ -166,7 +166,7 @@ export default {
     //   }).catch(() => {})
     // },
     handleSelectionChange(rows) {   // 当前选中的所有的行数据
-      this.ids = rows.map(v => v.id)
+      this.ids = rows.map(v => v.userId)
     },
     del(user) {
       console.log("user:",user)
