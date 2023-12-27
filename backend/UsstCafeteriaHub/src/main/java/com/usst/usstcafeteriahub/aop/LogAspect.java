@@ -29,9 +29,10 @@ public class LogAspect {
     public Object recordLog(ProceedingJoinPoint joinPoint) throws Throwable { // 连接点
         // 操作人ID-当前登陆员工ID
         // 获取请求头中的jwt令牌 解析令牌  
-        String jwt = request.getHeader("token");  
-        Claims claims = (Claims) JwtUtils.parseToken(jwt);
-        Integer operateUser = (Integer) claims.get("id");  
+        String jwt = request.getHeader("token");
+        log.info("jwt: {}", jwt);
+        Claims claims = JwtUtils.parseToken(jwt);
+        Integer operateUser = (Integer) claims.get("id");
   
         // 操作时间
         LocalDateTime operateTime = LocalDateTime.now();
@@ -59,8 +60,8 @@ public class LogAspect {
   
         // 记录操作日志  
         OperateLog operateLog = new OperateLog(null, operateUser, operateTime, className, methodName, methodParams, returnValue, costTime);
-        operateLogMapper.insert(operateLog);  
-        log.info("AOP记录操作日志: {}", operateLog);  
+        operateLogMapper.insert(operateLog);
+        log.info("AOP记录操作日志: {}", operateLog);
   
         return result;  
     }  
