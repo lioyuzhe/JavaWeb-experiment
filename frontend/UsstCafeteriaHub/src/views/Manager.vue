@@ -40,6 +40,7 @@
         </el-menu>
       </el-aside>
 
+	<!--    主页部分 -->
       <el-container>
         <!--        头部区域-->
         <el-header>
@@ -60,14 +61,14 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="$router.push('/manager/person')">个人信息</el-dropdown-item>
                 <el-dropdown-item @click.native="$router.push('/manager/password')">修改密码</el-dropdown-item>
-                <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                <el-dropdown-item @click.native="$router.push('/login')">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
 
         </el-header>
 
-        <!--        主体区域-->
+        <!--  路由选择页面的渲染-->
         <el-main>
           <router-view @update:user="updateUser" />
         </el-main>
@@ -85,36 +86,36 @@ import user from "@/views/manager/User";
 
 export default {
   name: 'HomeView',
-      data() {
-        return {
-      isCollapse: false,  // 不收缩
-      asideWidth: '200px',
-      collapseIcon: 'el-icon-s-fold',
-      user: JSON.parse(localStorage.getItem('admin') || '{}'),
-    }
-  },
-  mounted() {   // 页面加载完成之后触发
-    if (!this.user.id) {   // 当前的浏览器没有用户信息
-      // this.$router.push('/login')
-    }
-  },
-  methods: {
-    updateUser(user) {   // 获取子组件传过来的数据  更新当前页面的数据
-      this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
-    },
-    logout() {
-      localStorage.removeItem('admin')  // 清除当前的token和用户数据
-      this.$router.push('/login')
-    },
-    handleFull() {
-      document.documentElement.requestFullscreen()
-    },
-    handleCollapse() {
-      this.isCollapse = !this.isCollapse
-      this.asideWidth = this.isCollapse ? '64px' : '200px'
-      this.collapseIcon = this.isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'
-    }
-  }
+	  data() {
+      return {
+        isCollapse: false,  // 不收缩
+        asideWidth: '200px',
+        collapseIcon: 'el-icon-s-fold',
+        user: JSON.parse(localStorage.getItem('admin') || '{}'),
+      }
+      },
+      mounted() {   // 页面加载完成之后触发
+      if (!this.user.id) {   // 当前的浏览器没有用户信息
+        // this.$router.push('/login')
+      }
+      },
+      methods: {
+      updateUser(user) {   // 获取子组件传过来的数据  更新当前页面的数据
+        this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
+      },
+      logout() {
+        localStorage.removeItem('admin')  // 清除当前的token和用户数据
+        // this.$router.push('/login')
+      },
+      handleFull() {
+        document.documentElement.requestFullscreen()
+      },
+      handleCollapse() {
+        this.isCollapse = !this.isCollapse
+        this.asideWidth = this.isCollapse ? '64px' : '200px'
+        this.collapseIcon = this.isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'
+      }
+	  }
 }
 </script>
 

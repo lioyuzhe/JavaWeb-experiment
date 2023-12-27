@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Dish;
 import com.usst.usstcafeteriahub.service.DishRankService;
@@ -23,6 +24,8 @@ public class DishController {
     @Resource
     private DishService dishService;
 
+
+    @Log
     @ApiOperation("获取所有菜品")
     @GetMapping("/getDishes")
     public BaseResponse getDishes() {
@@ -31,6 +34,8 @@ public class DishController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("根据菜品的菜系获取菜品列表")
     @GetMapping("/getDishByCuisine")
     public BaseResponse getDishByCuisine(@RequestParam("cuisine") String cuisine) {
@@ -39,6 +44,8 @@ public class DishController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("根据菜品所属食堂获取菜品列表")
     @GetMapping("/getDishByCafeteriaID")
     public BaseResponse getDishByCafeteriaID(@RequestParam("cafeteriaId") Long cafeteriaId) {
@@ -48,6 +55,8 @@ public class DishController {
     }
 
 
+
+    @Log
     @ApiOperation("获取所有菜品的列表，并按菜品价格排序,接受参数order，1为从低到高，2为从高到低")
     @GetMapping("/getDishOrderByPrice")
     public BaseResponse getDishOrderByPriceDesc(@RequestParam("order") Integer order) {
@@ -56,6 +65,8 @@ public class DishController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("删除菜品")
     @PostMapping("/deleteDish")
     public BaseResponse deleteDish(@RequestBody Dish dish) {
@@ -70,6 +81,8 @@ public class DishController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("添加菜品")
     @PostMapping ("/addDish")
     public BaseResponse addDish(@RequestBody Dish dish) {
@@ -80,6 +93,8 @@ public class DishController {
         return dishService.add(dish);
     }
 
+
+    @Log
     @ApiOperation("修改菜品")
     @PostMapping("/updateDish")
     public BaseResponse updateDish(@RequestBody Dish dish) {
@@ -94,6 +109,8 @@ public class DishController {
         return Result.success("修改成功");
     }
 
+
+    @Log
     @ApiOperation("获取所有推荐菜品列表（status=1）")
     @GetMapping("/getRecommendDish")
     public BaseResponse getRecommendDish() {

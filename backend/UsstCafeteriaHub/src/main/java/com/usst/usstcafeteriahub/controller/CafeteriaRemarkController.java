@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.Cafeteria;
 import com.usst.usstcafeteriahub.model.entity.CafeteriaRemark;
@@ -23,6 +24,8 @@ public class CafeteriaRemarkController {
     @Resource
     private CafeteriaRemarkService cafeteriaRemarkService;
 
+
+    @Log
     @ApiOperation("查询食堂评价列表")
     @GetMapping("/getCafeteriaRemarks")
     public BaseResponse getCafeteriaRemarks() {
@@ -31,6 +34,8 @@ public class CafeteriaRemarkController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("按照食堂ID筛选食堂评价")
     @GetMapping("/getCafeteriaRemarksByCafeteriaID")
 
@@ -44,6 +49,8 @@ public class CafeteriaRemarkController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("按照用户ID筛选食堂评价")
     @GetMapping("/getCafeteriaRemarksByUserID")
     public BaseResponse getCafeteriaRemarksByUserID(@RequestParam Long id){
@@ -56,6 +63,8 @@ public class CafeteriaRemarkController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("添加食堂评价")
     @PostMapping("/addCafeteriaRemark")
     public BaseResponse addCafeteriaRemark(@RequestBody CafeteriaRemark cafeteriaRemark) {
@@ -66,6 +75,8 @@ public class CafeteriaRemarkController {
         return cafeteriaRemarkService.addcafeteriaRemark(cafeteriaRemark);
     }
 
+
+    @Log
     @ApiOperation("删除食堂评价")
     @PostMapping("/deleteCafeteriaRemark")
     public BaseResponse deleteCafeteriaRemark(@RequestBody CafeteriaRemark cafeteriaRemark) {
@@ -80,6 +91,8 @@ public class CafeteriaRemarkController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("修改食堂评价")
     @PostMapping("/updatecafeteriaRemark")
     public BaseResponse updateCafeteria(@RequestBody CafeteriaRemark cafeteriaRemark) {

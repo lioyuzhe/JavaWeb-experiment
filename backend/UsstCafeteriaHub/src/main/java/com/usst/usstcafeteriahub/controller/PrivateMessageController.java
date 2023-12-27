@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.PrivateMessages;
 import com.usst.usstcafeteriahub.service.PrivateMessagesService;
@@ -22,6 +23,8 @@ public class PrivateMessageController {
     @Resource
     private PrivateMessagesService privateMessagesService;
 
+
+    @Log
     @ApiOperation("根据conversationId获取私信列表（聊天记录）时间升序")
     @GetMapping("/getPrivateMessagesByConversationId")
     public BaseResponse getPrivateMessagesByConversationId(@RequestParam Long conversationId) {
@@ -33,6 +36,8 @@ public class PrivateMessageController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("根据发送方Id和接受方Id获取私信，未读优先，时间降序")
     @GetMapping("/getPrivateMessagesBySenderIdAndReceiverId")
     public BaseResponse getPrivateMessagesBySenderIdAndReceiverId(@RequestParam Long senderId, @RequestParam Long receiverId) {
@@ -44,6 +49,8 @@ public class PrivateMessageController {
         return Result.success(privateMessages);
     }
 
+
+    // @Log
     // @ApiOperation("(废置)根据用户id获取私信列表（聊天记录）时间升序")
     // @GetMapping("/getPrivateMessages")
     // public BaseResponse getPrivateMessages(@RequestParam Long id) {
@@ -55,6 +62,8 @@ public class PrivateMessageController {
     //     return Result.success(list);
     // }
 
+
+    // @Log
     // @ApiOperation("（废置）根据用户id获取私信，未读优先，时间降序")
     // @GetMapping("/getPrivateMessagesById")
     // public BaseResponse getPrivateMessagesById(@RequestParam Long id) {

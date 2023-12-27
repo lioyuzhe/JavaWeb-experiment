@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.request.LoginDTO;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
@@ -31,7 +32,7 @@ public class LoginController {
     @Resource
     private CafeteriaAdminService cafeteriaAdminService;
 
-
+    @Log
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public BaseResponse login(@RequestBody LoginDTO loginDTO, HttpServletRequest request){

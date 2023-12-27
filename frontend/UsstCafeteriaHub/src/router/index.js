@@ -10,7 +10,6 @@ VueRouter.prototype.push = function push (location) {
 Vue.use(VueRouter)
 
 const routes = [
-
   {
     path: '/ts_cafeteria_content',
     name: 'ts_cafeteria_content',

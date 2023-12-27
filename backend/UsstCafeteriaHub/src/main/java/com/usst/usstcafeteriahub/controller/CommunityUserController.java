@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.CommunityUser;
 import com.usst.usstcafeteriahub.service.CommunityUserService;
@@ -22,6 +23,8 @@ public class CommunityUserController {
     @Resource
     private CommunityUserService communityUserService;
 
+
+    @Log
     @ApiOperation("根据用户名进行模糊查询 返回社区User列表")
     @GetMapping("/getCommunityUserByCommunityUserName")
     public BaseResponse getCommunityUserByCommunityUserName(@RequestParam String communityUserName) {
@@ -36,6 +39,8 @@ public class CommunityUserController {
         return Result.success(list);
     }
 
+
+    @Log
     @ApiOperation("根据user_id获取社区User信息")
     @GetMapping("/getCommunityUserByUserId")
     public BaseResponse getCommunityUserByUserId(@RequestParam Long userId) {
@@ -50,6 +55,8 @@ public class CommunityUserController {
         return Result.success(communityUser);
     }
 
+
+    @Log
     @ApiOperation("删除社区User")
     @PostMapping("/deleteCommunityUser")
     public BaseResponse deleteCommunityUser(@RequestBody CommunityUser communityUser) {
@@ -64,6 +71,8 @@ public class CommunityUserController {
         return Result.success("删除成功");
     }
 
+
+    @Log
     @ApiOperation("添加社区User")
     @PostMapping("/addCommunityUser")
     public BaseResponse addCommunityUser(@RequestBody CommunityUser communityUser) {
@@ -78,6 +87,8 @@ public class CommunityUserController {
         return Result.success("添加成功");
     }
 
+
+    @Log
     @ApiOperation("修改社区User")
     @PostMapping("/updateCommunityUser")
     public BaseResponse updateCommunityUser(@RequestBody CommunityUser communityUser) {

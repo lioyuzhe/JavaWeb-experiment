@@ -1,6 +1,7 @@
 package com.usst.usstcafeteriahub.controller;
 
 import com.usst.usstcafeteriahub.common.BaseResponse;
+import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.User;
 import com.usst.usstcafeteriahub.model.request.RegisterDTO;
@@ -32,6 +33,8 @@ public class RegisterController {
     private CafeteriaAdminService cafeteriaAdminService;
 
 
+
+    @Log
     @ApiOperation(value = "注册用户")
     @PostMapping("/register")
     public BaseResponse register(@RequestBody RegisterDTO registerDTO){
