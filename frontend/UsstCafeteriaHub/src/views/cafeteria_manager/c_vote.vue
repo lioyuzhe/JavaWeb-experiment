@@ -247,7 +247,82 @@ export default {
 //但是没办法这是我唯一能做的补救了
 //抱歉
 //对不起
-
+// name: "Home",
+//     data() {
+//   return {
+//     // user: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+//     cafeteria_admin: {
+//       adminId: 0,
+//       account: "string",
+//       name: "璇哥哥",
+//       password: "string",
+//       avatar: "string",
+//       email: "string",
+//       phone: "string",
+//       createTime: "string",
+//       deleted: 0
+//     },
+//     complaint: [
+//       {
+//         complaint_id: 0,
+//         user_id: 0,
+//         username: "小璇",
+//         cafeteria_id: 0,
+//         cafeteria_name: "五食堂",
+//         content: "月入过万！",
+//         statue: 0,
+//         reply: "",
+//         time: "2010-01-01 12:00:00",
+//         //title: "璇哥做前端"
+//       },
+//       {
+//         complaint_id: 1,
+//         user_id: 0,
+//         username: "小璇",
+//         cafeteria_id: 0,
+//         cafeteria_name: "五食堂",
+//         content: "月入过万！",
+//         statue: 0,
+//         reply: "",
+//         time: "2010-01-01 12:00:00",
+//         //title: "璇哥做前端"
+//       }
+//     ],
+//     cafeteria_remark: [
+//       {
+//         remark_id: 0,
+//         cafeteria_id: 0,
+//         cafeteria_name: "五食堂",
+//         user_id: 0,
+//         username: "小璇",
+//         content: "月入过万！",
+//         statue: 0,
+//         reply: "",
+//         createtime: "2010-01-01 12:00:00",
+//         deleted: "",
+//         //title: "璇哥做前端"
+//       },
+//       {
+//         remark_id: 1,
+//         cafeteria_id: 0,
+//         cafeteria_name: "五食堂",
+//         user_id: 0,
+//         username: "小璇",
+//         content: "月入过万！",
+//         statue: 1,
+//         reply: "",
+//         createtime: "2010-01-01 12:00:00",
+//         deleted: "",
+//         //title: "璇哥做前端"
+//       }
+//     ],
+//     complaint_number: 0,
+//     remark_number: 0,
+//     formLabelWidth: '120px',
+//     dialogTableVisible: false,
+//     dialogFormVisible: false,
+//     activeName1: '0',
+//     activeName2: '0'
 </script>
 
 <template>
@@ -404,6 +479,129 @@ export default {
 <!--  </div>-->
 <!--一边改ui一边回档代码-->
 <!-- 我可真是个人才-->
+<!--  <div>-->
+<!--    <div style="box-shadow: 0 0 10px rgba(0,0,0,.1); padding: 10px 20px; border-radius: 5px; margin-bottom: 10px">-->
+<!--      欢迎登录上海理工大学食堂点评交流社区 管理员页面，<strong>{{ cafeteria_admin.name }}</strong>，祝你开心每一天！-->
+<!--    </div>-->
+
+<!--    <div style="display: flex">-->
+
+<!--      <el-card style="width: 100%; margin-right: 10px">-->
+<!--        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">系统公告</div>-->
+<!--        <el-timeline style="padding: 0">-->
+<!--          <el-timeline-item v-for="item in complaint" :key="item.id" :timestamp="item.time" placement="top">-->
+<!--            <el-card>-->
+<!--              <h4>{{ item.username }}</h4>-->
+<!--              <div v-html="item.content"></div>-->
+<!--            </el-card>-->
+<!--          </el-timeline-item>-->
+<!--        </el-timeline>-->
+<!--      </el-card>-->
+
+<!--    </div>-->
+
+<!--    <div style="display: flex; margin: 15px 0">-->
+
+<!--      <el-card style="width: 50%">-->
+<!--        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">-->
+<!--          投诉栏-->
+
+<!--          &lt;!&ndash;           待回复&ndash;&gt;-->
+<!--          <el-badge :value="complaint_number" class="item">-->
+<!--            <el-button size="small">待回复</el-button>-->
+<!--          </el-badge>-->
+<!--        </div>-->
+
+<!--        <el-collapse v-model="activeName1" accordion>-->
+<!--          <el-collapse-item v-for="(item, index) in filteredComplaints" :key="item.complaint_id" :name="index + ''">-->
+<!--            <template slot="title">-->
+<!--              <div style="display: flex; align-items: center; width: 100%">-->
+<!--                <h4 style="flex: 1">{{ item.username }}</h4>-->
+<!--                <div style="width: 150px; color: #888">{{ item.time }}</div>-->
+<!--              </div>-->
+<!--            </template>-->
+<!--            <div v-html="item.content"></div>-->
+
+<!--            &lt;!&ndash; Form &ndash;&gt;-->
+<!--            <el-button type="text" @click="dialogFormVisible = true">回复</el-button>-->
+
+<!--            <el-dialog title="回复" :visible.sync="dialogFormVisible">-->
+<!--              <el-form>-->
+<!--                <el-form-item label="回复人" :label-width="formLabelWidth">-->
+<!--                  <el-input v-model="cafeteria_admin.name" :disabled="true" autocomplete="off"></el-input>-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="接收人" :label-width="formLabelWidth">-->
+<!--                  <el-input v-model="item.username" :disabled="true" autocomplete="off"></el-input>-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="回复内容" :label-width="formLabelWidth">-->
+<!--                  <el-input type="textarea" :rows="6" placeholder="请输入内容"-->
+<!--                            v-model="cafeteria_remark.reply"></el-input>-->
+<!--                </el-form-item>-->
+<!--                &lt;!&ndash;                <el-form-item label="活动区域" :label-width="formLabelWidth">&ndash;&gt;-->
+<!--                &lt;!&ndash;                  <el-select v-model="form.region" placeholder="请选择活动区域">&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <el-option label="区域一" value="shanghai"></el-option>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <el-option label="区域二" value="beijing"></el-option>&ndash;&gt;-->
+<!--                &lt;!&ndash;                  </el-select>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </el-form-item>&ndash;&gt;-->
+<!--              </el-form>-->
+<!--              <div slot="footer" class="dialog-footer">-->
+<!--                <el-button @click="dialogFormVisible = false">取 消</el-button>-->
+<!--                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
+<!--              </div>-->
+<!--            </el-dialog>-->
+<!--          </el-collapse-item>-->
+<!--        </el-collapse>-->
+<!--      </el-card>-->
+
+<!--      <el-card style="width: 50%">-->
+<!--        <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">-->
+<!--          评价栏-->
+
+<!--          &lt;!&ndash;           待回复&ndash;&gt;-->
+<!--          <el-badge :value="remark_number" class="item">-->
+<!--            <el-button size="small">待回复</el-button>-->
+<!--          </el-badge>-->
+<!--        </div>-->
+
+<!--        <el-collapse v-model="activeName2" accordion>-->
+<!--          <el-collapse-item v-for="(item, index) in filteredRemarks" :key="item.remark_id" :name="index + ''">-->
+<!--            <template slot="title">-->
+<!--              <div style="display: flex; align-items: center; width: 100%">-->
+<!--                <h4 style="flex: 1">{{ item.username }}</h4>-->
+<!--                <div style="width: 150px; color: #888">{{ item.createtime }}</div>-->
+<!--              </div>-->
+<!--            </template>-->
+<!--            <div v-html="item.content"></div>-->
+
+<!--            &lt;!&ndash; Form &ndash;&gt;-->
+<!--            <el-button type="text" @click="dialogFormVisible = true">回复</el-button>-->
+
+<!--            <el-dialog title="回复" :visible.sync="dialogFormVisible">-->
+<!--              &lt;!&ndash;              <el-form :model="reply_form">&ndash;&gt;-->
+<!--              <el-form>-->
+<!--                <el-form-item label="回复人" :label-width="formLabelWidth">-->
+<!--                  <el-input v-model="cafeteria_admin.name" :disabled="true" autocomplete="off"></el-input>-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="接收人" :label-width="formLabelWidth">-->
+<!--                  <el-input v-model="item.username" :disabled="true" autocomplete="off"></el-input>-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="回复内容" :label-width="formLabelWidth">-->
+<!--                  <el-input type="textarea" :rows="6" placeholder="请输入内容"-->
+<!--                            v-model="cafeteria_remark.reply"></el-input>-->
+<!--                </el-form-item>-->
+
+<!--              </el-form>-->
+<!--              <div slot="footer" class="dialog-footer">-->
+<!--                <el-button @click="dialogFormVisible = false">取 消</el-button>-->
+<!--                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
+<!--              </div>-->
+<!--            </el-dialog>-->
+<!--          </el-collapse-item>-->
+<!--        </el-collapse>-->
+<!--      </el-card>-->
+<!--    </div>-->
+
+<!--  </div>-->
 <!--  <div>-->
 <!--    <div style="box-shadow: 0 0 10px rgba(0,0,0,.1); padding: 10px 20px; border-radius: 5px; margin-bottom: 10px">-->
 <!--      欢迎登录上海理工大学食堂点评交流社区 管理员页面，<strong>{{ cafeteria_admin.name }}</strong>，祝你开心每一天！-->

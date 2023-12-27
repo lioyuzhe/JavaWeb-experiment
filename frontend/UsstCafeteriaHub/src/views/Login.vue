@@ -9,7 +9,7 @@
 <!--            </div>-->
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <img src="@/assets/usst_logo.png" alt="" style="width: 45%;">
-              <div style="font-size: 30px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #FFFFFF;">
+              <div class="my-title">
                 上理点评
               </div>
             </div>
@@ -256,5 +256,14 @@ body {
 
   margin-block: 25px;
   margin-top: 0px; /* 或其他你想要的值 */
+}
+
+/*标题*/
+.my-title{
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #FFFFFF;
 }
 </style>
