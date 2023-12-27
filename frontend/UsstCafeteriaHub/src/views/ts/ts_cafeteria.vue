@@ -1,4 +1,4 @@
-te<template>
+<template>
   <div class="main-container">
     <!-- 侧边栏 -->
     <el-menu class="sidebar" style="position: fixed; top: 140px; width:120px; height: calc(100% - 60px); z-index: 1000;">
