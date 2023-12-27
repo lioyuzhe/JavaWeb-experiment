@@ -4,6 +4,7 @@
       <!--    侧边栏  -->
       <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #001529">
         <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
+        <!-- logo没改-->
           <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
           <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
         </div>
