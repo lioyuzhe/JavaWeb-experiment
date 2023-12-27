@@ -8,6 +8,7 @@ import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
 import com.usst.usstcafeteriahub.service.*;
 import com.usst.usstcafeteriahub.utils.CafeteriaAdminHolder;
+import com.usst.usstcafeteriahub.utils.JwtUtils;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -116,6 +117,9 @@ public class CafeteriaAdminController {
     }
 
 
+
+
+
     @ApiOperation(value = "修改食堂信息")
     @PostMapping("/updateCafeteria")
     public BaseResponse updateCafeteria(@RequestBody Cafeteria cafeteria){
@@ -137,7 +141,7 @@ public class CafeteriaAdminController {
 
     @ApiOperation(value = "增加食堂")
     @PostMapping("/addCafeteria")
-    public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria) {
+    public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria, HttpServletRequest request) {
         if (cafeteria == null){
             return Result.error("参数不能为空");
         }
@@ -147,6 +151,21 @@ public class CafeteriaAdminController {
             return Result.error("该食堂已存在");
         }
         if (cafeteriaService.save(cafeteria)){
+            // 同时要在cafeteria_manage表中添加一条记录
+            CafeteriaManage cafeteriaManage = new CafeteriaManage();
+            // 从token中获取食堂管理员的account
+            String token = request.getHeader("token");
+            log.info("请求头中的token:{}",token);
+            String account = JwtUtils.parseToken(token).get("account").toString();
+            log.info("解析token得到的account:{}",account);
+            // 根据account获取食堂管理员的id
+            CafeteriaAdmin cafeteriaAdmin = cafeteriaAdminService.getOne(new QueryWrapper<CafeteriaAdmin>().eq("account", account));
+            log.info("根据account获取食堂管理员: {}", cafeteriaAdmin);
+            cafeteriaManage.setAdminId(cafeteriaAdmin.getAdminId());
+            cafeteriaManage.setCafeteriaId(cafeteria.getCafeteriaId());
+
+
+            cafeteriaManageService.save(cafeteriaManage);
             return Result.success("添加成功");
         }else{
             return Result.error("添加失败");
@@ -167,6 +186,9 @@ public class CafeteriaAdminController {
         }
         // 删除
         if (cafeteriaService.removeById(cafeteria)){
+            // 同时要在cafeteria_manage表中删除一条记录
+            cafeteriaManageService.remove(new QueryWrapper<CafeteriaManage>().eq("cafeteria_id", cafeteria.getCafeteriaId()));
+
             return Result.success("删除成功");
         }else{
             return Result.error("删除失败");
@@ -188,6 +210,14 @@ public class CafeteriaAdminController {
     @GetMapping("/getAllCafeteria")
     public BaseResponse getAllCafeteria(){
         return Result.success(cafeteriaService.list());
+    }
+
+
+    @ApiOperation("获取当前食堂管理员管理的食堂 ID 列表")
+    @GetMapping("/getCafeteriaIdList/{adminId}")
+    public BaseResponse getCafeteriaIdList(@RequestParam long adminId,HttpServletRequest request) {
+        List<CafeteriaManage> cafeteriaManageList = cafeteriaManageService.list(new QueryWrapper<CafeteriaManage>().eq("admin_id", adminId));
+        return Result.success(cafeteriaManageList);
     }
 
 
@@ -265,6 +295,9 @@ public class CafeteriaAdminController {
         }
         return Result.success("删除成功");
     }
+
+
+
 
     // 食堂评价处理
     @ApiOperation("按照食堂ID筛选食堂评价")

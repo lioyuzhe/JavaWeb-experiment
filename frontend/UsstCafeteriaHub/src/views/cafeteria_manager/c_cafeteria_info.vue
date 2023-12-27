@@ -124,7 +124,7 @@ export default {
       this.fetchCanteens();
     },
     deleteToBackend(){
-      this.$request.post('/cafeterias/actions/deleteCafeteria',{
+      this.$request.post('/cafeteriaAdmins/actions/deleteCafeteria',{
         cafeteriaId:this.tempcanteen.cafeteriaId,
         name:this.tempcanteen.name,
         location:this.tempcanteen.location,
@@ -155,7 +155,7 @@ export default {
       this.addDialogVisible = true;
     },
     addToBackend(){
-      this.$request.post('/cafeterias/actions/addCafeteria',{
+      this.$request.post('/cafeteriaAdmins/actions/addCafeteria',{
         cafeteriaId:null,
         name:this.newcanteens[1],
         location:this.newcanteens[2],
@@ -180,7 +180,7 @@ export default {
       this.editableRowIndex = -1; // 退出编辑状态
     },
     fetchCanteens() {
-      this.$request.get('/cafeterias/actions/getCafeteria')
+      this.$request.get('/cafeteriaAdmins/actions/getAllCafeteria')
           .then(response => {
             this.canteens = response.data;
           })
@@ -191,7 +191,7 @@ export default {
     },
     showCanteenInfo(canteenId) {
       // 根据食堂 ID 获取食堂详细信息
-      this.$request.get('/admins/actions/getCafeteriaById',{
+      this.$request.get('/cafeteriaAdmins/actions/getCafeteriaById',{
         params: {
           id: canteenId
         }
@@ -216,7 +216,7 @@ export default {
     },
     saveToBackend() {
       //发送编辑后的食堂信息到后端
-      this.$request.post('/cafeterias/actions/updateCafeteria',{
+      this.$request.post('/cafeteriaAdmins/actions/updateCafeteria',{
           cafeteriaId:this.currentCanteenInfo[0].value,
           name:this.currentCanteenInfo[1].value,
           location:this.currentCanteenInfo[2].value,
@@ -257,20 +257,20 @@ export default {
 </script>
 <style>
 .el-menu--inline {
-  background-color: #000c17 !important;
+  background-color: #f8f8f8 !important;
 }
 .el-menu--inline .el-menu-item {
-  background-color: #000c17 !important;
+  background-color: #f8f8f8 !important;
   padding-left: 49px !important;
 }
 .el-menu-item:hover, .el-submenu__title:hover {
-  color: #fff !important;
+  color: #fbb6b6 !important;
 }
 .el-submenu__title:hover i {
   color: #fff !important;
 }
 .el-menu-item:hover i {
-  color: #fff !important;
+  color: #ff4d51 !important;
 }
 .el-menu-item.is-active {
   background-color: #1890ff !important;

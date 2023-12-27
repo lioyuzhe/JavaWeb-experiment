@@ -102,6 +102,7 @@ export default {
       if (pageNum) {
         this.pageNum = pageNum;
       }
+      // 这里本来是要用食堂管理员的接口的，但是这里如果可以用我就懒得写了
       this.$request.get('/admins/actions/getCafeteriaRemarks', {
         params: {
           pageNum: this.pageNum,
@@ -110,7 +111,7 @@ export default {
           userName: this.userName
         }
       }).then(res => {
-        this.tableData = res.data.records;``
+        this.tableData = res.data.records;
         this.total = res.data.total;
       });
     },
