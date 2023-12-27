@@ -1,5 +1,8 @@
 package com.usst.usstcafeteriahub.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
 import com.usst.usstcafeteriahub.model.entity.*;
@@ -11,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.usst.usstcafeteriahub.constant.WebConstants.ADMIN_LOGIN_STATE;
@@ -180,7 +184,48 @@ public class CafeteriaAdminController {
         return Result.success(cafeteria);
     }
 
+    @ApiOperation("获取所有食堂信息")
+    @GetMapping("/getAllCafeteria")
+    public BaseResponse getAllCafeteria(){
+        return Result.success(cafeteriaService.list());
+    }
+
+
+
     // 菜品维护
+
+    @ApiOperation(value = "多条件模糊查询菜品信息")
+    @GetMapping("/selectDishByPage")
+    public BaseResponse selectDishByPage(
+            @RequestParam Integer pageNum,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) String cafeteriaName,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String cuisine,
+            @RequestParam(required = false) BigDecimal price) {
+
+        QueryWrapper<Dish> queryWrapper = new QueryWrapper<Dish>().orderByDesc("dish_id"); // 默认倒序，让最新的数据在最上面
+
+        // 构建查询条件
+        if (StringUtils.isNotBlank(cafeteriaName)) {
+            queryWrapper.like("cafeteria_name", cafeteriaName);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            queryWrapper.like("name", name);
+        }
+        if (StringUtils.isNotBlank(cuisine)) {
+            queryWrapper.like("cuisine", cuisine);
+        }
+        if (price != null) {
+            queryWrapper.eq("price", price);
+        }
+
+        // select * from dish where (cafeteria_name like '%#{cafeteriaName}%' OR name like '%#{dishName}%' OR cuisine like '%#{cuisine}%' OR price = #{price})
+        Page<Dish> page = dishService.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return Result.success(page);
+    }
+
+
     @ApiOperation("添加菜品")
     @PostMapping ("/addDish")
     public BaseResponse addDish(@RequestBody Dish dish) {

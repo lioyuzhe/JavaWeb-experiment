@@ -15,10 +15,6 @@
           <el-dialog :visible.sync="addDialogVisible" title="食堂添加" @close="addDialogVisible = false">
             <div class="input-container">
             <div>
-              <label>食堂ID:</label>
-              <el-input v-model="newcanteens[0]" style="width:50%"></el-input>
-            </div>
-            <div>
               <label>食堂名称:</label>
               <el-input v-model="newcanteens[1]" style="width:50%"></el-input></div>
             <div>
@@ -29,14 +25,14 @@
               <label>食堂描述:</label>
               <el-input v-model="newcanteens[3]" style="width:50%"></el-input>
             </div>
-            <div>
-              <label>管理员ID:</label>
-              <el-input v-model="newcanteens[4]" style="width:50%"></el-input>
-            </div>
-            <div>
-              <label>管理员姓名:</label>
-              <el-input v-model="newcanteens[5]" style="width:50%"></el-input>
-            </div>
+<!--            <div>-->
+<!--              <label>管理员ID:</label>-->
+<!--              <el-input v-model="newcanteens[4]" style="width:50%"></el-input>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label>管理员姓名:</label>-->
+<!--              <el-input v-model="newcanteens[5]" style="width:50%"></el-input>-->
+<!--            </div>-->
             <div>
               <label>开业时间:</label>
               <el-input v-model="newcanteens[6]" style="width:50%"></el-input>
@@ -112,7 +108,7 @@ export default {
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
       collapseIcon: 'el-icon-s-fold',
-      user: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+      user: JSON.parse(localStorage.getItem('cafeteria_admin') || '{}'),
     }
   },
   // mounted() {   // 页面加载完成之后触发
@@ -160,12 +156,12 @@ export default {
     },
     addToBackend(){
       this.$request.post('/cafeterias/actions/addCafeteria',{
-        cafeteriaId:this.newcanteens[0],
+        cafeteriaId:null,
         name:this.newcanteens[1],
         location:this.newcanteens[2],
         description:this.newcanteens[3],
-        adminId: this.newcanteens[4],
-        adminName:this.newcanteens[5],
+        adminId: this.user.adminId,
+        adminName:this.user.name,
         openTime:this.newcanteens[6],
         closeTime:this.newcanteens[7],
         deleted: 0,
@@ -189,6 +185,7 @@ export default {
             this.canteens = response.data;
           })
           .catch(error => {
+            this.$message.error("获取食堂信息失败");
             console.error('Error fetching canteens:', error);
           });
     },
@@ -232,9 +229,11 @@ export default {
       })
           .then(response => {
             console.log('Successfully saved to backend');
+            this.$message.success("修改成功");
             this.dialogVisible = false; // 关闭 el-dialog
           })
           .catch(error => {
+            this.$message.error("修改失败");
             console.error('Error saving to backend:', error);
           });
     },

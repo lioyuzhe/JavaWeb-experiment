@@ -279,15 +279,15 @@ export default {
     },
     postDynamic() {
       const postData = {
-        communityId: this.postDynamicData.communityId,
-        communityName: this.postDynamicData.communityName,
+        communityId: null,
+        communityName: null,
         userId: this.user.userId,
         userName: this.user.name,
         title: this.postDynamicData.newTitle,
         content: this.postDynamicData.html,
         likeCount: this.postDynamicData.likeCount,
         created_time: this.postDynamicData.created_time,
-        deleted: this.postDynamicData.deleted
+        deleted: null
       };
       console.log("postData", postData);//测试数据
       // 发送请求

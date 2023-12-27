@@ -83,28 +83,39 @@ export default {
   },
   created() {
     console.log('created')
-    this.load()
+    this.load(1)
   },
   methods: {
     reset() {
       this.dishName = ''
       this.userName = ''
-      this.load()
+      this.load(1)
     },
-    load() {
+    load(pageNum) {
+      if (pageNum) {
+        this.pageNum = pageNum;
+      }
       this.$request.get('/admins/actions/getDishRemarks', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          dishName: this.dishName, // 根据菜品名称进行模糊查询
+          userName: this.userName  // 根据用户名称进行模糊查询
+        }
       }).then(res => {
-        this.tableData = res.data
-      })
+        this.tableData = res.data.records;
+        this.total = res.data.total;
+      });
     },
+
     handleCurrentChange(pageNum) {
       this.load(pageNum)
     },
 
     del(dishRemark) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/admins/actions/deleteDishRemark' + dishRemark).then(res => {
-          if (res.code === '200') {
+        this.$request.post('/admins/actions/deleteDishRemark',dishRemark).then(res => {
+          if (res.code === 200) {
             this.$message.success('操作成功')
             this.load(1)
           } else {
@@ -130,9 +141,9 @@ export default {
             method: 'POST',
             data: this.form
           }).then(res => {
-            if (res.code === '200') {
+            if (res.code === 200) {
               this.$message.success('保存成功')
-              this.load()
+              this.load(1)
               this.fromVisible = false
             } else {
               this.$message.error(res.msg)

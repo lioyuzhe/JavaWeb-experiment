@@ -149,7 +149,7 @@ export default {
               localStorage.setItem("user", JSON.stringify(res.data));   // 存储学生数据
               localStorage.setItem("role", JSON.stringify(this.user.role));   // 存储角色数据
             }else {
-              this.$message.error(res.msg)
+              this.$message.error(res.message)
             }
           })
         }

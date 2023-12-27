@@ -53,16 +53,10 @@
           <el-input v-model="form.adminName" placeholder="管理员名称"></el-input>
         </el-form-item>
         <el-form-item label="开放时间" prop="openTime">
-          <el-time-picker
-              v-model="form.openTime"
-              placeholder="选择时间">
-          </el-time-picker>
+          <el-input v-model="form.openTime" style="width:50%"></el-input>
         </el-form-item>
         <el-form-item label="关闭时间" prop="closeTime">
-          <el-time-picker
-              v-model="form.closeTime"
-              placeholder="选择时间">
-          </el-time-picker>
+          <el-input v-model="form.closeTime" style="width:50%"></el-input>
         </el-form-item>
       </el-form>
 
@@ -100,10 +94,10 @@ export default {
     },
     del(cafeteria) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/admins/actions/deleteCafeteria' + cafeteria).then(res => {
-          if (res.code === '200') {
+        this.$request.post('/admins/actions/deleteCafeteria' ,cafeteria).then(res => {
+          if (res.code === 200) {
             this.$message.success('操作成功')
-            this.load()
+            this.load(1)
           } else {
             this.$message.error(res.msg)
           }
@@ -124,7 +118,7 @@ export default {
         method: 'POST',
         data: this.form
       }).then(res => {
-        if (res.code === '200') {
+        if (res.code === 200) {
           this.$message.success('保存成功')
           this.load()
           this.fromVisible = false
@@ -138,13 +132,24 @@ export default {
       this.location = ''
       this.load(1)
     },
-    load() {
-      this.$request.get('/admins/actions/getCafeterias').then(res => {
-        this.tableData = res.data; // 假设返回的数据直接是一个数组
-      })
+    load(pageNum) {
+      if (pageNum) {
+        this.pageNum = pageNum;
+      }
+      this.$request.get('/admins/actions/getCafeterias', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          cafeteriaName: this.cafeteriaName,
+          location: this.location
+        }
+      }).then(res => {
+        this.tableData = res.data.records; // 假设后端返回的是分页结构
+        this.total = res.data.total;       // 总记录数
+      });
     },
-    handleCurrentChange() {
-      this.load()
+    handleCurrentChange(pageNum) {
+      this.load(pageNum)
     },
   }
 }

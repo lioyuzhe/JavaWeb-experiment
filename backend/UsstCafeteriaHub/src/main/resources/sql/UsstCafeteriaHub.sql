@@ -151,8 +151,8 @@ CREATE TABLE `cafeteria` (
                              `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '描述信息',
                              `admin_id` bigint DEFAULT NULL COMMENT '食堂管理员ID',
                              `admin_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '食堂管理员姓名',
-                             `open_time` datetime DEFAULT NULL COMMENT '开放时间',
-                             `close_time` datetime DEFAULT NULL COMMENT '关闭时间',
+                             `open_time` varchar(256) DEFAULT NULL COMMENT '开放时间',
+                             `close_time` varchar(256) DEFAULT NULL COMMENT '关闭时间',
                              `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除，默认为0 ，表示不删除，1 表示删除',
                              PRIMARY KEY (`cafeteria_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '食堂基本信息表' ROW_FORMAT = Dynamic;
