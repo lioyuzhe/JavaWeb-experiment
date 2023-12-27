@@ -1,8 +1,8 @@
 <template>
   <body><div style="height: 100vh; display: flex; align-items: center; justify-content: center">
     <div class="right-container">
-      <div style="height: 80%;display: flex;  background-color: rgba(0, 0, 0, 0.66); ; width: 30%; border-radius: 5px; overflow: hidden">
-        <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+      <div style="height: 80%;display: flex;  background-color: rgba(0, 0, 0, 0.66); ; width: 30%; border-radius: 10%; overflow: hidden">
+        <div  class="my-main" style="flex: 1; display: flex; align-items: center; justify-content: center;">
           <el-form :model="user" style="width: 50%" :rules="rules" ref="loginRef">
 <!--            <div style="flex: 1">-->
 <!--              <img src="@/assets/usst_logo.jpg" alt="" style="width: 100%">-->
@@ -265,5 +265,13 @@ body {
   text-align: center;
   margin-bottom: 20px;
   color: #FFFFFF;
+}
+
+/*主体*/
+.my-main{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
