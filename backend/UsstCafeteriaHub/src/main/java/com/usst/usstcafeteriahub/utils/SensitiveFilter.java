@@ -1,4 +1,4 @@
-package com.usst.usstcafeteriahub.filter;
+package com.usst.usstcafeteriahub.utils;
 
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.CharUtils;
