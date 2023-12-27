@@ -31,6 +31,11 @@ public class LogAspect {
         // 获取请求头中的jwt令牌 解析令牌  
         String jwt = request.getHeader("token");
         log.info("jwt: {}", jwt);
+        if(jwt == null){
+            // -- 直接调用目标方法不进行log记录 --
+            Object result = joinPoint.proceed();
+            return result;
+        }
         Claims claims = JwtUtils.parseToken(jwt);
         Integer operateUser = (Integer) claims.get("id");
   
