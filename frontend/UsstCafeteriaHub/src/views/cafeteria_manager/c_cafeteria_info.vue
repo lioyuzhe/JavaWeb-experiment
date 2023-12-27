@@ -15,10 +15,6 @@
           <el-dialog :visible.sync="addDialogVisible" title="食堂添加" @close="addDialogVisible = false">
             <div class="input-container">
             <div>
-              <label>食堂ID:</label>
-              <el-input v-model="newcanteens[0]" style="width:50%"></el-input>
-            </div>
-            <div>
               <label>食堂名称:</label>
               <el-input v-model="newcanteens[1]" style="width:50%"></el-input></div>
             <div>
@@ -29,14 +25,14 @@
               <label>食堂描述:</label>
               <el-input v-model="newcanteens[3]" style="width:50%"></el-input>
             </div>
-            <div>
-              <label>管理员ID:</label>
-              <el-input v-model="newcanteens[4]" style="width:50%"></el-input>
-            </div>
-            <div>
-              <label>管理员姓名:</label>
-              <el-input v-model="newcanteens[5]" style="width:50%"></el-input>
-            </div>
+<!--            <div>-->
+<!--              <label>管理员ID:</label>-->
+<!--              <el-input v-model="newcanteens[4]" style="width:50%"></el-input>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label>管理员姓名:</label>-->
+<!--              <el-input v-model="newcanteens[5]" style="width:50%"></el-input>-->
+<!--            </div>-->
             <div>
               <label>开业时间:</label>
               <el-input v-model="newcanteens[6]" style="width:50%"></el-input>
@@ -112,7 +108,7 @@ export default {
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
       collapseIcon: 'el-icon-s-fold',
-      user: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+      user: JSON.parse(localStorage.getItem('cafeteria_admin') || '{}'),
     }
   },
   // mounted() {   // 页面加载完成之后触发
@@ -128,7 +124,7 @@ export default {
       this.fetchCanteens();
     },
     deleteToBackend(){
-      this.$request.post('/cafeterias/actions/deleteCafeteria',{
+      this.$request.post('/cafeteriaAdmins/actions/deleteCafeteria',{
         cafeteriaId:this.tempcanteen.cafeteriaId,
         name:this.tempcanteen.name,
         location:this.tempcanteen.location,
@@ -159,13 +155,13 @@ export default {
       this.addDialogVisible = true;
     },
     addToBackend(){
-      this.$request.post('/cafeterias/actions/addCafeteria',{
-        cafeteriaId:this.newcanteens[0],
+      this.$request.post('/cafeteriaAdmins/actions/addCafeteria',{
+        cafeteriaId:null,
         name:this.newcanteens[1],
         location:this.newcanteens[2],
         description:this.newcanteens[3],
-        adminId: this.newcanteens[4],
-        adminName:this.newcanteens[5],
+        adminId: this.user.adminId,
+        adminName:this.user.name,
         openTime:this.newcanteens[6],
         closeTime:this.newcanteens[7],
         deleted: 0,
@@ -184,17 +180,18 @@ export default {
       this.editableRowIndex = -1; // 退出编辑状态
     },
     fetchCanteens() {
-      this.$request.get('/cafeterias/actions/getCafeteria')
+      this.$request.get('/cafeteriaAdmins/actions/getAllCafeteria')
           .then(response => {
             this.canteens = response.data;
           })
           .catch(error => {
+            this.$message.error("获取食堂信息失败");
             console.error('Error fetching canteens:', error);
           });
     },
     showCanteenInfo(canteenId) {
       // 根据食堂 ID 获取食堂详细信息
-      this.$request.get('/admins/actions/getCafeteriaById',{
+      this.$request.get('/cafeteriaAdmins/actions/getCafeteriaById',{
         params: {
           id: canteenId
         }
@@ -219,7 +216,7 @@ export default {
     },
     saveToBackend() {
       //发送编辑后的食堂信息到后端
-      this.$request.post('/cafeterias/actions/updateCafeteria',{
+      this.$request.post('/cafeteriaAdmins/actions/updateCafeteria',{
           cafeteriaId:this.currentCanteenInfo[0].value,
           name:this.currentCanteenInfo[1].value,
           location:this.currentCanteenInfo[2].value,
@@ -232,9 +229,11 @@ export default {
       })
           .then(response => {
             console.log('Successfully saved to backend');
+            this.$message.success("修改成功");
             this.dialogVisible = false; // 关闭 el-dialog
           })
           .catch(error => {
+            this.$message.error("修改失败");
             console.error('Error saving to backend:', error);
           });
     },
@@ -258,20 +257,20 @@ export default {
 </script>
 <style>
 .el-menu--inline {
-  background-color: #000c17 !important;
+  background-color: #f8f8f8 !important;
 }
 .el-menu--inline .el-menu-item {
-  background-color: #000c17 !important;
+  background-color: #f8f8f8 !important;
   padding-left: 49px !important;
 }
 .el-menu-item:hover, .el-submenu__title:hover {
-  color: #fff !important;
+  color: #fbb6b6 !important;
 }
 .el-submenu__title:hover i {
   color: #fff !important;
 }
 .el-menu-item:hover i {
-  color: #fff !important;
+  color: #ff4d51 !important;
 }
 .el-menu-item.is-active {
   background-color: #1890ff !important;

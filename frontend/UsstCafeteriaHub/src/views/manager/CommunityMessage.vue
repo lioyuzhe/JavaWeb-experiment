@@ -15,7 +15,12 @@
       <el-table-column prop="communityName" label="社区名称"></el-table-column>
       <el-table-column prop="userName" label="用户名称"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="content" label="内容"></el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button @click="showContent(scope.row)">查看内容</el-button>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="likeCount" label="点赞数"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="180" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
@@ -25,7 +30,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="内容详情" :visible.sync="dialogVisible" width="40%" :close-on-click-modal="false">
+      <el-form label-width="80px">
+        <el-form-item label="">
+          <el-input type="textarea" v-html="selectedContent" :rows="5" readonly></el-input>
+        </el-form-item>
+      </el-form>
 
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
     <div style="margin: 10px 0">
       <el-pagination
           @current-change="handleCurrentChange"
@@ -75,6 +90,8 @@ export default {
       userName: '',
       total: 0,
       fromVisible: false,
+      dialogVisible: false, // 控制对话框的显示
+      selectedContent: '',  // 被选中的内容
       form: {},
       rules: {
         content: [
@@ -90,6 +107,10 @@ export default {
     this.load()
   },
   methods: {
+    showContent(row) {
+      this.selectedContent = row.content; // 设置要显示的内容
+      this.dialogVisible = true;          // 显示对话框
+    },
     reset() {
       this.communityName = ''
       this.userName = ''
@@ -106,8 +127,8 @@ export default {
     },
     del(communityMessage) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(() => {
-        this.$request.delete('/admins/actions/deleteCommunityMessage' + communityMessage).then(res => {
-          if (res.code === '200') {
+        this.$request.post('/admins/actions/deleteCommunityMessage' , communityMessage).then(res => {
+          if (res.code === 200) {
             this.$message.success('操作成功')
             this.load(1)
           } else {
@@ -132,7 +153,7 @@ export default {
             method: 'POST',
             data: this.form
           }).then(res => {
-            if (res.code === '200') {
+            if (res.code === 200) {
               this.$message.success('保存成功')
               this.load()
               this.fromVisible = false

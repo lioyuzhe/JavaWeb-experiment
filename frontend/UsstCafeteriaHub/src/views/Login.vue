@@ -1,4 +1,5 @@
 <template>
+
   <body><div style="height: 100vh; display: flex; align-items: center; justify-content: center">
     <div class="right-container">
       <div style="height: 80%;display: flex;  background-color: rgba(0, 0, 0, 0.66); ; width: 30%; border-radius: 10%; overflow: hidden">
@@ -185,7 +186,7 @@ export default {
               localStorage.setItem("user", JSON.stringify(res.data));   // 存储学生数据
               localStorage.setItem("role", JSON.stringify(this.user.role));   // 存储角色数据
             }else {
-              this.$message.error(res.msg)
+              this.$message.error(res.message)
             }
           })
         }
@@ -273,5 +274,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 </style>

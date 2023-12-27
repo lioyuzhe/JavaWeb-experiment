@@ -28,4 +28,8 @@ public class CafeteriaManage implements Serializable {
         this.adminId = adminId;
         this.cafeteriaId = cafeteriaId;
     }
+
+    public CafeteriaManage() {
+
+    }
 }

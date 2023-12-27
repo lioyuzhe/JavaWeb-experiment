@@ -19,7 +19,7 @@ export default {
       isCollapse: false,  // 不收缩
       asideWidth: '200px',
       collapseIcon: 'el-icon-s-fold',
-      user: JSON.parse(localStorage.getItem('honey-user') || '{}'),
+      user: JSON.parse(localStorage.getItem('user') || '{}'),
     }
   },
   // mounted() {   // 页面加载完成之后触发
@@ -34,7 +34,7 @@ export default {
     filterByCafeteria() {
       if (this.selectedCafeteria !==-1) {
         // 发起请求，获取特定食堂的公告信息
-        this.$request.get('http://localhost:9090/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID', {
+        this.$request.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID', {
           params: {
             id: this.selectedCafeteria
           }
@@ -59,7 +59,7 @@ export default {
       }
     },
     deleteToBackend(){
-      this.$request.post('http://localhost:9090/cafeteriaNotices/actions/deleteCafeteriaNotice',{
+      this.$request.post('/cafeteriaNotices/actions/deleteCafeteriaNotice',{
         noticeId:this.tempNotice.noticeId,
         cafeteriaId:this.tempNotice.cafeteriaId,
         cafeteriaName:this.tempNotice.cafeteriaName,
@@ -85,7 +85,7 @@ export default {
       this.addDialogVisible = true;
     },
     addToBackend(){
-      this.$request.post('http://localhost:9090/cafeteriaNotices/actions/addCafeteriaNotice',{
+      this.$request.post('/cafeteriaNotices/actions/addCafeteriaNotice',{
         noticeId:this.newAnnouncement[0],
         cafeteriaId:this.newAnnouncement[1],
         cafeteriaName:this.newAnnouncement[2],
@@ -107,7 +107,7 @@ export default {
       this.editableRowIndex = -1; // 退出编辑状态
     },
     fetchnotices() {
-      axios.get('http://localhost:9090/cafeteriaNotices/actions/getCafeteriaNotices')
+      this.$message.get('/cafeteriaNotices/actions/getCafeteriaNotices')
           .then(response => {
             this.notices = response.data.data;
             let k=new Set;
@@ -124,7 +124,7 @@ export default {
     },
     showCanteenInfo(canteenId,noticeId) {
       // 根据公告 ID 获取公告详细信息
-      axios.get('http://localhost:9090/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID',{
+      this.$message.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID',{
         params: {
           id: canteenId
         }
@@ -152,7 +152,7 @@ export default {
     },
     saveToBackend() {
       //发送编辑后的公告信息到后端
-      this.$request.post('http://localhost:9090/cafeteriaNotices/actions/updateCafeteriaNotice',{
+      this.$request.post('/cafeteriaNotices/actions/updateCafeteriaNotice',{
         noticeId:this.currentNoticeInfo[0].value,
         cafeteriaId:this.currentNoticeInfo[1].value,
         cafeteriaName:this.currentNoticeInfo[2].value,
@@ -174,7 +174,7 @@ export default {
       this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
     },
     logout() {
-      localStorage.removeItem('honey-user')  // 清除当前的token和用户数据
+      localStorage.removeItem('user')  // 清除当前的token和用户数据
       this.$router.push('/login')
     },
     handleFull() {
@@ -192,14 +192,9 @@ export default {
 <template>
   <div>
     <el-container>
-      <!--    侧边栏  -->
-
       <el-container>
-        <!--        头部区域-->
-
-        <!--        主体区域-->
         <el-main>
-          <router-view @update:user="updateUser" />
+<!--          <router-view @update:user="updateUser" />-->
           <div>
             <el-button @click="addAnnouncement()">添加公告</el-button>
             <el-select v-model="selectedCafeteria" placeholder="选择食堂">

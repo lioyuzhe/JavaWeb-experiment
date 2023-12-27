@@ -2,181 +2,185 @@
   <div class="community">
     <el-row>
       <!-- 左侧 -->
-      <el-col :span="16">
-        <!-- 社区动态 -->
-        <div class="community-dynamic" shadow="hover">
-          <div class="top-bar">
-            <!-- 空白占位 -->
-            <div class="placeholder"></div>
-            <!-- 搜索框 -->
-            <el-input
-                v-model="searchText"
-                placeholder="输入关键字搜索"
-                prefix-icon="el-icon-search"
-                class="search-box"
-            ></el-input>
-          </div>
-          <!-- 排序切换和发表按钮 -->
-          <div class="sort-and-post">
-            <!-- 排序切换 -->
-            <div class="sort-toggle">
-              <span @click="toggleSort('time')" :class="{'active': sortType === 'time'}">时间</span>
-              <span>|</span>
-              <span @click="toggleSort('hot')" :class="{'active': sortType === 'hot'}">热度</span>
+      <el-col :span="16" offset="1">
+        <el-card style="height: auto">
+          <div class="community-dynamic" shadow="hover">
+            <div class="top-bar">
+              <!-- 空白占位 -->
+              <div class="placeholder"></div>
+              <!-- 搜索框 -->
+              <el-input
+                  v-model="searchText"
+                  placeholder="输入关键字搜索"
+                  prefix-icon="el-icon-search"
+                  class="search-box"
+              ></el-input>
             </div>
+            <!-- 排序切换和发表按钮 -->
+            <div class="sort-and-post">
+              <!-- 排序切换 -->
+              <div class="sort-toggle">
+                <span @click="toggleSort('time')" :class="{'active': sortType === 'time'}">时间</span>
+                <span>|</span>
+                <span @click="toggleSort('hot')" :class="{'active': sortType === 'hot'}">热度</span>
+              </div>
 
-            <!-- 发表 -->
-            <el-button icon="el-icon-plus" @click="showEditor">发布动态</el-button>
-          </div>
-          <!-- 编辑器容器 -->
-          <el-dialog :visible.sync="showDialog" title="发布动态" width="60%">
-            <div>
-              <input v-model="postDynamicData.newTitle" placeholder="标题" class="dynamic-title-input" />
+              <!-- 发表 -->
+              <el-button icon="el-icon-plus" @click="showEditor">发布动态</el-button>
             </div>
-            <div class="post-editor">
-              <Toolbar
-                  style="border-bottom: 1px solid #ccc"
-                  :editor="editor"
-                  :defaultConfig="postDynamicData.toolbarConfig"
-                  :mode="postDynamicData.mode"
-              />
-
-              <Editor
-                  style="height: 300px; overflow-y: hidden;"
-                  v-model="postDynamicData.html"
-                  :defaultConfig="postDynamicData.editorConfig"
-                  :mode="postDynamicData.mode"
-                  @onCreated="onCreated"
-              />
-            </div>
-            <span slot="footer" class="dialog-footer">
+            <!-- 编辑器容器 -->
+            <el-dialog :visible.sync="showDialog" title="发布动态" width="60%">
+              <div>
+                <input v-model="postDynamicData.newTitle" placeholder="标题" class="dynamic-title-input" />
+              </div>
+              <div class="post-editor">
+<!--                <Toolbar-->
+<!--                    style="border-bottom: 1px solid #ccc"-->
+<!--                    :editor="editor"-->
+<!--                    :defaultConfig="postDynamicData.toolbarConfig"-->
+<!--                    :mode="postDynamicData.mode"-->
+<!--                />-->
+                <div id="editor" v-model="postDynamicData.html"></div>
+<!--                <Editor-->
+<!--                    style="height: 300px; overflow-y: hidden;"-->
+<!--                    v-model="postDynamicData.html"-->
+<!--                    :defaultConfig=this.editorConfig-->
+<!--                    :mode="postDynamicData.mode"-->
+<!--                    @onCreated="onCreated"-->
+<!--                />-->
+              </div>
+              <span slot="footer" class="dialog-footer">
               <el-button @click="showDialog = false">取消</el-button>
               <el-button type="primary" @click="postDynamic">发布</el-button>
              </span>
-          </el-dialog>
-          <!-- 动态列表 -->
-          <el-row class="dynamic-list">
-            <el-col :span="24">
-              <el-card class="dynamic-item" v-for="post in dynamicList" :key="post.message_id" shadow="hover">
-                <!-- 动态元数据 -->
-                <div class="dynamic-meta">
-                  <div class="dynamic-user-info">
-                    <!-- 用户名 -->
-                    <span >{{ post.userName }}</span>
-                    <!-- 时间 -->
-                    <span class="dynamic-time">{{ post.createTime }}</span>
-                  </div>
-                </div>
-
-                <!-- 显示标题 -->
-                <h3>{{ post.title }}</h3>
-
-                <!-- 动态内容 -->
-                <div class="dynamic-content" v-html="post.content"></div>
-
-                <!-- 动态操作区域 -->
-                <div class="dynamic-actions">
-                  <!-- 点赞按钮 -->
-                  <el-button icon="el-icon-thumb" @click="toggleLike(post)" :type="post.liked ? 'primary' : 'default'">{{ post.likeCount }}</el-button>
-                  <!-- 评论按钮 -->
-                  <el-button icon="el-icon-chat-dot-square" @click="toggleComments(post)">评论</el-button>
-                </div>
-
-                <!-- 评论区域 -->
-                <el-collapse v-if="post.showComments">
-                  <el-collapse-item>
-                    <template v-slot:title>
-                      评论
-                    </template>
-
-                    <div v-if="post.comments && post.comments.length > 0">
-                      <el-card class="comment" v-for="comment in post.comments" :key="comment.commentId" shadow="never">
-                        <div>{{ comment.userName }}: {{ comment.content }}</div>
-                      </el-card>
+            </el-dialog>
+            <!-- 动态列表 -->
+            <el-row class="dynamic-list">
+              <el-col :span="24">
+                <el-card class="dynamic-item" v-for="post in dynamicList" :key="post.message_id" shadow="hover">
+                  <!-- 动态元数据 -->
+                  <div class="dynamic-meta">
+                    <div class="dynamic-user-info">
+                      <!-- 用户名 -->
+                      <span >{{ post.userName }}</span>
+                      <!-- 时间 -->
+                      <span class="dynamic-time">{{ post.createTime }}</span>
                     </div>
+                  </div>
 
-                    <div v-else>暂无评论，快来抢沙发吧！</div>
+                  <!-- 显示标题 -->
+                  <h3>{{ post.title }}</h3>
 
-                    <!-- 评论输入框 -->
-                    <el-input v-model="post.newCommentText" placeholder="写下你的评论..." clearable>
-                      <template v-slot:append>
-                        <el-button icon="el-icon-send" @click="addComment(post)">发送</el-button>
+                  <!-- 动态内容 -->
+                  <div class="dynamic-content" v-html="post.content"></div>
+
+                  <!-- 动态操作区域 -->
+                  <div class="dynamic-actions">
+                    <!-- 点赞按钮 -->
+                    <el-button icon="el-icon-thumb" @click="toggleLike(post)" :type="post.liked ? 'primary' : 'default'">{{ post.likeCount }}</el-button>
+                    <!-- 评论按钮 -->
+                    <el-button icon="el-icon-chat-dot-square" @click="toggleComments(post)">评论</el-button>
+                  </div>
+
+                  <!-- 评论区域 -->
+                  <el-collapse v-if="post.showComments">
+                    <el-collapse-item>
+                      <template v-slot:title>
+                        评论
                       </template>
-                    </el-input>
-                  </el-collapse-item>
-                </el-collapse>
 
-              </el-card>
-            </el-col>
-          </el-row>
-        </div>
+                      <div v-if="post.comments && post.comments.length > 0">
+                        <el-card class="comment" v-for="comment in post.comments" :key="comment.commentId" shadow="never">
+                          <div>{{ comment.userName }}: {{ comment.content }}</div>
+                        </el-card>
+                      </div>
+
+                      <div v-else>暂无评论，快来抢沙发吧！</div>
+
+                      <!-- 评论输入框 -->
+                      <el-input v-model="post.newCommentText" placeholder="写下你的评论..." clearable>
+                        <template v-slot:append>
+                          <el-button icon="el-icon-send" @click="addComment(post)">发送</el-button>
+                        </template>
+                      </el-input>
+                    </el-collapse-item>
+                  </el-collapse>
+
+                </el-card>
+              </el-col>
+            </el-row>
+          </div>
+        </el-card>
+        <!-- 社区动态 -->
+
       </el-col>
       <!-- 右侧 -->
-      <el-col :span="8">
-        <div class="notification-section">
-          <div class="notification-tabs">
-            <button @click="switchMessageType('likes')" :class="{ 'active': currentMessageType === 'likes' }">
-              <i class="el-icon-thumb" :style="{ color: currentMessageType === 'likes' ? 'blue' : 'gray' }"></i>
-            </button>
-            <button @click="switchMessageType('comments')" :class="{ 'active': currentMessageType === 'comments' }">
-              <i class="el-icon-chat-dot-square" :style="{ color: currentMessageType === 'comments' ? 'blue' : 'gray' }"></i>
-            </button>
-            <button @click="switchMessageType('messages')" :class="{ 'active': currentMessageType === 'messages' }">
-              <i class="el-icon-message" :style="{ color: currentMessageType === 'messages' ? 'blue' : 'gray' }"></i>
-            </button>
-          </div>
-
-          <!-- 点赞消息列表 -->
-          <div v-if="currentMessageType === 'likes'">
-            <ul>
-              <li v-for="like in likes" :key="like.id">{{ like.user }} 点赞了您的动态: "{{ like.title }}"</li>
-            </ul>
-          </div>
-
-          <!-- 评论消息列表 -->
-          <div v-if="currentMessageType === 'comments'">
-            <ul>
-              <li v-for="comment in comments" :key="comment.id">{{ comment.user }}: "{{ comment.content }}"</li>
-            </ul>
-          </div>
-
-          <!-- 私信消息列表 -->
-          <div v-if="currentMessageType === 'messages' && !showChatBox">
-            <ul>
-              <li v-for="message in messages" :key="message.message_id" @click="selectMessage(message)">
-                <img :src="message.sender_avatar" class="avatar">
-                <div>{{ message.sender_name }}: {{ message.content }}</div>
-                <div>{{ message.timestamp }}</div>
-              </li>
-            </ul>
-          </div>
-
-          <!-- 聊天框 -->
-          <div v-if="showChatBox" class="chat-window">
-            <div class="chat-header">
-              <img :src="selectedMessage.sender_avatar" class="chat-avatar">
-              <h3 class="chat-name">{{ selectedMessage.sender_name }}</h3>
-              <el-button type="text" icon="el-icon-close" @click="closeChat"></el-button>
+      <el-col :span="6">
+        <el-card style="height: 800px">
+          <div class="notification-section">
+            <div class="notification-tabs">
+              <button @click="switchMessageType('likes')" :class="{ 'active': currentMessageType === 'likes' }">
+                <i class="el-icon-thumb" :style="{ color: currentMessageType === 'likes' ? 'blue' : 'gray' }"></i>
+              </button>
+              <button @click="switchMessageType('comments')" :class="{ 'active': currentMessageType === 'comments' }">
+                <i class="el-icon-chat-dot-square" :style="{ color: currentMessageType === 'comments' ? 'blue' : 'gray' }"></i>
+              </button>
+              <button @click="switchMessageType('messages')" :class="{ 'active': currentMessageType === 'messages' }">
+                <i class="el-icon-message" :style="{ color: currentMessageType === 'messages' ? 'blue' : 'gray' }"></i>
+              </button>
             </div>
-            <div class="chat-body">
-              <div v-for="msg in selectedMessage.conversationContent" :key="msg.id" class="chat-message" :class="{ 'is-sender': msg.sender_id === currentUser.id }">
-                <div class="chat-message-content">{{ msg.content }}</div>
-                <div class="chat-message-time">{{ msg.timestamp }}</div>
+
+            <!-- 点赞消息列表 -->
+            <div v-if="currentMessageType === 'likes'">
+              <ul>
+                <li v-for="like in likes" :key="like.id">{{ like.user }} 点赞了您的动态: "{{ like.title }}"</li>
+              </ul>
+            </div>
+
+            <!-- 评论消息列表 -->
+            <div v-if="currentMessageType === 'comments'">
+              <ul>
+                <li v-for="comment in comments" :key="comment.id">{{ comment.user }}: "{{ comment.content }}"</li>
+              </ul>
+            </div>
+
+            <!-- 私信消息列表 -->
+            <div v-if="currentMessageType === 'messages' && !showChatBox">
+              <ul>
+                <li v-for="message in messages" :key="message.message_id" @click="selectMessage(message)">
+                  <img :src="message.sender_avatar" class="avatar">
+                  <div>{{ message.sender_name }}: {{ message.content }}</div>
+                  <div>{{ message.timestamp }}</div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 聊天框 -->
+            <div v-if="showChatBox" class="chat-window">
+              <div class="chat-header">
+                <img :src="selectedMessage.sender_avatar" class="chat-avatar">
+                <h3 class="chat-name">{{ selectedMessage.sender_name }}</h3>
+                <el-button type="text" icon="el-icon-close" @click="closeChat"></el-button>
+              </div>
+              <div class="chat-body">
+                <div v-for="msg in selectedMessage.conversationContent" :key="msg.id" class="chat-message" :class="{ 'is-sender': msg.sender_id === currentUser.id }">
+                  <div class="chat-message-content">{{ msg.content }}</div>
+                  <div class="chat-message-time">{{ msg.timestamp }}</div>
+                </div>
+              </div>
+              <div class="chat-footer">
+                <el-input
+                    type="textarea"
+                    v-model="newMessageText"
+                    placeholder="写点什么..."
+                    class="chat-input"
+                    @keyup.enter="sendMessage"
+                ></el-input>
+                <el-button type="primary" icon="el-icon-send" @click="sendMessage"></el-button>
               </div>
             </div>
-            <div class="chat-footer">
-              <el-input
-                  type="textarea"
-                  v-model="newMessageText"
-                  placeholder="写点什么..."
-                  class="chat-input"
-                  @keyup.enter="sendMessage"
-              ></el-input>
-              <el-button type="primary" icon="el-icon-send" @click="sendMessage"></el-button>
-            </div>
           </div>
-        </div>
-
+        </el-card>
       </el-col>
 
     </el-row>
@@ -187,6 +191,8 @@
 import '@wangeditor/editor/dist/css/style.css'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import request from '@/utils/request'
+import hljs from "highlight.js";
+import E from "wangeditor";
 export default {
   components: {
     Editor,
@@ -208,8 +214,27 @@ export default {
         created_time: '',
         deleted: 0,
         toolbarConfig: { },
-        editorConfig: { placeholder: '请输入内容...' },
+
         mode: 'default', // or 'simple'
+      },
+      editorConfig: {
+        placeholder: '请输入内容...',
+        uploadImgServer: this.$baseUrl + '/files/editor/upload',
+        uploadFileName:'file',
+        // uploadImgHeaders :
+        //   token: this.user.token
+        // ,
+        uploadImgParams : {
+          type: 'img',
+        },
+        uploadVideoServer : this.$baseUrl + '/files/editor/upload',
+        uploadVideoName : 'file',
+        // uploadVideoHeaders : {
+        //   token: this.user.token
+        // },
+        uploadVideoParams : {
+          type: 'video',
+        },
       },
       showDialog: false, // 控制对话框的显示
 
@@ -267,6 +292,29 @@ export default {
     };
   },
   methods: {
+    setRichText() {
+      this.$nextTick(() => {
+        this.editor = new E(`#editor`)
+        this.editor.highlight = hljs
+        this.editor.config.uploadImgServer = this.$baseUrl + '/files/editor/upload'
+        this.editor.config.uploadFileName = 'file'
+        this.editor.config.uploadImgHeaders = {
+          token: this.user.token
+        }
+        this.editor.config.uploadImgParams = {
+          type: 'img',
+        }
+        this.editor.config.uploadVideoServer = this.$baseUrl + '/files/editor/upload'
+        this.editor.config.uploadVideoName = 'file'
+        this.editor.config.uploadVideoHeaders = {
+          token: this.user.token
+        }
+        this.editor.config.uploadVideoParams = {
+          type: 'video',
+        }
+        this.editor.create()  // 创建
+      })
+    },
     toggleSort(type) {
       this.sortType = type;
       this.fetchDynamicList();
@@ -276,18 +324,20 @@ export default {
     },
     showEditor() {
       this.showDialog = true; // 点击按钮时显示对话框
+      this.setRichText()
     },
     postDynamic() {
+      this.postDynamicData.html =this.editor.txt.html()
       const postData = {
-        communityId: this.postDynamicData.communityId,
-        communityName: this.postDynamicData.communityName,
+        communityId: null,
+        communityName: null,
         userId: this.user.userId,
         userName: this.user.name,
         title: this.postDynamicData.newTitle,
         content: this.postDynamicData.html,
         likeCount: this.postDynamicData.likeCount,
         created_time: this.postDynamicData.created_time,
-        deleted: this.postDynamicData.deleted
+        deleted: null
       };
       console.log("postData", postData);//测试数据
       // 发送请求
@@ -300,6 +350,7 @@ export default {
             // 处理响应
             console.log('发布成功', response);
             this.resetPostDynamicData();
+            this.fetchDynamicList();
           })
           .catch(error => {
             // 处理错误

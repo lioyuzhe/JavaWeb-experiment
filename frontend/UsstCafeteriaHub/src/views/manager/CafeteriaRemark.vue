@@ -7,7 +7,8 @@
       <el-button type="info" @click="reset">重置</el-button>
     </div>
     <div style="margin: 10px 0">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+<!--      <el-button type="primary" plain @click="handleAdd">新增</el-button>-->
+      <span style="margin-right: 10px"></span>
     </div>
     <el-table :data="tableData" stripe :header-cell-style="{ backgroundColor: 'aliceblue', color: '#666' }" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -89,27 +90,38 @@ export default {
   },
   created() {
     console.log('created')
-    this.load()
+    this.load(1)
   },
   methods: {
     reset() {
       this.cafeteriaName = ''
       this.userName = ''
-      this.load()
+      this.load(1)
     },
-    load() {
+    load(pageNum) {
+      if (pageNum) {
+        this.pageNum = pageNum;
+      }
       this.$request.get('/admins/actions/getCafeteriaRemarks', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          cafeteriaName: this.cafeteriaName,
+          userName: this.userName
+        }
       }).then(res => {
-        this.tableData = res.data
-      })
+        this.tableData = res.data.records;
+        this.total = res.data.total;
+      });
     },
+
     handleCurrentChange(pageNum) {
       this.load(pageNum)
     },
     del(cafeteriaRemark) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/admins/actions/deleteCafeteriaRemark' + cafeteriaRemark).then(res => {
-          if (res.code === '200') {
+        this.$request.post('/admins/actions/deleteCafeteriaRemark' ,cafeteriaRemark).then(res => {
+          if (res.code === 200) {
             this.$message.success('操作成功')
             this.load(1)
           } else {
@@ -134,9 +146,9 @@ export default {
             method: 'POST',
             data: this.form
           }).then(res => {
-            if (res.code === '200') {
+            if (res.code === 200) {
               this.$message.success('保存成功')
-              this.load()
+              this.load(1)
               this.fromVisible = false
             } else {
               this.$message.error(res.msg)

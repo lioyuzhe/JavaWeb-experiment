@@ -1,19 +1,21 @@
 <template>
   <div>
     <div>
-      <el-input style="width: 200px" placeholder="查询用户名称" v-model="userName"></el-input>
-      <el-input style="width: 200px; margin: 0 5px" placeholder="查询社区名称"  v-model="communityName"></el-input>
-      <el-button type="primary" @click="load(1)">查询</el-button>
+<!--      <el-input style="width: 200px" placeholder="查询用户名称" v-model="userName"></el-input>-->
+<!--      <el-input style="width: 200px; margin: 0 5px" placeholder="查询社区名称"  v-model="communityName"></el-input>-->
+      <el-button type="primary" @click="load()">查询</el-button>
       <el-button type="info" @click="reset">重置</el-button>
     </div>
     <div style="margin: 10px 0">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+<!--      <el-button type="primary" plain @click="handleAdd">新增</el-button>-->
+      <span style="margin-right: 10px"></span>
     </div>
+
     <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="communityUserId" label="序号" width="70"></el-table-column>
       <el-table-column prop="userName" label="用户名称"></el-table-column>
-      <el-table-column prop="communityName" label="社区名称"></el-table-column>
+      <el-table-column prop="communityName" label="社区名称" ></el-table-column>
       <el-table-column prop="postCount" label="发帖数"></el-table-column>
       <el-table-column prop="likeCount" label="点赞数"></el-table-column>
       <el-table-column label="操作" width="180">
@@ -41,7 +43,7 @@
           <el-input v-model="dialogForm.userName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="社区名称" prop="communityName">
-          <el-input v-model="dialogForm.communityName" auto-complete="off"></el-input>
+          <el-input v-model="dialogForm.communityName" auto-complete="off" disabled></el-input>
         </el-form-item>
         <el-form-item label="发帖数" prop="postCount">
           <el-input-number v-model="dialogForm.postCount" :min="0" :max="10000" controls-position="right"></el-input-number>
@@ -119,7 +121,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$request.delete('/admins/actions/deleteCommunityUser' + row).then(res => {
+        this.$request.post('/admins/actions/deleteCommunityUser' ,row).then(res => {
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -157,7 +159,7 @@ export default {
             method: 'post',
             data: this.dialogForm
           }).then(res => {
-            if (res.code === '200') {
+            if (res.code === 200) {
               this.$message.success('保存成功')
               this.load()
               this.dialogFormVisible = false
