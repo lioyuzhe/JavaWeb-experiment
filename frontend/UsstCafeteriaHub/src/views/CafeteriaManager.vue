@@ -2,18 +2,18 @@
     <div>
       <el-container>
         <!--    侧边栏  -->
-        <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #001529">
+        <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #f8f8f8">
           <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
-            <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
-            <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
+            <img src="@/assets/logo2.png" alt="" style="width: 40px; height: 40px">
+            <span class="logo-title" v-show="!isCollapse" style="color: black;">上海理工大学食堂点评交流社区</span>
           </div>
-          <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#001529" text-color="rgba(255, 255, 255, 0.65)"
-                   active-text-color="#fff" style="border: none" :default-active="$route.path">
-            <el-menu-item index="/home">
-              <i class="el-icon-s-home"></i>
-              <span slot="title">系统首页</span>
-            </el-menu-item>
-            <el-submenu index="info">
+          <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#f8f8f8"
+                   active-text-color="#f8f8f8" style="border: none" :default-active="$route.path">
+<!--            <el-menu-item index="/home">-->
+<!--              <i class="el-icon-s-home"></i>-->
+<!--              <span slot="title">系统首页</span>-->
+<!--            </el-menu-item>-->
+            <el-submenu index="info" class="el-submenu">
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>信息管理</span>
@@ -67,7 +67,6 @@
   </template>
   
   <script>
-  
   import user from "@/views/manager/User";
   
   export default {
@@ -104,64 +103,67 @@
     }
   }
   </script>
-  
-  <style>
-  .el-menu--inline {
-    background-color: #000c17 !important;
-  }
-  .el-menu--inline .el-menu-item {
-    background-color: #000c17 !important;
-    padding-left: 49px !important;
-  }
-  .el-menu-item:hover, .el-submenu__title:hover {
-    color: #fff !important;
-  }
-  .el-submenu__title:hover i {
-    color: #fff !important;
-  }
-  .el-menu-item:hover i {
-    color: #fff !important;
-  }
-  .el-menu-item.is-active {
-    background-color: #1890ff !important;
-    border-radius: 5px !important;
-    width: calc(100% - 8px);
-    margin-left: 4px;
-  }
-  .el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
-    margin-left: -4px;
-  }
-  .el-menu-item {
-    height: 40px !important;
-    line-height: 40px !important;
-  }
-  .el-submenu__title {
-    height: 40px !important;
-    line-height: 40px !important;
-  }
-  .el-submenu .el-menu-item {
-    min-width: 0 !important;
-  }
-  .el-menu--inline .el-menu-item.is-active {
-    padding-left: 45px !important;
-  }
-  /*.el-submenu__icon-arrow {*/
-  /*  margin-top: -5px;*/
-  /*}*/
-  
-  .el-aside {
-    transition: width .3s;
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
-  }
-  .logo-title {
-    margin-left: 5px;
-    font-size: 20px;
-    transition: all .3s;   /* 0.3s */
-  }
-  .el-header {
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    display: flex;
-    align-items: center;
-  }
-  </style>
-  
+
+<style>
+.el-menu-item {
+  color: #000000;
+  background-color: #f8f8f8;
+  padding-left: 49px !important;
+}
+.el-menu-item:hover, .el-submenu__title:hover {
+  color: #000000;
+}
+.el-submenu__title:hover i {
+  color: #f8f8f8;
+}
+.el-menu-item:hover i {
+  color: #f8f8f8;
+}
+.el-menu-item.is-active {
+  color: #6e77f2;
+  background-color: #ffff00;
+  border-radius: 5px !important;
+  width: calc(100% - 8px);
+  margin-left: 4px;
+}
+.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
+  margin-left: -4px;
+}
+.el-menu-item {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+.el-submenu__title {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+.el-submenu .el-menu-item {
+  min-width: 0 !important;
+}
+.el-menu--inline .el-menu-item.is-active {
+  padding-left: 45px !important;
+}
+/*.el-submenu__icon-arrow {*/
+/*  margin-top: -5px;*/
+/*}*/
+
+.el-aside {
+  transition: width .3s;
+  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+}
+.logo-title {
+  margin-left: 5px;
+  font-size: 20px;
+  transition: all .3s;   /* 0.3s */
+}
+.el-header {
+  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  display: flex;
+  align-items: center;
+}
+
+.el-submenu__icon-arrow {
+  background-color: #f8f8f8;
+  margin-top: -5px;
+}
+</style>

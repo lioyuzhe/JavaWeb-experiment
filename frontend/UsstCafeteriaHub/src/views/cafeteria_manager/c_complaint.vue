@@ -164,7 +164,7 @@ export default {
     },
     //负责从服务器获取所有投诉
     fetchComplaints() {
-      return axios.get('http://localhost:9090/cafeteriaAdmins/actions/getComplaint')
+      return this.$request.get('/cafeteriaAdmins/actions/getComplaint')
           .then(response => response.data.data)
           .catch(error => {
             console.error("Error fetching data: ", error);
@@ -181,19 +181,18 @@ export default {
     },
     // 获取当前管理员管理的食堂 ID 列表
     fetchManagedCafeteriaIds() {
-      const url = 'http://localhost:9090/cafeteriaManages/actions/getCafeteriaManagesByAdminID?id=' + this.cafeteria_admin.adminId;
-      return axios.get(url)
+      const url = '/cafeteriaAdmins/actions/getCafeteriaIdList/'+this.cafeteria_admin.adminId;
+      return this.$request.get(url)
           .then(res => {
-            this.cafeteriaManage = res.data.data;
-            return this.cafeteriaManage
-                .filter(manage => manage.adminId === this.cafeteria_admin.adminId)
-                .map(manage => manage.cafeteriaId);
+            // 假设返回的数据结构是 { data: [{ cafeteriaId: 1 }, { cafeteriaId: 2 }, ...] }
+            return res.data.map(manage => manage.cafeteriaId);
           })
           .catch(error => {
-            console.error("Error fetching cafeteria manages: ", error);
+            console.error("Error fetching cafeteria IDs: ", error);
             return [];
           });
     },
+
 
     // 根据食堂 ID 筛选出管理员负责的食堂的投诉
     filterResponsibleComplaints(allComplaints, managedCafeteriaIds) {
@@ -251,7 +250,7 @@ export default {
     //提交表单
     submitComplaint() {
       this.currentComplaint.status = 1; // 手动设置状态
-      const url = 'http://localhost:9090/complaints/actions/updateComplaint';
+      const url = '/complaints/actions/updateComplaint';
       const headers = { 'Content-Type': 'application/json' };
 
       this.$request.post(url, this.currentComplaint, {headers})

@@ -11,8 +11,8 @@
             <result property="description" column="description" jdbcType="VARCHAR"/>
             <result property="adminId" column="admin_id" jdbcType="BIGINT"/>
             <result property="adminName" column="admin_name" jdbcType="VARCHAR"/>
-            <result property="openTime" column="open_time" jdbcType="TIMESTAMP"/>
-            <result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
+            <result property="openTime" column="open_time" jdbcType="VARCHAR"/>
+            <result property="closeTime" column="close_time" jdbcType="VARCHAR"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 

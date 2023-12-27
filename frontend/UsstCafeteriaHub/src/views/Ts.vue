@@ -3,16 +3,26 @@
     <!-- 头部导航栏 -->
     <el-header class="header" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
       <el-row type="flex" justify="space-between" align="middle">
-        <el-col :span="18">
-          <el-menu mode="horizontal" class="menu">
+        <!-- Logo 和项目名称 -->
+        <el-col :span="4">
+          <div class="header-logo" style="display: flex; align-items: center; height: 100%;">
+            <img src="@/assets/logo2.png" alt="Logo" style="height: 50px;"> <!-- Logo图像 -->
+            <span style="margin-left: 10px;">上海理工大学食堂社区</span> <!-- 项目名称 -->
+          </div>
+        </el-col>
+
+
+        <!-- 导航菜单 -->
+        <el-col :span="14" >
+          <el-menu mode="horizontal" class="menu" style="background-color: lightgrey;">
             <el-menu-item index="1" @click="goto('home')">首页</el-menu-item>
             <el-menu-item index="2" @click="goto('community')">社区</el-menu-item>
             <el-menu-item index="3" @click="goto('canteen')">食堂</el-menu-item>
           </el-menu>
         </el-col>
-        <!-- 填充剩余空间，将头像推到右侧 -->
-        <el-col :span="18"></el-col> <!-- 根据实际情况调整span大小，以填充头像左侧的空间 -->
-        <el-col :span="6">
+
+        <!-- 用户信息和头像 -->
+        <el-col :span="6" style="display: flex; justify-content: flex-end; align-items: center;">
           <el-popover
               class="user-inf"
               placement="bottom"
@@ -20,21 +30,27 @@
               trigger="hover"
               v-model="userProfileVisible"
           >
+            <!-- 弹出内容 -->
             <p><strong>用户活跃度：</strong>{{ user.activityLevel }}</p>
             <p><strong>用户id：</strong>{{ user.userId }}</p>
             <p><strong>用户账号：</strong>{{ user.account }}</p>
             <p><strong>用户名：</strong>{{ user.name }}</p>
             <p><strong>用户邮箱：</strong>{{ user.email }}</p>
             <p><strong>用户手机号：</strong>{{ user.phone }}</p>
+            <p><strong>用户角色：</strong>{{ user.role === 0 ? '学生' : '老师' }}</p>
+
 
             <el-button type="text" @click="openEditDialog">修改个人信息</el-button>
             <el-button type="text" @click="logout">退出登录</el-button>
 
-            <template #reference>
-              <el-avatar :src="user.avatar" size="large"></el-avatar>
+            <template #reference >
+              <el-avatar :src="user.avatar" size="small"></el-avatar>
             </template>
           </el-popover>
 
+          <div style="display: flex; align-items: center; margin-left: 10px;">
+            <span >用户： {{ user.name }}</span>
+          </div>
         </el-col>
       </el-row>
     </el-header>
@@ -461,7 +477,7 @@ export default {
 
 .header {
   /* 设定头部的样式和对齐 */
-  background-color: #fff; /* 根据需要设置背景颜色 */
+  background-color: lightgray; /* 根据需要设置背景颜色 */
   padding: 0 70px;
   height: 60px; /* 设定一个固定高度 */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 添加阴影效果 */
