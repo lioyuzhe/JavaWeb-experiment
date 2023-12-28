@@ -40,32 +40,32 @@
         <el-row :gutter="20">
           <!-- 最新促销 -->
           <el-col :span="8">
-            <el-card class="box-card" >
+            <el-card class="box-card1" >
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228184859.png" class="entrance-image">
               <div class="feature-info">
-                <h3 @click="showPromoDialog('promo')">最新促销</h3>
-                <p>探索我们的特价菜品</p>
+                <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;" @click="showPromoDialog('promo')">最新促销</h3>
+                <p style="color:#009966; font-size: 16px; text-align: center;">探索我们的特价菜品</p>
               </div>
             </el-card>
           </el-col>
           <!-- 食堂排名 -->
           <!-- 食堂排名 -->
           <el-col :span="8">
-            <el-card class="box-card" >
+            <el-card class="box-card1" >
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190211.png" class="entrance-image">
               <div class="feature-info">
-                <h3 @click="showCanteenRankDialog" >食堂排名</h3>
-                <p>查看最新食堂排名</p>
+                <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;" @click="showCanteenRankDialog" >食堂排名</h3>
+                <p style="color:#009966; font-size: 16px; text-align: center;">查看最新食堂排名</p>
               </div>
             </el-card>
           </el-col>
           <!-- 菜品排名 -->
           <el-col :span="8">
-            <el-card class="box-card" @click="showDialog('dishRank')">
+            <el-card class="box-card1" @click="showDialog('dishRank')">
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png" class="entrance-image">
               <div class="feature-info">
-                <h3>菜品排名</h3>
-                <p>最新高评价菜品排名</p>
+                <h3  style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">菜品排名</h3>
+                <p style="color:#009966; font-size: 16px; text-align: center;">最新高评价菜品排名</p>
               </div>
             </el-card>
           </el-col>
