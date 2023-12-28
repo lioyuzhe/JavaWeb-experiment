@@ -25,6 +25,12 @@
       <el-divider></el-divider>
     </div>
     <ts-cafeteria-complaint :cafeteria="cafeteria"></ts-cafeteria-complaint>
+
+    <div class="page-header" id="announcement">
+      <h2>食堂公告</h2>
+      <el-divider></el-divider>
+    </div>
+    <ts-cafeteria-announcement :cafeteria="cafeteria"></ts-cafeteria-announcement>
   </div>
 </template>
 
@@ -33,6 +39,7 @@ import TsCafeteriaIntroduction from './ts_cafeteria/ts_cafeteria_introduction.vu
 import TsCafeteriaDish from './ts_cafeteria/ts_cafeteria_dish.vue';
 import TsCafeteriaVote from './ts_cafeteria/ts_cafeteria_vote.vue';
 import TsCafeteriaComplaint from './ts_cafeteria/ts_cafeteria_complaint.vue';
+import TsCafeteriaAnnouncement from './ts_cafeteria/ts_cafeteria_announcement.vue'; // 新导入的组件
 
 export default {
   props: {
@@ -68,6 +75,7 @@ export default {
     TsCafeteriaDish,
     TsCafeteriaVote,
     TsCafeteriaComplaint,
+    TsCafeteriaAnnouncement // 注册新组件
   }
 };
 </script>

@@ -4,11 +4,21 @@
       <!-- 左侧内容 -->
       <el-col :span="16" :offset="2">
         <!-- 动态轮播部分 -->
+<!--        <el-card class="box-card">-->
+<!--          <el-carousel :interval="4000" type="card" height="200px">-->
+<!--            <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">-->
+<!--              <h3>{{ promo.dish_name }}</h3>-->
+<!--              <p>{{ promo.description }}</p>-->
+<!--            </el-carousel-item>-->
+<!--          </el-carousel>-->
+<!--        </el-card>-->
+
         <el-card class="box-card">
           <el-carousel :interval="4000" type="card" height="200px">
-            <el-carousel-item v-for="promo in promotions" :key="promo.promotion_id">
-              <h3>{{ promo.dish_name }}</h3>
-              <p>{{ promo.description }}</p>
+            <el-carousel-item v-for="dish in dishes" :key="dish.dishId">
+              <img :src="dish.imageUrl" class="dish-image" alt="Dish Image">
+              <h3>{{ dish.name }}</h3>
+              <p>所属食堂：{{ dish.cafeteriaName }}</p>
             </el-carousel-item>
           </el-carousel>
         </el-card>
@@ -65,6 +75,7 @@ export default {
   name: 'ts_home',
   data() {
     return {
+      dishes: [], // 用于存储菜品数据
       hasUnreadComments: false,//用于标识是否有未读的评论消息。
       hasUnreadLikes: false,// 用于标识是否有未读的点赞消息。
       hasUnreadComplaintReplies: false,//用于标识是否有未读的投诉回复消息。
@@ -169,6 +180,7 @@ export default {
   },
   created() {
     this.fetchData();
+    this.fetchDishes(); // 获取菜品数据
     // 定时器，每隔一定时间请求最新数据
     setInterval(() => {
       this.fetchLatestComments();
@@ -176,6 +188,16 @@ export default {
     }, 10000); // 比如每10秒更新一次
   },
   methods: {
+    async fetchDishes() {
+      try {
+        const response = await this.$request.get('/dishes/actions/getDishes');
+        if (response && response.data) {
+          this.dishes = response.data;
+        }
+      } catch (error) {
+        console.error('Error fetching dishes:', error);
+      }
+    },
     getMessageType(item) {
       // 根据消息的字段判断消息类型
       if (item.cafeteriaName && item.content && item.reply) {
@@ -281,7 +303,7 @@ export default {
 
 <style scoped>
 .box-card {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .icon-tray .icon {
@@ -304,5 +326,10 @@ export default {
     width: 33%;
     margin-bottom: 10px;
   }
+}
+.dish-image {
+  width: 60%;
+  height: 70%;
+  object-fit: cover;
 }
 </style>

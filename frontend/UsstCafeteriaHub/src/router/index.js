@@ -74,6 +74,8 @@ const routes = [
       { path: 'announcement',name : 'announcement',meta: {name: '活动公告'},component: () => import('../views/cafeteria_manager/c_announcement.vue') },
       { path: 'cafeteria_vote', name: 'c_cafeteria_vote', meta: { name: '投票信息管理' }, component: () => import('../views/cafeteria_manager/c_vote.vue') },
       { path: 'cafeteria_complaint', name: 'c_cafeteria_complaint', meta: { name: '投诉管理' }, component: () => import('../views/cafeteria_manager/c_complaint.vue') },
+        { path: 'person', name: 'c_person', meta: { name: '个人信息' }, component: () => import('../views/cafeteria_manager/c_person.vue') },
+
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },

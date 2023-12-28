@@ -24,8 +24,8 @@
         <h2>{{ selectedDish.name }}</h2>
         <img :src="selectedDish.imageUrl" alt="Dish Image" class="dialog-image" />
         <div class="dish-details">
-                  <p>菜品类别：{{ selectedDish.cuisine }}</p>
-                  <p>菜品价格：{{ selectedDish.price }} 元</p>
+          <p>菜品类别：{{ selectedDish.cuisine }}</p>
+          <p>菜品价格：{{ selectedDish.price }} 元</p>
           <p class="rating-label">菜品评分：</p>
           <el-rate v-model="rating"></el-rate> <!-- 星级评分组件 -->
           <p class="review-label">菜品评价：</p>
@@ -47,6 +47,18 @@
           </div>
           <el-button type="primary" @click="submitReview">发布</el-button>
           <el-button @click="cancelReview">取消</el-button>
+        </div>
+        <div class="dish-comments">
+          <h3>菜品评价</h3>
+          <div v-if="selectedDishComments.length === 0">暂无评价</div>
+          <div v-else>
+            <el-card v-for="comment in selectedDishComments" :key="comment.id">
+              <p>{{ comment.content }}</p>
+              <p>评分：{{ comment.score }}</p>
+              <p>评价人：{{ comment.userName }}</p>
+              <p>评价时间：{{ comment.createdAt }}</p>
+            </el-card>
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -75,6 +87,7 @@ export default {
       imagePreviewUrl: '', // 用于存储图片预览的 URL
       user: JSON.parse(localStorage.getItem('user')),
       dishSearch: '', // 用于绑定搜索框的输入值
+      selectedDishComments: [], // 用于存储选中的菜品的评论
     };
   },
   created() {
@@ -98,13 +111,14 @@ export default {
     }
   },
   methods: {
+
+
+
     searchDish() {
       const searchKeyword = this.dishSearch.toLowerCase();
-
       const foundDish = this.dishes.find(dish =>
           dish.name.toLowerCase().includes(searchKeyword)
       );
-
       if (foundDish) {
         this.selectedDish = foundDish;
         this.dialogVisible = true; // 显示弹窗
@@ -120,8 +134,20 @@ export default {
       }
     },
     viewDetails(dish) {
-      this.selectedDish = dish; // 设置被选中的菜品
-      this.dialogVisible = true; // 显示弹窗
+      this.selectedDish = dish;
+      this.dialogVisible = true;
+      // console.log('Selected dish:', dish)
+      this.fetchDishComments(dish.dishId); // 获取该菜品的评论
+    },
+    // 新增方法：获取指定菜品的评论
+    async fetchDishComments(dishId) {
+      try {
+        const response = await this.$request.get(`/dishRemarks/actions/getDishRemark?dishId=${dishId}`);
+        this.selectedDishComments = response.data;
+      } catch (error) {
+        console.error('Error fetching dish comments:', error);
+        this.selectedDishComments = [];
+      }
     },
     async fetchDishes() {
       console.log('Fetching dishes for cafeteria:', this.cafeteria);

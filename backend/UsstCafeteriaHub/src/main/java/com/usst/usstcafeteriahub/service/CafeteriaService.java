@@ -3,6 +3,7 @@ package com.usst.usstcafeteriahub.service;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.model.entity.Cafeteria;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author Klein
@@ -16,5 +17,5 @@ public interface CafeteriaService extends IService<Cafeteria> {
      * @param cafeteria
      * @return
      */
-    BaseResponse add(Cafeteria cafeteria);
+    BaseResponse add(Cafeteria cafeteria, HttpServletRequest request);
 }

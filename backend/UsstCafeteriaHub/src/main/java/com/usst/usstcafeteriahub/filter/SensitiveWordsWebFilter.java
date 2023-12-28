@@ -14,6 +14,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*")
 @Slf4j
 public class SensitiveWordsWebFilter implements Filter {
+
     @Autowired
     private SensitiveFilter sensitiveFilter;
 
@@ -24,19 +25,27 @@ public class SensitiveWordsWebFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        // 这里实现敏感词过滤逻辑
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        log.info("进入敏感词过滤器的http请求类：{}",httpServletRequest);
+
+        // 检查是否是文件上传请求
+        String contentType = httpServletRequest.getContentType();
+        if (contentType != null && contentType.startsWith("multipart/form-data")) {
+            // 是文件上传请求，不进行敏感词处理，直接传递给过滤器链
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        // 非文件上传请求，执行原有敏感词过滤逻辑
+        log.info("进入敏感词过滤器的http请求类：{}", httpServletRequest);
         SensitiveRequestWrapper sensitiveRequestWrapper = new SensitiveRequestWrapper(httpServletRequest, sensitiveFilter);
 
-        String url = sensitiveRequestWrapper.getRequestURI().toString();
+        String url = sensitiveRequestWrapper.getRequestURI();
         log.info("请求的url：{}", url);
-        log.info("包装后的请求类：{}",sensitiveRequestWrapper);
+        log.info("包装后的请求类：{}", sensitiveRequestWrapper);
 
         filterChain.doFilter(sensitiveRequestWrapper, servletResponse);
-
-
     }
+
 
     // 根据需要实现 init 和 destroy 方法
     @Override
