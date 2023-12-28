@@ -47,4 +47,18 @@ public interface DishService extends IService<Dish> {
      * @return
      */
     BaseResponse add(@Param("dish") Dish dish);
+
+    /**
+     * 删除菜品同时删除菜品排行表里的菜品
+     * @param dish
+     * @return
+     */
+    BaseResponse removeDish(Dish dish);
+
+    /**
+     * 更新菜品同时更新菜品排行表里的菜品
+     * @param dish
+     * @return
+     */
+    BaseResponse updateDish(Dish dish);
 }

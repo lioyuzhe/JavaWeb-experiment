@@ -25,6 +25,7 @@ public class DishController {
     private DishService dishService;
 
 
+
     @Log
     @ApiOperation("获取所有菜品")
     @GetMapping("/getDishes")
@@ -74,11 +75,7 @@ public class DishController {
             return Result.error("参数为空");
         }
         log.info("要删除菜品: {}", dish);
-        boolean remove = dishService.removeById(dish.getDishId());
-        if (!remove) {
-            return Result.error("删除失败");
-        }
-        return Result.success("删除成功");
+        return dishService.removeDish(dish);
     }
 
 
@@ -102,11 +99,7 @@ public class DishController {
             return Result.error("参数为空");
         }
         log.info("修改菜品: {}", dish);
-        boolean update = dishService.updateById(dish);
-        if(!update){
-            return Result.error("修改失败");
-        }
-        return Result.success("修改成功");
+        return dishService.updateDish(dish);
     }
 
 

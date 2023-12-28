@@ -129,6 +129,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
                 claims.put("id",admin.getAdminId());
                 claims.put("account",admin.getAccount());
                 claims.put("password",admin.getPassword());
+                log.info("登录用户信息claims:{}",claims);
                 String token = JwtUtils.generateToken(claims);
                 log.info("登录用户信息生成的token:{}",token);
                 admin.setToken(token);

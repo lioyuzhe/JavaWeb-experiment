@@ -11,7 +11,7 @@ import java.util.Map;
 @Slf4j
 public class JwtUtils {
     private static final String signKey = "usstcafeteriahub";
-    private static final long expire = 43200000L; // 12 hours
+    private static final long expire = 432000000L; // 12 hours
 
     /**
      * 生成JWT令牌

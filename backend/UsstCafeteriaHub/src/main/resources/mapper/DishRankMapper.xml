@@ -20,6 +20,11 @@
         dish_id,dish_name,total_score,
         ranking,average_score
     </sql>
+    <!--根据菜品Id删除菜品排名-->
+    <update id="removeDishRankByDishId">
+        delete from dish_rank
+        where dish_id = #{dishId}
+    </update>
     <select id="getDishRankByScore" resultType="com.usst.usstcafeteriahub.model.entity.DishRank">
         select
         <include refid="Base_Column_List"/>

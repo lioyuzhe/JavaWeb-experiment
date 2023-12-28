@@ -26,7 +26,6 @@ public class CafeteriaRankController {
     @Resource
     private CafeteriaRankService cafeteriaRankService;
 
-
     @Log
     @ApiOperation("获取食堂排行榜,totalScore,由高到低排列")
     @GetMapping("/getCafeteriaRank")

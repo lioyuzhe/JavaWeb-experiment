@@ -33,6 +33,12 @@ public interface DishRankMapper extends BaseMapper<DishRank> {
      * @return
      */
     List<CafeteriaRank> getDishRanksBycafeteriaId(Long cafeteriaId);
+
+    /**
+     * 根据菜品ID删除菜品排名
+     * @param dishId
+     */
+    void removeDishRankByDishId(Long dishId);
 }
 
 
