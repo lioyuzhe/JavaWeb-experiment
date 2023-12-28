@@ -30,8 +30,8 @@
               <el-card class="box-card">
                 <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
                 <div>
-                  <h3>{{ entry.title }}</h3>
-                  <p>{{ entry.description }}</p>
+                  <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">{{ entry.title }}</h3>
+                  <p style="color:#009966; font-size: 16px; text-align: center;">{{ entry.description }}</p>
                 </div>
               </el-card>
             </router-link>
@@ -104,32 +104,38 @@ export default {
           id: 'promo',
           title: '最新促销',
           description: '探索我们的特价菜品',
+		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228184859.png'
         },
         {
           id: 'vote',
           title: '投票调查',
           description: '参与我们的最新调查',
+		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228185236.png'
         },
         // 新增加的功能入口数据
         {
           id: 'recommendation',
           title: '食堂推荐',
           description: '最新食堂推荐菜品',
+		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228185614.png'
         },
         {
           id: 'communityTopic',
           title: '社区话题',
           description: '社区热门话题，参与讨论',
+		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228185853.png'
         },
         {
           id: 'canteenRank',
           title: '食堂排名',
           description: '查看最新食堂排名',
+		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190211.png'
         },
         {
           id: 'dishRank',
           title: '菜品排名',
           description: '最新高评价菜品排名',
+		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png'
         }
       ],
       promotions: [
@@ -308,6 +314,7 @@ export default {
 
 .icon-tray .icon {
   text-align: center;
+  margin: 12px;
 }
 
 .entrance-image {
