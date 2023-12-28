@@ -227,10 +227,10 @@ export default {
     // this.fetchData();
     this.fetchDishes(); // 获取菜品数据
     // 定时器，每隔一定时间请求最新数据
-    setInterval(() => {
-      // this.fetchLatestComments();
-      // this.fetchLatestComplaintReplies();
-    }, 100000); // 比如每100秒更新一次
+    // setInterval(() => {
+    //   // this.fetchLatestComments();
+    //   // this.fetchLatestComplaintReplies();
+    // }, 100000); // 比如每100秒更新一次
   },
   methods: {
     // 显示菜品排名对话框并获取数据

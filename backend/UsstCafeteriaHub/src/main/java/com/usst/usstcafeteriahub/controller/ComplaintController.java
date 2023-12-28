@@ -163,10 +163,10 @@ public class ComplaintController {
         if (userId == null) {
             return Result.error("参数为空");
         }
-        List<Complaint> list = complaintService.getComplaintReplyByUserId(userId);
-        if (list == null) {
-            return Result.error("查询失败");
-        }
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_id", userId);
+//        queryWrapper.eq("status", 1);
+        List<Complaint> list = complaintService.list(queryWrapper);
         log.info("根据用户id获取已回复的投诉列表: {}", list);
         return Result.success(list);
     }

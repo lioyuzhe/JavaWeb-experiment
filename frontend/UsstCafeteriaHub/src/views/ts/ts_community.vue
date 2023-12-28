@@ -429,6 +429,7 @@ export default {
           console.log("test");
           // 检查后端返回的数据是否为对象且包含 commentId 属性
           post.comments = response.data ;
+
           console.log('Comments:', post.comments);
           console.log("test");
           this.$message.success("评论获取成功");
@@ -455,14 +456,21 @@ export default {
         createTime: null,
       };
       console.log("newComment", newComment)
-      try {
-        // 这里假设您的后端接受POST请求来添加评论
-        await this.$request.post(`/community/comments`, newComment);
-        post.comments.unshift(newComment); // 将新评论添加到列表的顶部
-        post.newCommentText = ''; // 清空输入框
-      } catch (error) {
-        console.error('添加评论失败:', error);
-      }
+        // 发送新评论到后端
+        const response = await this.$request.post(`/community/comments`, newComment);
+        console.log("response",response)
+        if (response.code === 200) {
+          // 将新评论添加到当前动态的评论列表中
+          if (!post.comments) {
+            post.comments = []; // 如果评论列表不存在，则初始化一个空数组
+          }
+          post.comments.unshift(response.data); // 将新评论添加到评论列表的开头
+          post.newCommentText = ''; // 清空输入框
+          // this.toggleComments(post); // 刷新评论列表
+          this.$message.success("评论成功添加");
+        } else {
+          this.$message.error("评论添加失败");
+        }
     },
 
     async toggleLike(post) {
