@@ -9,7 +9,7 @@
       <el-card style="width: 100%; margin-right: 10px">
         <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">我管理的食堂</div>
         <el-timeline style="padding: 0">
-          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="'营业时间：'+renderTime(item.openTime)"
+          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="'营业时间：'+item.openTime+'-'+item.closeTime"
                             placement="top">
             <el-card>
               <h4>{{ item.name }}</h4>
@@ -188,7 +188,7 @@ export default {
     //加载食堂信息
     async loadCafeteria() {
       try {
-        const response = await axios.get('http://localhost:9090/cafeterias/actions/getCafeteria');
+        const response = await this.$request.get('/cafeterias/actions/getCafeteria');
         this.cafeteria = Array.isArray(response.data.data) ? response.data.data : [];
         console.log(this.cafeteria);
       } catch (error) {
@@ -199,7 +199,7 @@ export default {
     //加载投诉信息
     async loadComplaint() {
       try {
-        const response = await axios.get('http://localhost:9090/complaints/actions/getComplaint');
+        const response = await this.$request.get('/complaints/actions/getComplaint');
         this.complaint = Array.isArray(response.data.data) ? response.data.data : [];
         console.log(this.complaint);
       } catch (error) {
@@ -210,7 +210,7 @@ export default {
     //加载评价信息
     async loadRemark() {
       try {
-        const response = await axios.get('http://localhost:9090/cafeteriaRemarks/actions/getCafeteriaRemarks');
+        const response = await this.$request.get('/cafeteriaRemarks/actions/getCafeteriaRemarks');
         this.cafeteria_remark = response.data.data;
         console.log(this.cafeteria_remark.content);
       } catch (error) {
@@ -236,7 +236,7 @@ export default {
     //提交投诉回复
     async submitComplaint() {
       this.currentComplaint.status = 1; // 手动设置状态
-      const url = 'http://localhost:9090/complaints/actions/updateComplaint'; // 替换为您的API地址
+      const url = '/complaints/actions/updateComplaint'; // 替换为您的API地址
       const headers = {
         'Content-Type': 'application/json'
       };
@@ -254,7 +254,7 @@ export default {
     //提交评价回复
     async submitRemark() {
       this.currentRemark.status = 1; // 手动设置状态
-      const url = 'http://localhost:9090/cafeteriaRemarks/actions/updatecafeteriaRemark'; // 替换为您的API地址
+      const url = '/cafeteriaRemarks/actions/updatecafeteriaRemark'; // 替换为您的API地址
       // 设置请求头部，指定内容类型为 JSON
       const headers = {
         'Content-Type': 'application/json'

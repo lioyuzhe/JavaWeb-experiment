@@ -198,20 +198,20 @@ export default {
       let url = '';
       switch (destination) {
         case 'home':
-          url = 'http://localhost:7000/ts/ts_home';
+          url =  '/ts/ts_home';
           break;
         case 'community':
-          url = 'http://localhost:7000/ts/ts_community';
+          url =  '/ts/ts_community';
           break;
         case 'canteen':
-          url = 'http://localhost:7000/ts/ts_cafeteria_introduction';
+          url =   '/ts/ts_cafeteria_introduction';
           break;
         case 'vote':
-          url = 'http://localhost:7000/ts/ts_cafeteria_vote';
+          url = '/ts/ts_cafeteria_vote';
           break;
         default:
           // 默认地址或错误处理
-          url = 'http://localhost:7000';
+          url = '$baseUrl';
       }
       window.location.href = url;
     },

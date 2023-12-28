@@ -64,7 +64,7 @@
             <el-card class="box-card1" @click="showDialog('dishRank')">
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png" class="entrance-image">
               <div class="feature-info">
-                <h3  style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">菜品排名</h3>
+                <h3 @click="showDishRankDialog() style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">菜品排名</h3>
                 <p style="color:#009966; font-size: 16px; text-align: center;">最新高评价菜品排名</p>
               </div>
             </el-card>
@@ -90,7 +90,16 @@
             <el-table-column prop="ranking" label="排名"></el-table-column>
           </el-table>
         </el-dialog>
-
+        <!-- 菜品排名对话框 -->
+        <el-dialog title="菜品排名" :visible.sync="dishRankDialogVisible">
+          <el-table :data="dishRanks">
+            <el-table-column prop="dishName" label="菜品名称"></el-table-column>
+            <el-table-column prop="cafeteriaName" label="所属食堂"></el-table-column>
+            <el-table-column prop="totalScore" label="总分"></el-table-column>
+            <el-table-column prop="averageScore" label="平均分"></el-table-column>
+            <el-table-column prop="ranking" label="排名"></el-table-column>
+          </el-table>
+        </el-dialog>
 
       </el-col>
 
@@ -208,20 +217,41 @@ export default {
       promoDialogVisible: false,
       promoDishes: [],// 用于存储促销菜品数据
       canteenRankDialogVisible: false,
-      canteenRanks: [] // 用于存储食堂排名数据
+      canteenRanks: [] ,// 用于存储食堂排名数据
+      dishRankDialogVisible: false, // 控制菜品排名对话框的显示
+      dishRanks: [], // 用于存储菜品排名数据
     };
 
   },
   created() {
-    this.fetchData();
+    // this.fetchData();
     this.fetchDishes(); // 获取菜品数据
     // 定时器，每隔一定时间请求最新数据
-    setInterval(() => {
-      this.fetchLatestComments();
-      // this.fetchLatestComplaintReplies();
-    }, 100000); // 比如每10秒更新一次
+    // setInterval(() => {
+    //   // this.fetchLatestComments();
+    //   // this.fetchLatestComplaintReplies();
+    // }, 100000); // 比如每100秒更新一次
   },
   methods: {
+    // 显示菜品排名对话框并获取数据
+    showDishRankDialog() {
+      this.fetchDishRanks();
+    },
+
+    // 从后端获取菜品排名数据
+    async fetchDishRanks() {
+      try {
+        const response = await this.$request.get('/dishRanks/actions/getDishRank');
+        if (response.code === 200) {
+          this.dishRanks = response.data;
+          this.dishRankDialogVisible = true; // 显示对话框
+        } else {
+          console.error('获取菜品排名失败', response);
+        }
+      } catch (error) {
+        console.error('Error fetching dish ranks:', error);
+      }
+    },
     showCanteenRankDialog() {
 
       this.fetchCanteenRanks();
@@ -284,7 +314,7 @@ export default {
 
 
     async fetchData() {
-      await this.fetchLatestComments();
+      // await this.fetchLatestComments();
       // await this.fetchLatestComplaintReplies();
       // ...其他可能需要获取的数据
     },
@@ -351,7 +381,7 @@ export default {
     activeMessages() {
       switch (this.activeTab) {
         case 'comments':
-          this.fetchLatestComments();
+          // this.fetchLatestComments();
           return this.latestComments;
         case 'likes':
           return this.likes;
