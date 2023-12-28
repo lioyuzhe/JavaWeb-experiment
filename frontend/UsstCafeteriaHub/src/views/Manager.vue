@@ -5,10 +5,10 @@
       <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #f8f8f8 ">
         <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
 
-        <!-- logo没改-->
             <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
             <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
         </div>
+
 
         <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#f8f8f8"
                  active-text-color="#f8f8f8" style="border: none" :default-active="$route.path">
