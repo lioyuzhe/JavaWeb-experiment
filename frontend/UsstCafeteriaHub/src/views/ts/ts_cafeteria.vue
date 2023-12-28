@@ -6,6 +6,7 @@ te<template>
       <el-menu-item index="dish" @click="scrollToSection('dish')">食堂菜品</el-menu-item>
       <el-menu-item index="vote" @click="scrollToSection('vote')">投票调查</el-menu-item>
       <el-menu-item index="complaint" @click="scrollToSection('complaint')">投诉食堂</el-menu-item>
+      <el-menu-item index="announcement" @click="scrollToSection('announcement')">食堂公告</el-menu-item>
     </el-menu>
     <div class="content" style="width: 100%;">
       <!-- 顶部栏 -->

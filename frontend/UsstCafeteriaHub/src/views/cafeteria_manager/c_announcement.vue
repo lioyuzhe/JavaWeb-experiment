@@ -31,12 +31,19 @@ export default {
     this.fetchnotices(); // 获取多个公告信息
   },
   methods: {
+    onCafeteriaChange(value) {
+      const selectedCafeteria = this.cafeterias.find(c => c.name === value);
+      if (selectedCafeteria) {
+        this.form.cafeteriaName = selectedCafeteria.name;
+        this.form.cafeteriaId = selectedCafeteria.cafeteriaId;
+      }
+    },
     filterByCafeteria() {
       if (this.selectedCafeteria !==-1) {
         // 发起请求，获取特定食堂的公告信息
         this.$request.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID', {
           params: {
-            id: this.selectedCafeteria
+            id: this.selectedCafeteria.cafeteriaId
           }
         })
             .then(response => {
@@ -106,10 +113,22 @@ export default {
     saveRow(index) {
       this.editableRowIndex = -1; // 退出编辑状态
     },
-    fetchnotices() {
-      this.$message.get('/cafeteriaNotices/actions/getCafeteriaNotices')
+    fetchCafeterias() {
+      // 发起请求获取食堂信息，以下是示例代码
+      this.$request.get('/cafeteriaAdmins/actions/getAllCafeteria')
           .then(response => {
-            this.notices = response.data.data;
+            this.cafeterias = response.data; // 假设后端返回的数据结构是 { data: [食堂列表] }
+            this.$message.success("获取成功")
+          })
+          .catch(error => {
+            this.$message.error(response.message)
+            console.error('获取食堂信息失败:', error);
+          });
+    },
+    fetchnotices() {
+      this.$request.get('/cafeteriaNotices/actions/getCafeteriaNotices')
+          .then(response => {
+            this.notices = response.data;
             let k=new Set;
             for(let i=0;i<this.notices.length;i++){
               k.add(this.notices[i].cafeteriaId)
@@ -121,16 +140,17 @@ export default {
           .catch(error => {
             console.error('Error fetching canteens:', error);
           });
+          this.fetchCafeterias();
     },
     showCanteenInfo(canteenId,noticeId) {
       // 根据公告 ID 获取公告详细信息
-      this.$message.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID',{
+      this.$request.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID',{
         params: {
           id: canteenId
         }
       })
           .then(response => {
-            const myObject = response.data.data; // 将后端返回的公告信息赋值给 currentNoticeInfo
+            const myObject = response.data; // 将后端返回的公告信息赋值给 currentNoticeInfo
             console.log(noticeId)
             for(let i=0;i<myObject.length;i++){
               if(myObject[i].noticeId === noticeId){
@@ -197,7 +217,7 @@ export default {
 <!--          <router-view @update:user="updateUser" />-->
           <div>
             <el-button @click="addAnnouncement()">添加公告</el-button>
-            <el-select v-model="selectedCafeteria" placeholder="选择食堂">
+            <el-select v-model="selectedCafeteria" placeholder="选择食堂" @change="onCafeteriaChange">
               <el-option :value="-1">无</el-option>
               <el-option
                   v-for="notice in chosenNotice"

@@ -124,7 +124,7 @@ export default {
       this.fetchCanteens();
     },
     deleteToBackend(){
-      this.$request.post('/cafeteriaAdmins/actions/deleteCafeteria',{
+      this.$request.post('/cafeterias/actions/deleteCafeteria',{
         cafeteriaId:this.tempcanteen.cafeteriaId,
         name:this.tempcanteen.name,
         location:this.tempcanteen.location,
@@ -155,7 +155,7 @@ export default {
       this.addDialogVisible = true;
     },
     addToBackend(){
-      this.$request.post('/cafeteriaAdmins/actions/addCafeteria',{
+      this.$request.post('/cafeterias/actions/addCafeteria',{
         cafeteriaId:null,
         name:this.newcanteens[1],
         location:this.newcanteens[2],
@@ -216,7 +216,7 @@ export default {
     },
     saveToBackend() {
       //发送编辑后的食堂信息到后端
-      this.$request.post('/cafeteriaAdmins/actions/updateCafeteria',{
+      this.$request.post('/cafeterias/actions/updateCafeteria',{
           cafeteriaId:this.currentCanteenInfo[0].value,
           name:this.currentCanteenInfo[1].value,
           location:this.currentCanteenInfo[2].value,

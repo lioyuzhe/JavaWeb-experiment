@@ -94,7 +94,7 @@ export default {
     },
     del(cafeteria) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.post('/admins/actions/deleteCafeteria' ,cafeteria).then(res => {
+        this.$request.post('/cafeterias/actions/deleteCafeteria' ,cafeteria).then(res => {
           if (res.code === 200) {
             this.$message.success('操作成功')
             this.load(1)
@@ -114,7 +114,7 @@ export default {
     },
     save() {
       this.$request({
-        url: this.form.cafeteriaId ? '/admins/actions/updateCafeteria': '/admins/actions/addCafeteria',
+        url: this.form.cafeteriaId ? '/cafeterias/actions/updateCafeteria': '/cafeterias/actions/addCafeteria',
         method: 'POST',
         data: this.form
       }).then(res => {

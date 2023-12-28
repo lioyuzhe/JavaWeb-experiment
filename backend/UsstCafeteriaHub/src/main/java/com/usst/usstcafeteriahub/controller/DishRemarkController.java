@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
@@ -28,9 +29,15 @@ public class DishRemarkController {
     @ApiOperation("根据菜品ID获取菜品评价列表")
     @GetMapping("/getDishRemark")
     public BaseResponse getDishRemarkByDishId(@RequestParam("dishId") Long dishId) {
-        List<DishRemark> dishRemarks = dishRemarkService.getDishRemarkByDishId(dishId);
-        log.info("根据菜品ID获取菜品评价: {}", dishRemarks);
-        return Result.success(dishRemarks);
+        if (dishId == null) {
+            return Result.error("参数为空");
+        }
+        // 根据菜品id获取菜品评价列表
+        QueryWrapper<DishRemark> wrapper = new QueryWrapper<>();
+        wrapper.eq("dish_id", dishId);
+        List<DishRemark> list = dishRemarkService.list(wrapper);
+        log.info("根据菜品id获取菜品评价列表: {}", list);
+        return Result.success(list);
     }
 
 

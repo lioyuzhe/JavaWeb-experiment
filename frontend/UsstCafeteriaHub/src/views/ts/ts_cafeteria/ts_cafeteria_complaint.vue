@@ -1,7 +1,7 @@
 <template>
   <div class="complaint-container">
     <el-row :gutter="20">
-      <el-col :span="16" :offset="4">
+      <el-col :span="15" :offset="1">
         <el-card class="complaint-card" shadow="hover">
           <h2 class="complaint-title">食堂投诉栏</h2>
           <el-form @submit.prevent="submitComplaint">
@@ -17,6 +17,23 @@
             </el-form-item>
           </el-form>
         </el-card>
+      </el-col>
+<!--      展示自己投诉的回复          -->
+      <el-col :span="6">
+        <el-card class="complaint-response-card" shadow="hover">
+          <h2 class="complaint-response-title">我的投诉回复</h2>
+          <el-list>
+            <el-list-item v-for="reply in complaintReplies" :key="reply.complaintId">
+              <template #default="{ reply }">
+                <p>投诉内容: {{ reply.content }}</p>
+                <p>回复: {{ reply.reply }}</p>
+              </template>
+            </el-list-item>
+          </el-list>
+        </el-card>
+
+
+
       </el-col>
     </el-row>
   </div>
@@ -43,6 +60,7 @@ export default {
     return {
       content: '',
       user: JSON.parse(localStorage.getItem('user') || '{}'),
+      complaintReplies: [], // 存储投诉回复信息
     };
   },
   methods: {
@@ -83,6 +101,23 @@ export default {
             // // 可以在这里添加其他的错误处理逻辑
           });
     },
+    fetchComplaintReplies() {
+      this.$request.get(`/complaints/actions/getComplaintReplyByUserId?userId=${this.user.userId}`)
+          .then(response => {
+            if (response.code === 200 && response.data) {
+              this.complaintReplies = response.data;
+            } else {
+              this.$message.error('获取投诉回复失败');
+            }
+          })
+          .catch(error => {
+            this.$message.error('获取投诉回复时出现错误');
+          });
+    },
+
+  },
+  mounted() {
+    this.fetchComplaintReplies(); // 组件加载时获取投诉回复
   },
 };
 </script>
