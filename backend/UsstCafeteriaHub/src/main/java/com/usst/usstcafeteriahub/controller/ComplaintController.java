@@ -1,5 +1,8 @@
 package com.usst.usstcafeteriahub.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
@@ -22,6 +25,24 @@ import java.util.List;
 public class ComplaintController {
     @Resource
     private ComplaintService complaintService;
+
+    @Log
+    @ApiOperation(value = "多条件模糊查询投诉信息")
+    @GetMapping("/getComplaintsByCondition")
+    public BaseResponse getComplaintsByCondition(@RequestParam Integer pageNum,
+                                      @RequestParam Integer pageSize,
+                                      @RequestParam(required = false) String cafeteriaName,
+                                      @RequestParam(required = false) String userName) {
+        QueryWrapper<Complaint> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(cafeteriaName), "cafeteria_name", cafeteriaName);
+        queryWrapper.like(StrUtil.isNotBlank(userName), "user_name", userName);
+        queryWrapper.orderByDesc("complaint_id"); // 假设投诉表有 complaint_id 列作为主键
+
+        Page<Complaint> page = complaintService.page(new Page<>(pageNum, pageSize), queryWrapper);
+
+        return Result.success(page);
+    }
+
 
 
     @Log
