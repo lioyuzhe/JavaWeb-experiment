@@ -9,7 +9,7 @@
       <el-card style="width: 100%; margin-right: 10px">
         <div style="margin-bottom: 15px; font-size: 20px; font-weight: bold">我管理的食堂</div>
         <el-timeline style="padding: 0">
-          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="'营业时间：'+renderTime(item.openTime)"
+          <el-timeline-item v-for="item in filteredCafeteria" :key="item.cafeteriaId" :timestamp="'营业时间：'+item.openTime+'-'+item.closeTime"
                             placement="top">
             <el-card>
               <h4>{{ item.name }}</h4>
