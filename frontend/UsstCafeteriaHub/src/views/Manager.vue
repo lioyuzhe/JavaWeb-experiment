@@ -5,11 +5,10 @@
       <el-aside :width="asideWidth" style="min-height: 100vh; background-color: #f8f8f8 ">
         <div style="height: 60px; color: white; display: flex; align-items: center; justify-content: center">
 
-        <!-- logo没改-->
-          <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
-          <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
+            <img src="@/assets/logo1.png" alt="" style="width: 40px; height: 40px">
+            <span class="logo-title" v-show="!isCollapse">上海理工大学食堂点评交流社区</span>
+        </div>
 
-		</div>
 
         <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#f8f8f8"
                  active-text-color="#f8f8f8" style="border: none" :default-active="$route.path">
@@ -42,6 +41,7 @@
           </el-submenu>
         </el-menu>
       </el-aside>
+
 
 	<!--    主页部分 -->
       <el-container>
@@ -108,6 +108,7 @@ export default {
       },
       logout() {
         localStorage.removeItem('admin')  // 清除当前的token和用户数据
+        localStorage.removeItem('role')
         // this.$router.push('/login')
       },
       handleFull() {

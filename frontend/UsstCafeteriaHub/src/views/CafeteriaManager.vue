@@ -8,7 +8,7 @@
             <span class="logo-title" v-show="!isCollapse" style="color: black;">上海理工大学食堂点评交流社区</span>
           </div>
           <el-menu :default-openeds="['info']" :collapse="isCollapse" :collapse-transition="false" router background-color="#f8f8f8"
-                   active-text-color="#f8f8f8" style="border: none" :default-active="$route.path">
+                   active-text-color="gray" style="border: none" :default-active="$route.path">
 <!--            <el-menu-item index="/home">-->
 <!--              <i class="el-icon-s-home"></i>-->
 <!--              <span slot="title">系统首页</span>-->
@@ -25,6 +25,8 @@
               <el-menu-item index="/cafeteria_manager/announcement" >活动公告</el-menu-item>
               <el-menu-item index="/cafeteria_manager/cafeteria_vote" >投票信息管理</el-menu-item>
               <el-menu-item index="/cafeteria_manager/cafeteria_complaint" >投诉管理</el-menu-item>
+<!--              添加一个个人信息管理页面-->
+              <el-menu-item index="/cafeteria_manager/person" >个人信息管理</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -90,6 +92,7 @@
       },
       logout() {
         localStorage.removeItem('cafeteria_admin')  // 清除当前的token和用户数据
+        localStorage.removeItem('role')
         this.$router.push('/login')
       },
       handleFull() {
@@ -114,10 +117,10 @@
   color: #000000;
 }
 .el-submenu__title:hover i {
-  color: #f8f8f8;
+  color: #000000;
 }
 .el-menu-item:hover i {
-  color: #f8f8f8;
+  color: #000000;
 }
 .el-menu-item.is-active {
   color: #6e77f2;

@@ -120,7 +120,7 @@ export default {
     },
     del(cafeteriaRemark) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.post('/admins/actions/deleteCafeteriaRemark' ,cafeteriaRemark).then(res => {
+        this.$request.post('/cafeteriaRemarks/actions/deleteCafeteriaRemark' ,cafeteriaRemark).then(res => {
           if (res.code === 200) {
             this.$message.success('操作成功')
             this.load(1)
@@ -142,7 +142,7 @@ export default {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
           this.$request({
-            url: this.form.remarkId ? '/admins/actions/updateCafeteriaRemark': '/admins/actions/addCafeteriaRemark',
+            url: this.form.remarkId ? '/cafeteriaRemarks/actions/updatecafeteriaRemark': '/cafeteriaRemarks/actions/addCafeteriaRemark',
             method: 'POST',
             data: this.form
           }).then(res => {

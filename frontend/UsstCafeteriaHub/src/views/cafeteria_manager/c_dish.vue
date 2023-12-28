@@ -169,7 +169,7 @@ export default {
     },
     save() {   // 保存按钮触发的逻辑  它会触发新增或者更新
       this.$request({
-        url: this.form.dishId ? '/cafeteriaAdmins/actions/updateDish': '/cafeteriaAdmins/actions/addDish',
+        url: this.form.dishId ? '/dishes/actions/updateDish': '/dishes/actions/addDish',
         method: 'POST',
         data: this.form
       }).then(res => {
@@ -198,7 +198,7 @@ export default {
     },
     del(dish) {
       this.$confirm('您确认删除这个菜品吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.post('/cafeteriaAdmins/actions/deleteDish', dish).then(res => {
+        this.$request.post('/dishes/actions/deleteDish', dish).then(res => {
           if (res.code === 200) {   // 表示操作成功
             this.$message.success('操作成功')
             this.load(1)

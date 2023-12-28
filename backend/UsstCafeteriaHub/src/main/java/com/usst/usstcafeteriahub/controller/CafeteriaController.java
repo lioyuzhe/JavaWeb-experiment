@@ -8,6 +8,7 @@ import com.usst.usstcafeteriahub.model.entity.Promotion;
 import com.usst.usstcafeteriahub.service.CafeteriaService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +39,12 @@ public class CafeteriaController {
     @Log
     @ApiOperation("添加食堂")
     @PostMapping("/addCafeteria")
-    public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria) {
+    public BaseResponse addCafeteria(@RequestBody Cafeteria cafeteria, HttpServletRequest request) {
         if (cafeteria == null) {
             return Result.error("参数为空");
         }
         log.info("添加食堂: {}", cafeteria);
-        return cafeteriaService.add(cafeteria);
+        return cafeteriaService.add(cafeteria, request);
     }
 
 

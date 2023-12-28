@@ -61,6 +61,7 @@
                   <!-- 动态元数据 -->
                   <div class="dynamic-meta">
                     <div class="dynamic-user-info">
+<!--                      <el-avatar :size='small' :src="post.avatar"></el-avatar>-->
                       <!-- 用户名 -->
                       <span >{{ post.userName }}</span>
                       <!-- 时间 -->
@@ -208,6 +209,7 @@ export default {
         html: '',
         communityId: '',
         communityName: '',
+        avatar: '',
         userId: '',
         userName: '',
         likeCount: 0,

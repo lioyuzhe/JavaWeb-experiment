@@ -176,6 +176,7 @@ export default {
     logout() {
       // 清除用户数据
       localStorage.removeItem('user');
+      localStorage.removeItem('role');
       // 重定向到登录页面或主页
       this.$router.push('/login'); // 根据您的路由配置适当修改
     },
