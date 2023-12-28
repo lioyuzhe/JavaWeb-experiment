@@ -37,6 +37,61 @@
             </router-link>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <!-- 最新促销 -->
+          <el-col :span="8">
+            <el-card class="box-card" >
+              <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228184859.png" class="entrance-image">
+              <div class="feature-info">
+                <h3 @click="showPromoDialog('promo')">最新促销</h3>
+                <p>探索我们的特价菜品</p>
+              </div>
+            </el-card>
+          </el-col>
+          <!-- 食堂排名 -->
+          <!-- 食堂排名 -->
+          <el-col :span="8">
+            <el-card class="box-card" >
+              <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190211.png" class="entrance-image">
+              <div class="feature-info">
+                <h3 @click="showCanteenRankDialog" >食堂排名</h3>
+                <p>查看最新食堂排名</p>
+              </div>
+            </el-card>
+          </el-col>
+          <!-- 菜品排名 -->
+          <el-col :span="8">
+            <el-card class="box-card" @click="showDialog('dishRank')">
+              <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png" class="entrance-image">
+              <div class="feature-info">
+                <h3>菜品排名</h3>
+                <p>最新高评价菜品排名</p>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+
+
+        <!-- 促销菜品对话框 -->
+        <el-dialog title="促销菜品" :visible.sync="promoDialogVisible">
+          <el-table :data="promoDishes">
+            <el-table-column prop="name" label="菜品名称"></el-table-column>
+            <el-table-column prop="cafeteriaName" label="所属食堂"></el-table-column>
+            <el-table-column prop="price" label="价格"></el-table-column>
+            <el-table-column prop="cuisine" label="菜系"></el-table-column>
+          </el-table>
+        </el-dialog>
+        <!-- 食堂排名对话框 -->
+        <el-dialog title="食堂排名" :visible.sync="canteenRankDialogVisible">
+          <el-table :data="canteenRanks">
+            <el-table-column prop="cafeteriaName" label="食堂名称"></el-table-column>
+            <el-table-column prop="totalScore" label="总分"></el-table-column>
+            <el-table-column prop="averageScore" label="均分"></el-table-column>
+            <el-table-column prop="ranking" label="排名"></el-table-column>
+          </el-table>
+        </el-dialog>
+
+
       </el-col>
 
       <!-- 右侧内容 -->
@@ -100,12 +155,12 @@ export default {
 
       featureEntrances: [
         // 现有的功能入口数据
-        {
-          id: 'promo',
-          title: '最新促销',
-          description: '探索我们的特价菜品',
-		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228184859.png'
-        },
+      //   {
+      //     id: 'promo',
+      //     title: '最新促销',
+      //     description: '探索我们的特价菜品',
+		  // imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228184859.png'
+      //   },
         {
           id: 'vote',
           title: '投票调查',
@@ -125,51 +180,20 @@ export default {
           description: '社区热门话题，参与讨论',
 		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228185853.png'
         },
-        {
-          id: 'canteenRank',
-          title: '食堂排名',
-          description: '查看最新食堂排名',
-		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190211.png'
-        },
-        {
-          id: 'dishRank',
-          title: '菜品排名',
-          description: '最新高评价菜品排名',
-		  imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png'
-        }
+      //   {
+      //     id: 'canteenRank',
+      //     title: '食堂排名',
+      //     description: '查看最新食堂排名',
+		  // imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190211.png'
+      //   },
+      //   {
+      //     id: 'dishRank',
+      //     title: '菜品排名',
+      //     description: '最新高评价菜品排名',
+		  // imageUrl: 'https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png'
+      //   }
       ],
       promotions: [
-        {
-          promotion_id: 1,
-          dish_name: '促销菜品1',
-          description: '促销菜品1描述。',
-        },
-        // 可以添加更多模拟的促销信息
-        {
-          promotion_id: 2,
-          dish_name: '最新投票调查',
-          description: '最新投票调查描述。',
-        },
-        {
-          promotion_id: 3,
-          dish_name: '最新食堂推荐菜品',
-          description: '最新食堂推荐菜品描述。',
-        },
-        {
-          promotion_id: 4,
-          dish_name: '社区热门话题',
-          description: '被点赞最多的社区信息。',
-        },
-        {
-          promotion_id: 5,
-          dish_name: '最新食堂排名',
-          description: '最新食堂排名描述。',
-        },
-        {
-          promotion_id: 6,
-          dish_name: '最新高评价菜品排名',
-          description: '最新高评价菜品排名描述。',
-        },
       ],
       communityMessages: [
 
@@ -181,6 +205,10 @@ export default {
 
       ],
 
+      promoDialogVisible: false,
+      promoDishes: [],// 用于存储促销菜品数据
+      canteenRankDialogVisible: false,
+      canteenRanks: [] // 用于存储食堂排名数据
     };
 
   },
@@ -190,10 +218,42 @@ export default {
     // 定时器，每隔一定时间请求最新数据
     setInterval(() => {
       this.fetchLatestComments();
-      this.fetchLatestComplaintReplies();
-    }, 10000); // 比如每10秒更新一次
+      // this.fetchLatestComplaintReplies();
+    }, 100000); // 比如每10秒更新一次
   },
   methods: {
+    showCanteenRankDialog() {
+
+      this.fetchCanteenRanks();
+    },
+    async fetchCanteenRanks() {
+      try {
+        const response = await this.$request.get('/cafeteriaRanks/actions/getCafeteriaRank');
+        if (response.code ===200) {
+          this.canteenRanks = response.data;
+          this.canteenRankDialogVisible = true;
+          this.$message.success("获取成功")
+        }
+      } catch (error) {
+        console.error('Error fetching canteen ranks:', error);
+        // 这里可以根据需要添加错误处理逻辑
+      }
+    },
+    showPromoDialog() {
+      this.promoDialogVisible = true;
+      this.fetchPromoDishes();
+    },
+    async fetchPromoDishes() {
+      try {
+        const response = await this.$request.get('/dishes/actions/getTop5RecommendDish');
+        if (response && response.data) {
+          this.promoDishes = response.data;
+        }
+      } catch (error) {
+        console.error('Error fetching promo dishes:', error);
+        // 这里可以根据需要添加错误处理逻辑
+      }
+    },
     async fetchDishes() {
       try {
         const response = await this.$request.get('/dishes/actions/getDishes');
@@ -225,7 +285,7 @@ export default {
 
     async fetchData() {
       await this.fetchLatestComments();
-      await this.fetchLatestComplaintReplies();
+      // await this.fetchLatestComplaintReplies();
       // ...其他可能需要获取的数据
     },
 
@@ -296,7 +356,7 @@ export default {
         case 'likes':
           return this.likes;
         case 'complaints':
-          this.fetchLatestComplaintReplies();
+          // this.fetchLatestComplaintReplies();
           return this.latestComplaintReplies;
         default:
           return [];
@@ -347,6 +407,22 @@ export default {
 .dish-image {
   width: 60%;
   height: 70%;
+  object-fit: cover;
+}
+.feature-info {
+  text-align: center;
+}
+.entrance-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.feature-info {
+  text-align: center;
+}
+.entrance-image {
+  width: 100%;
+  height: auto;
   object-fit: cover;
 }
 </style>

@@ -112,4 +112,15 @@ public class DishController {
         return Result.success(list);
     }
 
+
+    // 在你的Controller中
+    @Log
+    @ApiOperation("获取前5个推荐菜品列表（status=1）")
+    @GetMapping("/getTop5RecommendDish")
+    public BaseResponse getTop5RecommendDish() {
+        List<Dish> list = dishService.getTopNRecommendDish(5);
+        log.info("获取前5个推荐菜品: {}", list);
+        return Result.success(list);
+    }
+
 }

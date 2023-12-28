@@ -61,4 +61,6 @@ public interface DishService extends IService<Dish> {
      * @return
      */
     BaseResponse updateDish(Dish dish);
+
+    List<Dish> getTopNRecommendDish(int i);
 }

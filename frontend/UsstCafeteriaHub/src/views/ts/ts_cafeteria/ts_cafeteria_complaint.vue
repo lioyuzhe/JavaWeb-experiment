@@ -108,7 +108,7 @@ export default {
           });
     },
     fetchComplaintReplies() {
-      this.$request.get(`/complaints/actions/getComplaintReplyByUserId?userId=${this.user.userId}`)
+      this.$request.get(`/complaints/actions/?userId=${this.user.userId}`)
           .then(response => {
             if (response.code === 200 && response.data) {
               this.complaintReplies = response.data;
