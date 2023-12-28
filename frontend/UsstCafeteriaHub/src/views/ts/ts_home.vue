@@ -27,7 +27,7 @@
         <el-row :gutter="20">
           <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id">
             <router-link :to="getLink(entry.id)">
-              <el-card class="box-card">
+              <el-card class="box-card1">
                 <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
                 <div>
                   <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">{{ entry.title }}</h3>
@@ -42,7 +42,7 @@
       <!-- 右侧内容 -->
       <el-col :span="5" >
         <!-- 功能图标部分 -->
-        <el-card class="box-card">
+        <el-card class="box-card1">
           <div class="icon-tray">
             <el-badge :value="commentsCount" class="icon">
               <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
@@ -310,6 +310,16 @@ export default {
 <style scoped>
 .box-card {
   margin-bottom: 40px;
+}
+
+.box-card1 {
+  margin-bottom: 40px;
+  background: linear-gradient(
+  					to bottom, 
+  					rgba(3,153,253, 0.2) 0%,
+  					rgba(153,243,153, 0.5) 50%,
+					rgba(0,0,0,0)
+  				  );
 }
 
 .icon-tray .icon {

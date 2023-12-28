@@ -68,6 +68,12 @@ export default {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   font-family: 'Arial', sans-serif;
+  background: linear-gradient(
+  					to bottom, 
+  					rgba(3,153,253, 0.2) 0%,
+  					rgba(153,243,153, 0.2) 50%,
+  					rgba(0,0,0,0)
+  				  );
 }
 
 .cafeteria-title {
