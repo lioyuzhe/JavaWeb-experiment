@@ -18,6 +18,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @author Klein
@@ -49,7 +50,27 @@ public class CafeteriaServiceImpl extends ServiceImpl<CafeteriaMapper, Cafeteria
         if (cafeteriaOld != null) {
             return Result.error("已存在同名食堂");
         }
+
+        boolean save = addCafeteriaAndCafeteriaRankAndCafeteriaManage(cafeteria, request);
+
+        if(!save){
+            return Result.error("添加失败");
+        }
+        return Result.success("添加成功");
+    }
+
+    /**
+     * 添加食堂，但如果数据库中已经有相同的cafeteriaName，则返回“已存在同名食堂”。每次添加食堂时，都会添加一条食堂排名和食堂管理
+     * @param cafeteria
+     * @param request
+     * @return
+     */
+    @Transactional
+    public boolean addCafeteriaAndCafeteriaRankAndCafeteriaManage(Cafeteria cafeteria, HttpServletRequest request) {
+        // 添加食堂到食堂表
         boolean save = save(cafeteria);
+
+        // 添加食堂到食堂排名表
         CafeteriaRank cafeteriaRank = new CafeteriaRank();
         cafeteriaRank.setCafeteriaId(cafeteria.getCafeteriaId());
         cafeteriaRank.setCafeteriaName(cafeteria.getName());
@@ -68,14 +89,11 @@ public class CafeteriaServiceImpl extends ServiceImpl<CafeteriaMapper, Cafeteria
         log.info("根据account获取食堂管理员: {}", cafeteriaAdmin);
         cafeteriaManage.setAdminId(cafeteriaAdmin.getAdminId());
         cafeteriaManage.setCafeteriaId(cafeteria.getCafeteriaId());
-
-
         cafeteriaManageService.save(cafeteriaManage);
-        if(!save){
-            return Result.error("添加失败");
-        }
-        return Result.success("添加成功");
+
+        return save;
     }
+
 }
 
 

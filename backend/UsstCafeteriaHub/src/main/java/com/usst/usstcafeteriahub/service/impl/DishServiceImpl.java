@@ -3,6 +3,7 @@ package com.usst.usstcafeteriahub.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Result;
+import com.usst.usstcafeteriahub.mapper.DishRankMapper;
 import com.usst.usstcafeteriahub.model.entity.Dish;
 import com.usst.usstcafeteriahub.model.entity.DishRank;
 import com.usst.usstcafeteriahub.service.DishRankService;
@@ -11,6 +12,7 @@ import com.usst.usstcafeteriahub.mapper.DishMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     private DishMapper dishMapper;
     @Resource
     private DishRankService dishRankService;
+    @Resource
+    private DishRankMapper dishRankMapper;
 
     /**
      * 根据菜品的菜系获取菜品列表
@@ -86,6 +90,20 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
                 return Result.error("已经存在相同的菜品");
             }
         }
+        boolean dishsaved = addDishAndDishRank(dish);
+        if (!dishsaved) {
+            return Result.error("添加失败");
+        }
+        return Result.success("添加成功");
+    }
+
+    /**
+     * 事务管理保证dish和dishRank表同时添加
+     * @param dish
+     * @return
+     */
+    @Transactional
+    public boolean addDishAndDishRank(Dish dish){
         boolean dishsaved = this.save(dish);
         // 同时添加到菜品排名
         DishRank dishRank = new DishRank();
@@ -95,10 +113,74 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         dishRank.setDishName(dish.getName());
         dishRank.setTotalScore(0.0);
         dishRankService.save(dishRank);
-        if (!dishsaved) {
-            return Result.error("添加失败");
+
+        return dishsaved;
+    }
+
+
+    /**
+     * 删除菜品同时删除菜品排行表里的菜品
+     * @param dish
+     * @return
+     */
+    @Override
+    public BaseResponse removeDish(Dish dish) {
+        if (dish == null) {
+            return Result.error("参数为空");
         }
-        return Result.success("添加成功");
+        boolean dishRemoved = removeDishAndDishRank(dish);
+        if (!dishRemoved) {
+            return Result.error("删除失败");
+        }
+        return Result.success("删除成功");
+    }
+
+    /**
+     * 事务管理保证dish和dishRank表同时添加
+     * @param dish
+     * @return
+     */
+    @Transactional
+    public boolean removeDishAndDishRank(Dish dish){
+        boolean dishRemoved = this.removeById(dish.getDishId());
+        dishRankMapper.removeDishRankByDishId(dish.getDishId());
+        return dishRemoved;
+    }
+
+
+
+    /**
+     * 更新菜品同时更新菜品排行表里的菜品
+     * @param dish
+     * @return
+     */
+    @Override
+    public BaseResponse updateDish(Dish dish) {
+        if (dish == null) {
+            return Result.error("参数为空");
+        }
+        boolean dishUpdated = updateDishAndDishRank(dish);
+        if (!dishUpdated) {
+            return Result.error("更新失败");
+        }
+        return Result.success("更新成功");
+    }
+
+    /**
+     * 事务管理保证dish和dishRank表同时更新
+     * @param dish
+     * @return
+     */
+    @Transactional
+    public boolean updateDishAndDishRank(Dish dish){
+        // 更新菜品表
+        boolean dishUpdated = this.updateById(dish);
+        // 同步跟新菜品排名表
+        DishRank dishRank = dishRankMapper.getDishRankByDishId(dish.getDishId());
+        dishRank.setDishName(dish.getName());
+        dishRank.setCafeteriaName(dish.getCafeteriaName());
+        dishRankMapper.updateById(dishRank);
+        return dishUpdated;
     }
 }
 
