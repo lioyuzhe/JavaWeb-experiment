@@ -34,5 +34,4 @@ public class CafeteriaRankController {
         log.info("食堂排行榜: {}", cafeteriaRanks);
         return Result.success(cafeteriaRanks);
     }
-
 }

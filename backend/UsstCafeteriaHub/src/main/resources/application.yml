@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: hmdp
+    name: UsstCafeteriaHub
   datasource:
     url: jdbc:mysql://${ip}:3306/UsstCafeteriaHub?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
