@@ -18,7 +18,11 @@
       <el-table-column prop="name" label="菜名"></el-table-column>
       <el-table-column prop="price" label="价格"></el-table-column>
       <el-table-column prop="cuisine" label="菜系"></el-table-column>
-      <el-table-column prop="status" label="状态" width="90" align="center"></el-table-column>
+      <el-table-column prop="status" label="状态" width="90" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.status === 0 ? '普通菜品' : '促销菜品' }}
+        </template>
+      </el-table-column>
       <el-table-column label="图片">
         <template v-slot="scope">
           <div style="display: flex; align-items: center">
@@ -65,8 +69,11 @@
         <el-form-item label="菜系" prop="cuisine">
           <el-input v-model="form.cuisine" placeholder="菜系"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-input v-model="form.status" placeholder="状态"></el-input>
+        <el-form-item label="设置促销" prop="status">
+          <el-select v-model="form.status" placeholder="选择菜品类型">
+            <el-option label="普通菜品" value="0"></el-option>
+            <el-option label="促销菜品" value="1"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="图片">
           <el-upload
