@@ -136,7 +136,7 @@
 
       </el-col>
       <!-- 右侧 -->
-      <el-col :span="6">
+      <el-col :span="6" style="margin-left: 20px;">
         <el-card style="height: 800px">
           <div class="notification-section">
             <div class="notification-tabs">
@@ -152,23 +152,23 @@
             </div>
 
             <!-- 点赞消息列表 -->
-            <div v-if="currentMessageType === 'likes'">
+            <div class="listStyle" v-if="currentMessageType === 'likes'">
               <ul>
-                <li v-for="like in likes" :key="like.id">{{ like.user }} 点赞了您的动态: "{{ like.title }}"</li>
+                <li class="listFontStyle" v-for="like in likes" :key="like.id">{{ like.user }} 点赞了您的动态: "{{ like.title }}"</li>
               </ul>
             </div>
 
             <!-- 评论消息列表 -->
-            <div v-if="currentMessageType === 'comments'">
+            <div class="listStyle" v-if="currentMessageType === 'comments'">
               <ul>
-                <li v-for="comment in comments" :key="comment.id">{{ comment.user }}: "{{ comment.content }}"</li>
+                <li class="listFontStyle" v-for="comment in comments" :key="comment.id">{{ comment.user }}: "{{ comment.content }}"</li>
               </ul>
             </div>
 
             <!-- 私信消息列表 -->
-            <div v-if="currentMessageType === 'messages' && !showChatBox">
+            <div class="listStyle" v-if="currentMessageType === 'messages' && !showChatBox">
               <ul>
-                <li v-for="message in messages" :key="message.message_id" @click="selectMessage(message)">
+                <li class="listFontStyle" v-for="message in messages" :key="message.message_id" @click="selectMessage(message)">
                   <img :src="message.sender_avatar" class="avatar">
                   <div>{{ message.sender_name }}: {{ message.content }}</div>
                   <div>{{ message.timestamp }}</div>
@@ -574,6 +574,26 @@ export default {
 </script>
 
 <style scoped>
+.listFontStyle{
+	font-style: oblique; 
+	font-weight: bold;
+	font-size: 17px; 
+	margin-bottom: 20px;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+	
+.listStyle{
+	border-radius: 12px;
+	background: linear-gradient(
+	    to bottom, 
+	    rgba(153,243,153, 0.5) 0%, 
+	    rgba(3,153,253, 0.2) 60%,
+		rgba(3,153,253, 0) 100% 
+	  );
+	  padding: 1px;
+}
+	
+	
 .community {
   padding: 20px;
 }
@@ -753,7 +773,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   height: 100%; /* 右侧部分占满整个高度 */
-  border-left: 1px solid #eee;
+  /* border-left: 1px solid #eee; */
   padding: 0; /* 可以根据需要调整内边距 */
   flex-grow: 1;
 }

@@ -6,7 +6,7 @@
       <h2>食堂介绍</h2>
       <el-divider></el-divider>
     </div>
-    <ts-cafeteria-introduction :cafeteria="cafeteria"></ts-cafeteria-introduction>
+    <ts-cafeteria-introduction :cafeteria="cafeteria" class="contentStyle"></ts-cafeteria-introduction>
 
     <div class="page-header" id="dish">
       <h2>食堂菜品</h2>
@@ -83,6 +83,23 @@ export default {
 <style>
 /* 在这里添加您的CSS样式 */
 .ts-cafeteria-content {
+	padding: 20px;
   /* 示例样式 */
+}
+.page-header{
+	
+}
+
+.contentStyle{
+	display: flex;
+	  justify-content: space-around;
+	  align-items: center;
+	  padding: 10px 20rpx 10px 20rpx;
+	  margin-top: 40rpx;
+	  background-color: #ffffff;
+	  border-radius: 20rpx;
+	  margin-left: 10rpx;
+	  margin-right: 10rpx;
+	  box-shadow: 1rpx 1rpx 20rpx #ffc89c
 }
 </style>

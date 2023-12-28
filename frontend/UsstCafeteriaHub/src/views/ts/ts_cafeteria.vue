@@ -10,7 +10,7 @@
     </el-menu>
     <div class="content" style="width: 100%;">
       <!-- 顶部栏 -->
-      <div class="top-container" style="position: fixed; top: 70px; margin-left: 120px;">
+      <div class="top-container">
         <!-- 食堂选择顶部栏 -->
         <el-menu class="cafeteria-select" mode="horizontal" style="left: 10px">
 
@@ -157,6 +157,15 @@ export default {
   padding: 10px;
   z-index: 1000; /* 或者更高的值，确保高于其他元素 */
   position: relative; /* 或 absolute/fixed，z-index 需要定位属性配合使用 */
+	position: fixed; 
+	top: 70px; 
+	margin-left: 140px;
+	border-radius: 10px;
+	background: linear-gradient(
+						to bottom, 
+						rgba(3,153,253, 0.2) 0%,
+						rgba(153,243,153, 0.5) 100%
+					  );
 }
 
 .cafeteria-search {
@@ -165,8 +174,12 @@ export default {
 }
 
 .cafeteria-select {
+	border-radius: 10px;
   display: flex;
   align-items: center;
+  background-color: rgba(240,255,250,0.9);
+  font-weight: bold;
+  color: black;
 }
 
 .cafeteria-select {

@@ -27,7 +27,7 @@
         <el-row :gutter="20">
           <el-col :span="8" v-for="entry in featureEntrances" :key="entry.id">
             <router-link :to="getLink(entry.id)">
-              <el-card class="box-card">
+              <el-card class="box-card1">
                 <img :src="entry.imageUrl" class="entrance-image" alt="Feature">
                 <div>
                   <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">{{ entry.title }}</h3>
@@ -40,32 +40,32 @@
         <el-row :gutter="20">
           <!-- 最新促销 -->
           <el-col :span="8">
-            <el-card class="box-card" >
+            <el-card class="box-card1" >
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228184859.png" class="entrance-image">
               <div class="feature-info">
-                <h3 @click="showPromoDialog('promo')">最新促销</h3>
-                <p>探索我们的特价菜品</p>
+                <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;" @click="showPromoDialog('promo')">最新促销</h3>
+                <p style="color:#009966; font-size: 16px; text-align: center;">探索我们的特价菜品</p>
               </div>
             </el-card>
           </el-col>
           <!-- 食堂排名 -->
           <!-- 食堂排名 -->
           <el-col :span="8">
-            <el-card class="box-card" >
+            <el-card class="box-card1" >
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190211.png" class="entrance-image">
               <div class="feature-info">
-                <h3 @click="showCanteenRankDialog" >食堂排名</h3>
-                <p>查看最新食堂排名</p>
+                <h3 style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;" @click="showCanteenRankDialog" >食堂排名</h3>
+                <p style="color:#009966; font-size: 16px; text-align: center;">查看最新食堂排名</p>
               </div>
             </el-card>
           </el-col>
           <!-- 菜品排名 -->
           <el-col :span="8">
-            <el-card class="box-card" >
+            <el-card class="box-card1" @click="showDialog('dishRank')">
               <img src="https://cdn.jsdelivr.net/gh/Yu-Ring/obsidian/20231228190159.png" class="entrance-image">
               <div class="feature-info">
-                <h3 @click="showDishRankDialog()">菜品排名</h3>
-                <p>最新高评价菜品排名</p>
+                <h3 @click="showDishRankDialog() style="color:#000000; font-size: 20px; font-weight: bolder; text-align: center;">菜品排名</h3>
+                <p style="color:#009966; font-size: 16px; text-align: center;">最新高评价菜品排名</p>
               </div>
             </el-card>
           </el-col>
@@ -106,7 +106,7 @@
       <!-- 右侧内容 -->
       <el-col :span="5" >
         <!-- 功能图标部分 -->
-        <el-card class="box-card">
+        <el-card class="box-card1">
           <div class="icon-tray">
             <el-badge :value="commentsCount" class="icon">
               <el-button icon="el-icon-message" circle @click="handleIconClick('comments')"></el-button>
@@ -400,6 +400,16 @@ export default {
 <style scoped>
 .box-card {
   margin-bottom: 40px;
+}
+
+.box-card1 {
+  margin-bottom: 40px;
+  background: linear-gradient(
+  					to bottom, 
+  					rgba(3,153,253, 0.2) 0%,
+  					rgba(153,243,153, 0.5) 50%,
+					rgba(0,0,0,0)
+  				  );
 }
 
 .icon-tray .icon {
