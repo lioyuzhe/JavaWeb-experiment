@@ -1,5 +1,8 @@
 package com.usst.usstcafeteriahub.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
@@ -24,6 +27,25 @@ public class CafeteriaNoticeController {
     @Resource
     private CafeteriaNoticeService cafeteriaNoticeService;
 
+    @Log
+    @ApiOperation(value = "多条件模糊查询食堂公告信息")
+    @GetMapping("/getCafeteriaNoticesByConditions")
+    public BaseResponse getCafeteriaNoticesByConditions(@RequestParam Integer pageNum,
+                                            @RequestParam Integer pageSize,
+                                            @RequestParam String cafeteriaName,
+                                            @RequestParam String title) {
+        QueryWrapper<CafeteriaNotice> queryWrapper = new QueryWrapper<CafeteriaNotice>().orderByDesc("notice_Id");  // 默认倒序，让最新的数据在最上面
+        // 如果 cafeteriaName 和 title 参数不为空，添加 like 查询
+        queryWrapper.like(StrUtil.isNotBlank(cafeteriaName), "cafeteria_name", cafeteriaName);
+        queryWrapper.like(StrUtil.isNotBlank(title), "title", title);
+
+        Page<CafeteriaNotice> page = cafeteriaNoticeService.page(new Page<>(pageNum, pageSize), queryWrapper);
+
+        return Result.success(page);
+    }
+
+
+
 
     @Log
     @ApiOperation("查询食堂公告列表")
@@ -33,6 +55,8 @@ public class CafeteriaNoticeController {
         log.info("获取食堂公告列表: {}", list);
         return Result.success(list);
     }
+
+
 
 
     @Log

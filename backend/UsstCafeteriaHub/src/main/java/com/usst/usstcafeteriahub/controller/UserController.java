@@ -1,5 +1,6 @@
 package com.usst.usstcafeteriahub.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.usst.usstcafeteriahub.common.BaseResponse;
 import com.usst.usstcafeteriahub.common.Log;
 import com.usst.usstcafeteriahub.common.Result;
@@ -114,6 +115,18 @@ public class UserController {
     public BaseResponse getCurrentUser(){
         User user = UserHolder.getUser();
         if (user==null) return Result.error("尚未登录");
+        return Result.success(user);
+    }
+
+
+    @Log
+    @ApiOperation("根据用户名获取用户信息")
+    @GetMapping("/getUserByUserName")
+    public BaseResponse getUserByUserName(@RequestParam String userName){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name",userName);
+        User user = userService.getOne(queryWrapper);
+        if (user==null) return Result.error("用户不存在");
         return Result.success(user);
     }
 

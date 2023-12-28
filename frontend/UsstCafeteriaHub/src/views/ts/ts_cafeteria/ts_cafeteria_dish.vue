@@ -112,8 +112,6 @@ export default {
   },
   methods: {
 
-
-
     searchDish() {
       const searchKeyword = this.dishSearch.toLowerCase();
       const foundDish = this.dishes.find(dish =>

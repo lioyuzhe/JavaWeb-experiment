@@ -21,14 +21,18 @@
 <!--      展示自己投诉的回复          -->
       <el-col :span="6">
         <el-card class="complaint-response-card" shadow="hover">
-          <h2 class="complaint-response-title">我的投诉回复</h2>
+          <h2 class="complaint-response-title">我的投诉</h2>
           <el-list>
-            <el-list-item v-for="reply in complaintReplies" :key="reply.complaintId">
-              <template #default="{ reply }">
+            <el-card>
+              <el-list-item
+                  v-for="reply in complaintReplies"
+                  :key="reply.complainId"
+              >
                 <p>投诉内容: {{ reply.content }}</p>
                 <p>回复: {{ reply.reply }}</p>
-              </template>
-            </el-list-item>
+              </el-list-item>
+            </el-card>
+
           </el-list>
         </el-card>
 
@@ -65,6 +69,8 @@ export default {
   },
   methods: {
     submitComplaint() {
+      console.log("submitComplaint")
+      console.log("cafeteria", this.cafeteria)
       const payload = {
         userId: this.user.userId,
         userName: this.user.name,
@@ -72,7 +78,7 @@ export default {
         cafeteriaName: this.cafeteria.name,
         content: this.content,
       };
-
+      console.log("payload", payload)
       this.$request.post('/complaints/actions/addComplaint', payload)
           .then(response => {
             // 显示成功消息
@@ -88,7 +94,7 @@ export default {
             return response;
           })
           .catch(error => {
-            // // 显示错误消息
+            // 显示错误消息
             // let message = '提交投诉时出现错误，请稍后重试。';
             // // 如果错误中有更具体的信息，可以使用它
             // if (error.response && error.response.data) {
@@ -98,7 +104,7 @@ export default {
             //   message: message,
             //   type: 'error'
             // });
-            // // 可以在这里添加其他的错误处理逻辑
+            // 可以在这里添加其他的错误处理逻辑
           });
     },
     fetchComplaintReplies() {
@@ -106,6 +112,7 @@ export default {
           .then(response => {
             if (response.code === 200 && response.data) {
               this.complaintReplies = response.data;
+              console.log("complaintReplies", this.complaintReplies)
             } else {
               this.$message.error('获取投诉回复失败');
             }

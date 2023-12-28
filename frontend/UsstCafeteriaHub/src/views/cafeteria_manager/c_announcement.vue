@@ -1,34 +1,88 @@
-<script>
-import axios from "axios";
+<template>
+  <div>
+    <div>
+      <el-input style="width: 200px; margin: 0 5px" placeholder="查询食堂名" v-model="cafeteriaName"></el-input>
+      <el-input style="width: 200px; margin: 0 5px" placeholder="查询公告标题" v-model="title"></el-input>
+      <el-button  type="primary" @click="load(1)">查询</el-button>
+      <el-button type="info" @click="reset">重置</el-button>
+    </div>
+    <div style="margin: 10px 0">
+      <el-button type="primary" @click="handleAdd">新增</el-button>
+    </div>
+    <el-table :data="tableData" stripe>
+      <el-table-column prop="noticeId" label="序号" width="70"></el-table-column>
+      <el-table-column prop="cafeteriaName" label="食堂名"></el-table-column>
+      <el-table-column prop="title" label="公告标题"></el-table-column>
+      <el-table-column prop="content" label="公告内容"></el-table-column>
+      <el-table-column prop="createTime" label="发布时间">
+        <template v-slot="scope">
+          <span>{{ scope.row.createTime | formatDate }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="180">
+        <template v-slot="scope">
+          <el-button type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button type="danger" @click="handleDel(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
+    <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="pageNum"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="total">
+    </el-pagination>
+
+    <el-dialog title="新增/编辑公告" :visible.sync="fromVisible" width="50%" top="15vh">
+      <el-form :model="form" label-width="80px" ref="formRef">
+<!--        <el-form-item label="食堂" prop="cafeteriaName">-->
+<!--          <el-input v-model="form.cafeteriaName" placeholder="食堂名称"></el-input>-->
+<!--        </el-form-item>-->
+        <el-form-item label="食堂名" prop="cafeteriaName">
+          <el-select v-model="form.cafeteriaName" placeholder="选择食堂" @change="onCafeteriaChange">
+            <el-option
+                v-for="cafeteria in cafeterias"
+                :key="cafeteria.cafeteriaId"
+                :label="cafeteria.name"
+                :value="cafeteria.name">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="公告标题" prop="title">
+          <el-input v-model="form.title" placeholder="公告标题"></el-input>
+        </el-form-item>
+        <el-form-item label="公告内容" prop="content">
+          <el-input type="textarea" v-model="form.content" placeholder="公告内容"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="fromVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleSubmit">确定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
 export default {
-  name: "c_announcement",
   data() {
     return {
-      selectedCafeteria: '', // 存储用户选择的食堂
-      cafeterias: [], // 存储所有的食堂信息
-      tempNotice:[],//删除时临时存放选中公告信息
-      newAnnouncement:[], //存放新公告信息
-      notices: [], // 存放从后端获取的多个公告信息
-      chosenNotice:[],
-      decideDialogVisible: false,
-      addDialogVisible: false,
-      dialogVisible: false,
-      editableRowIndex: -1,
-      currentNoticeInfo: [], // 存放当前选中公告的信息
-      isCollapse: false,  // 不收缩
-      asideWidth: '200px',
-      collapseIcon: 'el-icon-s-fold',
-      user: JSON.parse(localStorage.getItem('user') || '{}'),
-    }
+      tableData: [],
+      pageNum: 1,
+      pageSize: 5,
+      total: 0,
+      cafeteriaName: '',
+      title: '',
+      fromVisible: false,
+      form: {},
+      cafeterias: [], // 存储食堂信息的数组
+    };
   },
-  // mounted() {   // 页面加载完成之后触发
-  //   if (!this.user.id) {   // 当前的浏览器没有用户信息
-  //     this.$router.push('/login')
-  //   }
-  // },
   created() {
-    this.fetchnotices(); // 获取多个公告信息
+    this.load(1);
   },
   methods: {
     onCafeteriaChange(value) {
@@ -37,81 +91,6 @@ export default {
         this.form.cafeteriaName = selectedCafeteria.name;
         this.form.cafeteriaId = selectedCafeteria.cafeteriaId;
       }
-    },
-    filterByCafeteria() {
-      if (this.selectedCafeteria !==-1) {
-        // 发起请求，获取特定食堂的公告信息
-        this.$request.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID', {
-          params: {
-            id: this.selectedCafeteria.cafeteriaId
-          }
-        })
-            .then(response => {
-              this.notices = response.data; // 更新显示特定食堂的公告信息
-              let k=new Set;
-              for(let i=0;i<this.notices.length;i++){
-                k.add(this.notices[i].cafeteriaId)
-              }
-              for( let item of k.keys()){
-                console.log("k=",item);
-              }
-              this.chosenNotice=[...k];
-              console.log(this.chosenNotice[0]);
-            })
-            .catch(error => {
-              console.error('Error fetching notices:', error);
-            });
-      } else{
-        this.fetchnotices(); // 获取所有公告信息
-      }
-    },
-    deleteToBackend(){
-      this.$request.post('/cafeteriaNotices/actions/deleteCafeteriaNotice',{
-        noticeId:this.tempNotice.noticeId,
-        cafeteriaId:this.tempNotice.cafeteriaId,
-        cafeteriaName:this.tempNotice.cafeteriaName,
-        title:this.tempNotice.title,
-        content: this.tempNotice.content,
-        createTime:this.tempNotice.createTime,
-        deleted:this.tempNotice.deleted,
-      })
-          .then(response => {
-            console.log('Successfully deleted');
-            this.$message.success("删除成功");
-            this.decideDialogVisible = false; // 关闭
-          })
-          .catch(error => {
-            console.error('Error saving to backend:', error);
-          });
-    },
-    decideToDelete(notice){
-      this.tempNotice=notice;
-      this.decideDialogVisible = true;
-    },
-    addAnnouncement(){
-      this.addDialogVisible = true;
-    },
-    addToBackend(){
-      this.$request.post('/cafeteriaNotices/actions/addCafeteriaNotice',{
-        noticeId:this.newAnnouncement[0],
-        cafeteriaId:this.newAnnouncement[1],
-        cafeteriaName:this.newAnnouncement[2],
-        title:this.newAnnouncement[3],
-        content: this.newAnnouncement[4],
-        createTime:this.newAnnouncement[5],
-        deleted:0,
-      })
-          .then(response => {
-            console.log('Successfully saved to backend');
-            this.$message.success("添加成功");
-            this.addDialogVisible = false; // 关闭
-          })
-          .catch(error => {
-            console.error('Error saving to backend:', error);
-          });
-    },
-    saveRow(index) {
-      this.editableRowIndex = -1; // 退出编辑状态
     },
     fetchCafeterias() {
       // 发起请求获取食堂信息，以下是示例代码
@@ -125,243 +104,52 @@ export default {
             console.error('获取食堂信息失败:', error);
           });
     },
-    fetchnotices() {
-      this.$request.get('/cafeteriaNotices/actions/getCafeteriaNotices')
-          .then(response => {
-            this.notices = response.data;
-            let k=new Set;
-            for(let i=0;i<this.notices.length;i++){
-              k.add(this.notices[i].cafeteriaId)
-            }
-            this.chosenNotice=[...k];
-            console.log(this.chosenNotice[0]);
-            console.log(this.notices)
-          })
-          .catch(error => {
-            console.error('Error fetching canteens:', error);
-          });
-          this.fetchCafeterias();
-    },
-    showCanteenInfo(canteenId,noticeId) {
-      // 根据公告 ID 获取公告详细信息
-      this.$request.get('/cafeteriaNotices/actions/getCafeteriaNoticesByCafeteriaID',{
+    load(pageNum) {
+      this.pageNum = pageNum;
+      this.$request.get('/cafeteriaNotices/actions/getCafeteriaNoticesByConditions', {
         params: {
-          id: canteenId
-        }
-      })
-          .then(response => {
-            const myObject = response.data; // 将后端返回的公告信息赋值给 currentNoticeInfo
-            console.log(noticeId)
-            for(let i=0;i<myObject.length;i++){
-              if(myObject[i].noticeId === noticeId){
-                this.currentNoticeInfo =[]
-                this.currentNoticeInfo.push({ property: '公告ID', value: myObject[i].noticeId });
-                this.currentNoticeInfo.push({ property: '食堂ID', value: myObject[i].cafeteriaId });
-                this.currentNoticeInfo.push({ property: '食堂名称', value: myObject[i].cafeteriaName });
-                this.currentNoticeInfo.push({ property: '公告标题', value: myObject[i].title });
-                this.currentNoticeInfo.push({ property: '公告内容', value: myObject[i].content });
-                this.currentNoticeInfo.push({ property: '创建时间（自动生成）', value: myObject[i].createTime });
-              }
-          }
-
-            this.dialogVisible = true; // 显示 el-dialog
-          })
-          .catch(error => {
-            console.error('Error fetching canteen info:', error);
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          cafeteriaName: this.cafeteriaName,
+          title: this.title,
+        },
+      }).then((res) => {
+        this.tableData = res.data.records;
+        this.total = res.data.total;
+      });
+      this.fetchCafeterias();
+    },
+    handleAdd() {
+      this.fromVisible = true;
+      this.form = {};
+    },
+    handleEdit(row) {
+      this.form = JSON.parse(JSON.stringify(row));
+      this.fromVisible = true;
+    },
+    handleDel(row) {
+      this.$request.post('/cafeteriaNotices/actions/deleteCafeteriaNotice', { noticeId: row.noticeId })
+          .then(() => {
+            this.load(this.pageNum);
+            this.$message.success('删除成功');
           });
     },
-    saveToBackend() {
-      //发送编辑后的公告信息到后端
-      this.$request.post('/cafeteriaNotices/actions/updateCafeteriaNotice',{
-        noticeId:this.currentNoticeInfo[0].value,
-        cafeteriaId:this.currentNoticeInfo[1].value,
-        cafeteriaName:this.currentNoticeInfo[2].value,
-        title:this.currentNoticeInfo[3].value,
-        content: this.currentNoticeInfo[4].value,
-        createTime:this.currentNoticeInfo[5].value,
-        deleted:0,
-      })
-          .then(response => {
-            console.log('Successfully saved to backend');
-            this.$message.success("修改成功");
-            this.dialogVisible = false; // 关闭 el-dialog
-          })
-          .catch(error => {
-            console.error('Error saving to backend:', error);
-          });
+    handleSubmit() {
+      const url = this.form.noticeId ? '/cafeteriaNotices/actions/updateCafeteriaNotice' : '/cafeteriaNotices/actions/addCafeteriaNotice';
+      this.$request.post(url, this.form).then(() => {
+        this.load(1);
+        this.fromVisible = false;
+        this.$message.success('操作成功');
+      });
     },
-    updateUser(user) {   // 获取子组件传过来的数据  更新当前页面的数据
-      this.user = JSON.parse(JSON.stringify(user))  // 让父级的对象跟子级的对象毫无关联
+    handleCurrentChange(pageNum) {
+      this.load(pageNum);
     },
-    logout() {
-      localStorage.removeItem('user')  // 清除当前的token和用户数据
-      this.$router.push('/login')
+    reset() {
+      this.cafeteriaName = '';
+      this.title = '';
+      this.load(1);
     },
-    handleFull() {
-      document.documentElement.requestFullscreen()
-    },
-    handleCollapse() {
-      this.isCollapse = !this.isCollapse
-      this.asideWidth = this.isCollapse ? '64px' : '200px'
-      this.collapseIcon = this.isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'
-    }
-  }
-}
+  },
+};
 </script>
-
-<template>
-  <div>
-    <el-container>
-      <el-container>
-        <el-main>
-<!--          <router-view @update:user="updateUser" />-->
-          <div>
-            <el-button @click="addAnnouncement()">添加公告</el-button>
-            <el-select v-model="selectedCafeteria" placeholder="选择食堂" @change="onCafeteriaChange">
-              <el-option :value="-1">无</el-option>
-              <el-option
-                  v-for="notice in chosenNotice"
-                  :key="notice.noticeId"
-                  :label="notice.name"
-                    :value="notice"
-              ></el-option>
-            </el-select>
-            <el-button @click="filterByCafeteria">筛选</el-button>
-
-          </div>
-          <el-dialog :visible.sync="addDialogVisible" title="添加公告" @close="addDialogVisible = false">
-            <div class="input-container">
-              <div>
-                <label>公告ID:</label>
-                <el-input v-model="newAnnouncement[0]" style="width:50%"></el-input>
-              </div>
-              <div>
-                <label>食堂ID:</label>
-                <el-input v-model="newAnnouncement[1]" style="width:50%"></el-input></div>
-              <div>
-                <label>食堂名称:</label>
-                <el-input v-model="newAnnouncement[2]" style="width:50%"></el-input>
-              </div>
-              <div>
-                <label>公告标题:</label>
-                <el-input v-model="newAnnouncement[3]" style="width:50%"></el-input>
-              </div>
-              <div>
-                <label>公告内容:</label>
-                <el-input v-model="newAnnouncement[4]" style="width:50%"></el-input>
-              </div>
-              <div>
-                <label>创建时间（自动生成）:</label>
-                <el-input v-model="newAnnouncement[5]" style="width:50%" disabled></el-input>
-              </div>
-              <div style="display: flex; justify-content: center;">
-              <el-button type="primary" @click="addToBackend()">确定</el-button>
-              <el-button @click="addDialogVisible = false">取消</el-button>
-              </div>
-            </div>
-          </el-dialog>
-          <div v-for="notice in notices" :key="notice.noticeId">
-            <div style="display: flex; justify-content: space-between;">
-              <p style="margin-right: 10px;">{{ notice.title }}</p>
-              <div>
-                <el-button @click="showCanteenInfo(notice.cafeteriaId,notice.noticeId)">修改</el-button>
-                <el-button @click="decideToDelete(notice)">删除</el-button>
-              </div>
-            </div>
-          </div>
-          <el-dialog :visible.sync="decideDialogVisible" title="公告信息删除" @close="decideDialogVisible = false">
-            <p style="text-align: center; margin-bottom: 20px;font-size: 18px;">确定要删除{{this.tempNotice.title}}吗</p>
-            <div style="text-align: center;">
-              <el-button @click="deleteToBackend">确定</el-button>
-              <el-button @click="decideDialogVisible = false">取消</el-button>
-            </div>
-          </el-dialog>
-          <!-- el-dialog 用于展示公告信息和编辑 -->
-          <el-dialog :visible.sync="dialogVisible" title="公告信息编辑" @close="dialogVisible = false">
-            <el-table :data="currentNoticeInfo" style="width: 100%">
-              <el-table-column prop="property" label="属性"></el-table-column>
-              <el-table-column prop="value" label="信息">
-                <template v-slot="scope">
-                  <div v-if="scope.$index === editableRowIndex">
-                    <div v-if="scope.row.property !== '创建时间（自动生成）'">
-                    <el-input v-model="scope.row.value" @blur="saveRow(scope.$index)"></el-input>
-                    </div>
-                  </div>
-                  <div v-else @click="editableRowIndex = scope.$index">{{ scope.row.value }}</div>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div style="display: flex; justify-content: center;">
-            <el-button type="primary" @click="saveToBackend">修改</el-button>
-            <el-button @click="dialogVisible = false">取消</el-button>
-            </div>
-          </el-dialog>
-        </el-main>
-
-      </el-container>
-
-
-    </el-container>
-  </div>
-</template>
-
-<style scoped>
-.el-menu--inline {
-  background-color: #000c17 !important;
-}
-.el-menu--inline .el-menu-item {
-  background-color: #000c17 !important;
-  padding-left: 49px !important;
-}
-.el-menu-item:hover, .el-submenu__title:hover {
-  color: #fff !important;
-}
-.el-submenu__title:hover i {
-  color: #fff !important;
-}
-.el-menu-item:hover i {
-  color: #fff !important;
-}
-.el-menu-item.is-active {
-  background-color: #1890ff !important;
-  border-radius: 5px !important;
-  width: calc(100% - 8px);
-  margin-left: 4px;
-}
-.el-menu-item.is-active i, .el-menu-item.is-active .el-tooltip{
-  margin-left: -4px;
-}
-.el-menu-item {
-  height: 40px !important;
-  line-height: 40px !important;
-}
-.el-submenu__title {
-  height: 40px !important;
-  line-height: 40px !important;
-}
-.el-submenu .el-menu-item {
-  min-width: 0 !important;
-}
-.el-menu--inline .el-menu-item.is-active {
-  padding-left: 45px !important;
-}
-.input-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.input-container div {
-  display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  margin-bottom: 10px; /* 控制每个 div 之间的间距 */
-}
-
-.input-container div label {
-  width: 100px; /* 设定 label 宽度，确保对齐 */
-  margin-right: 20px;
-}
-
-.input-container div el-input {
-  flex: 1; /* 每个 el-input 占据父元素 div 的剩余宽度 */
-}
-</style>

@@ -63,7 +63,7 @@
                     <div class="dynamic-user-info">
 <!--                      <el-avatar :size='small' :src="post.avatar"></el-avatar>-->
                       <!-- 用户名 -->
-                      <span >{{ post.userName }}</span>
+                      <span @click="fetchUserInfo(post.userName)" >{{ post.userName }}</span>
                       <!-- 时间 -->
                       <span class="dynamic-time">{{ post.createTime }}</span>
                     </div>
@@ -110,6 +110,26 @@
                 </el-card>
               </el-col>
             </el-row>
+            <el-dialog
+                :visible.sync="showUserInfoDialog"
+                title="用户信息"
+                width="30%"
+            >
+              <div v-if="selectedUserInfo">
+                <el-avatar :size='"medium"' :src="selectedUserInfo.avatar"></el-avatar>
+                <p>用户名: {{ selectedUserInfo.account }}</p>
+                <p>姓名: {{ selectedUserInfo.name }}</p>
+                <p>邮箱: {{ selectedUserInfo.email }}</p>
+                <p>电话: {{ selectedUserInfo.phone }}</p>
+                <p>角色：{{ selectedUserInfo.role === 0 ? '学生' : '老师' }}</p>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="showUserInfoDialog = false">关闭</el-button>
+              </span>
+            </el-dialog>
+
+
+
           </div>
         </el-card>
         <!-- 社区动态 -->
@@ -289,6 +309,8 @@ export default {
       selectedMessage: null,
       showChatBox: false,
       newMessageText: '',
+      showUserInfoDialog: false,  // 控制对话框的显示 点击姓名显示用户具体信息
+      selectedUserInfo: null, // 被选中的用户信息
 
       // 其他数据定义
     };
@@ -506,7 +528,22 @@ export default {
     closeChat() {
       this.showChatBox = false;
       this.selectedMessage = null;
-    }
+    },
+    fetchUserInfo(userName) {
+      this.$request.get(`/users/actions/getUserByUserName?userName=${userName}`)
+          .then(response => {
+            if (response && response.data) {
+              this.selectedUserInfo = response.data;
+              this.showUserInfoDialog = true;
+            } else {
+              this.$message.error('无法获取用户信息');
+            }
+          })
+          .catch(error => {
+            console.error('获取用户信息错误:', error);
+            this.$message.error('获取用户信息失败');
+          });
+    },
   },
   mounted() {
     // //从父组件中获取数据
