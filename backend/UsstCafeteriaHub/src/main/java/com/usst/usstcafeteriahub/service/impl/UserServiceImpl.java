@@ -12,6 +12,7 @@ import com.usst.usstcafeteriahub.mapper.UserMapper;
 import com.usst.usstcafeteriahub.utils.JwtUtils;
 import com.usst.usstcafeteriahub.utils.UserHolder;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import com.usst.usstcafeteriahub.utils.RegexUtils;
 import jakarta.annotation.Resource;
@@ -32,6 +33,7 @@ import static com.usst.usstcafeteriahub.constant.WebConstants.USER_LOGIN_STATE;
 * @createDate 2023-12-10 14:42:29
 */
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
     @Resource
@@ -121,11 +123,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return Result.error("用户不存在");
         }else {
             if(user.getPassword().equals(loginDTO.getPassword())){
+                log.info("登录判断user:{}",user);
                 Map<String,Object> claims = new HashMap<>();
                 claims.put("id",user.getUserId());
                 claims.put("account",user.getAccount());
                 claims.put("password",user.getPassword());
+                log.info("存入token的claims：{}",claims);
                 String token = JwtUtils.generateToken(claims);
+                log.info("生成的token:{}",token);
                 user.setToken(token);
                 // 将用户信息保存到session中
                 request.getSession().setAttribute(USER_LOGIN_STATE,user);

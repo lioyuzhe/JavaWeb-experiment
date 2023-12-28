@@ -83,7 +83,9 @@ public class CafeteriaAdminServiceImpl extends ServiceImpl<CafeteriaAdminMapper,
                 claims.put("id",Cafeteriaadmin.getAdminId());
                 claims.put("account",Cafeteriaadmin.getAccount());
                 claims.put("password",Cafeteriaadmin.getPassword());
+                log.info("存入token的claims：{}",claims);
                 String token = JwtUtils.generateToken(claims);
+                log.info("生成的token:{}",token);
                 Cafeteriaadmin.setToken(token);
 
                 // 将用户信息保存到session中

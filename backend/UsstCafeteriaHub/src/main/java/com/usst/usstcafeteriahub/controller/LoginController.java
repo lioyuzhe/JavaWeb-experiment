@@ -32,7 +32,11 @@ public class LoginController {
     @Resource
     private CafeteriaAdminService cafeteriaAdminService;
 
-    @Log
+    /**
+     * 用户注册
+     * @param
+     * @return
+     */
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public BaseResponse login(@RequestBody LoginDTO loginDTO, HttpServletRequest request){
